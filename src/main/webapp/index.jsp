@@ -111,9 +111,9 @@
         		 for(let list of data) {
         			 let listDiv = "<div class='col-3'>"
         			 				+ "<div class='listBox'>"
-        			 				+ "<img src='/files/" + list.system_name + "'>"
+        			 				+ "<img src='/listFiles/" + list.system_name + "'>"
         			 				+ "<p>" + list.list_title + "</p>"
-        			 				+ "<input type='text' class='d-none' id='hiddenSeq_list' value='" + list.seq_list + "'>"
+        			 				+ "<input type='text' class='d-none' value='" + list.seq_list + "'>"
         			 				+ "</div></div>";
         			 				
         			 $(".viewList").append(listDiv);
@@ -147,6 +147,12 @@
 
         document.getElementById("logo").addEventListener("click", function () {
             location.href = "#";
+        })
+        
+        // 리스트 클릭 시
+        $(document).on("click", ".listBox", function(e){
+        	console.log($(e.target).siblings("input"));
+        	location.href="${pageContext.request.contextPath}/toListDetailView.li?seq_list=" + $(e.target).siblings("input").val();
         })
     </script>
 
