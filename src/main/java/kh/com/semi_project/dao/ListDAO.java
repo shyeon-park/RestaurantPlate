@@ -126,7 +126,7 @@ public class ListDAO {
 		return -1;
 	}
 	
-	// 상위 8개의 리스트를 조회하고 tbl_listFile과 조인하여 list_title과 system_name을 뿌려주는 작업
+	 //상위 8개의 리스트를 조회하고 tbl_listFile과 조인하여 list_title과 system_name을 뿌려주는 작업
 	public ArrayList<ListJoinFileDTO> getListAndFile() throws Exception {
 		String sql = "SELECT * FROM "
 				+ "(SELECT ROW_NUMBER() OVER(ORDER BY seq_list DESC) 순위,"
