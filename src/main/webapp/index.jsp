@@ -12,10 +12,295 @@
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-    <link href="index.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+
     <title>맛집 플레이트</title>
-    
+    <style>
+    	@font-face {
+            font-family: 'twaysky';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: '양진체';
+            src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+		.notosanskr * { 
+ 			font-family: 'Noto Sans KR', sans-serif;
+		}
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            width: 100%;
+            border: 1px solid grey;
+        }
+        
+
+        /*메인 페이지 헤더부분*/
+        .headerContainer {
+            width: 100%;
+            height: auto;
+            /* border: 1px solid grey; */
+            position: relative;
+        }
+
+        /*네비*/
+        .naviBar {
+            position: fixed;
+            width: 100%;
+            height: 80px;
+            margin: 0;
+            top: 0;
+            /* opacity: 0.8; */
+        }
+
+        .menu {
+            height: 100%;
+            /* border: 1px solid grey; */
+            /* position: relative; */
+            float: left;
+        }
+
+        .menu:first-child {
+            padding: 8px;
+        }
+
+        #logo {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .menu>a {
+            color: white;
+            position: relative;
+            top: 30%;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        /*메인 이미지*/
+        .mainImg {
+            width: 100%;
+            /* height: 100%; */
+            margin: 0;
+        }
+
+        .ImgCls {
+            width: 100%;
+            /* height: 100%; */
+            padding: 0;
+        }
+
+        #imgs {
+            width: 100%;
+            max-height: 700px;
+            /* opacity: 0.8; */
+            /* max-width:100%;
+            height:auto; */
+        }
+
+        /*메인 텍스트*/
+        .mainTxt {
+            position: absolute;
+            width: 100%;
+            top: 30%;
+        }
+
+        .txtDiv {
+            width: 80%;
+            margin: auto;
+            height: 100%;
+        }
+
+        .txtDiv>h2 {
+            font-family: '양진체';
+            color: whitesmoke;
+            /* font-weight: bold; */
+            text-shadow: 1px 1px 1px grey;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .txtDiv>h2:first-child {
+            margin-top: 40px;
+        }
+
+        /*검색창*/
+        .search {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            margin: 0;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .searchDiv {
+            position: relative;
+            width: 60%;
+            margin: auto;
+        }
+
+        #searchBox {
+            width: 100%;
+            height: 60px;
+            border-radius: 4px;
+            border: 1px solid #bbb;
+            opacity: 0.9;
+        }
+
+        #searchBtn {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+            position: absolute;
+            height: 100%;
+            width: 100px;
+            top: 0;
+            right: 0;
+            background-color: red;
+            border: 1px solid red;
+        }
+
+        /*메인페이지 바디부분1*/
+        .bodyContainer1 {
+            width: 100%;
+            height: 600px;
+            background-color: #ebc091;
+        }
+
+        .rowBody {
+            width: 100%;
+            height: 50%;
+            padding-top: 20px;
+        }
+
+        .txtBox {
+            width: 50%;
+            height: 100%;
+            text-align: center;
+            padding: 0;
+            position: relative;
+
+        }
+
+        .txtBox>p {
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+            top: 50%;
+            transform: translate(0, -50%);
+        }
+
+        .imgBox {
+            width: 40%;
+            height: 100%;
+            margin: auto;
+        }
+
+        .imgBox>img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .borderBox {
+        	width: 10%;
+        	margin: auto;
+        	height: 50px;
+        }
+        
+        #bold {
+        	border-top: 2px solid black;
+        }
+
+
+        /*메인페이지 바디부분2*/
+        .bodyContainer2 {
+            width: 90%;
+            height: 700px;
+            margin: auto;
+            /* border: 1px solid grey; */
+             margin-top: 100px; 
+            /* background-color: lightgrey; */
+        }
+        
+        .tit {
+        	text-align: center;
+        	/* margin-bottom: 100px; */
+        }
+        
+        .bodyContainer2 h2{
+        	font-family: 'Noto Sans KR';
+        	font-weight: bold;
+        	color: #333;
+        	margin: 0;
+        }
+		
+		.viewList {
+			width: 100%;
+			margin: auto;
+		}
+		
+		.listBox {
+			height: 200px;
+			position: relative;
+			background-color: black;
+			margin-bottom: 20px;
+			transition-duration: 1.5s;
+		}
+		
+		.listBox:hover {
+			cursor: pointer;
+			transform: scale(1.1);
+		}
+		
+		.listBox > img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0.7;
+		}
+		
+		.listBox > p {
+			position: absolute;
+			font-weight: bold;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			text-align: center;
+			font-size: 20px;
+			color: white;
+		}
+		
+		.moleList>a {
+			margin-right: 12px;
+			color: #333;
+		}
+		
+		/* footer */
+		.footer {
+			width: 100%;
+			height: 400px;
+			border: 1px solid black;
+			background-color: lightgrey;
+		}
+    </style>
 </head>
 
 <body>
@@ -89,13 +374,23 @@
         <div class="bodyContainer2">
             <div class="row">
                 <div class="col-12 tit">
-                    <h3>추천 맛집 리스트</h3>
+                    <h2>추천 맛집 리스트</h2>
                 </div>
             </div>
+            <div class="borderBox"></div>
+        	<div class="borderBox" id="bold"></div>
             <div class="row viewList">
             
             </div>
-            
+            <div class="row">
+            	<div class="col-12 d-flex justify-content-end moleList">
+            		<a href="${pageContext.request.contextPath}/toTotalListView.li">더보기</a>
+            	</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+        	
         </div>
     </div>
     <script>
@@ -103,6 +398,7 @@
              getListAndFile();
          })
 
+         // 메인페이지로 리스트목록 불러오기
          function getListAndFile() {
         	 $.ajax({
         		 url: "${pageContext.request.contextPath}/toGetList.home",
@@ -155,8 +451,6 @@
         	location.href="${pageContext.request.contextPath}/toListDetailView.li?seq_list=" + $(e.target).siblings("input").val();
         })
     </script>
-
-
 
 </body>
 
