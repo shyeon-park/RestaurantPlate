@@ -235,10 +235,11 @@ public class ListController extends HttpServlet {
 			
 			try {
 				ArrayList<ListJoinFileDTO> list = dao.getListAndFileAll();
+				System.out.println(list);
 
 				if (list != null) {
 					request.setAttribute("list", list);
-					request.getRequestDispatcher("/RestaurantList/totalListView.jsp").forward(request, response);
+					request.getRequestDispatcher("/restaurantList/totalListView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

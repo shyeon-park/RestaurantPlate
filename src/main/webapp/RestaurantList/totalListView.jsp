@@ -108,10 +108,15 @@
 			margin: auto;
 		}
 		
+		.viewList>.col-4 {
+			border-bottom: 1px solid lightgrey;
+		}
+		
 		.listBox {
 			height: 200px;
 			position: relative;
-			margin-bottom: 20px;
+			margin-top: 30px;
+			margin-bottom: 30px;
 			transition-duration: 1.5s;
 		}
 		
@@ -124,7 +129,7 @@
 			position: absolute;
 			width: 100%;
 			height: 100%;
-			opacity: 0.7;
+			opacity: 0.8;
 		}
 		
 		.listBox > p {
@@ -137,6 +142,7 @@
 			font-size: 20px;
 			color: white;
 		}
+		
     </style>
 </head>
 <body>
@@ -169,11 +175,11 @@
         <div class="bodyContainer">
             <div class="row viewList">
             <c:forEach items="${list}" var="listDto">
-            	<div class="col-3 ">
+            	<div class="col-4">
                     <div class="listBox">
-                        <img src="${listDto.getSystem_name()}">
+                        <img src="/listFiles/${listDto.getSystem_name()}">
                         <p>${listDto.getList_title()}</p>
-                        <input type="text" class="d-none" value="${listDto.getSeq_list}">
+                        <input type="text" class="d-none" value="${listDto.getSeq_list()}">
                     </div>
                 </div>
             </c:forEach>
