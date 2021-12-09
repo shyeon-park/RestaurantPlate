@@ -135,7 +135,7 @@ a:link {
 		<div class="headerContainer">
 			<div class="row naviBar">
 				<div class="col-2 menu d-flex justify-content-center">
-					<img src="img/logo.png" id="logo">
+					<img src="${pageContext.request.contextPath}/img/logo.png" id="logo">
 				</div>
 				<div class="col-2 col-md-6 menu"></div>
 				<div class="col-2 col-md-1 menu d-flex justify-content-start">
