@@ -3,6 +3,7 @@ package kh.com.semi_project.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -10,6 +11,7 @@ import javax.naming.InitialContext;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
 import kh.com.semi_project.dto.RestaurantDTO;
+import kh.com.semi_project.dto.RestaurantJoinFileDTO;
 
 public class RestaurantDAO {
 	private BasicDataSource bds;
@@ -68,5 +70,37 @@ public class RestaurantDAO {
 				return rs;
 		}
 		return -1;
+	}
+	
+	// 해당 리스트의 맛집들을 맛집테이블과 맛집파일테이블을 조인하여 새로운 DTO로 뿌려주는 작업
+	public ArrayList<RestaurantJoinFileDTO> selectRestAndFileBySeq(int listNum) throws Exception {
+		String sql = "SELECT * FROM tbl_rest JOIN tbl_restFile USING(seq_rest) WHERE seq_list=?";
+		
+		try (Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);) {
+			
+			pstmt.setInt(1, listNum);
+			
+			ResultSet rs = pstmt.executeQuery();
+			ArrayList<RestaurantJoinFileDTO> list = new ArrayList<>();
+			while(rs.next()) {
+				int seq_rest = rs.getInt("seq_rest");
+				int seq_list = rs.getInt("seq_list");
+				String rest_name = rs.getString("rest_name");
+				String rest_introduction = rs.getString("rest_introduction");
+				String sido = rs.getString("sido");
+				String sigungu = rs.getString("sigungu");
+				String bname = rs.getString("bname");
+				String rest_address = rs.getString("rest_address");
+				String rest_tel = rs.getString("rest_tel");
+				String rest_time = rs.getString("rest_time");
+				String parking_possible = rs.getString("parking_possible");
+				String system_name = rs.getString("system_name");
+				list.add(new RestaurantJoinFileDTO(seq_rest, seq_list, rest_name, rest_introduction, sido, sigungu, bname, rest_address,
+						                             rest_tel, rest_time, parking_possible, system_name)); 
+			}
+			return list;
+		}
+		
 	}
 }

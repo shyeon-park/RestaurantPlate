@@ -127,7 +127,7 @@ public class ListDAO {
 	}
 	
 	// 리스트 테이블과 리스트파일 테이블을 조인해서 8개의 데이터를 랜덤으로 뽑아주는 작업
-	public ArrayList<ListJoinFileDTO> getListAndFile() throws Exception {
+	public ArrayList<ListJoinFileDTO> selectListAndFileRandom() throws Exception {
 		String sql = "select * from (select * from tbl_list order by dbms_random.random())"
 				     + "JOIN tbl_listFile USING(seq_list) where rownum <= 8";
 		
@@ -148,7 +148,7 @@ public class ListDAO {
 	
 	
 	// ListFile 테이블과 조인하여 모든 데이터 조회
-	public ArrayList<ListJoinFileDTO> getListAndFileAll() throws Exception {
+	public ArrayList<ListJoinFileDTO> selectListAndFileAll() throws Exception {
 		String sql = "select * from tbl_list JOIN tbl_listFile USING (seq_list)";
 		
 		try(Connection con = this.getConnection();

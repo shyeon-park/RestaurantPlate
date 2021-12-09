@@ -41,7 +41,7 @@ public class HomeController extends HttpServlet {
 
 			ListDAO dao = new ListDAO();
 			try {
-				ArrayList<ListJoinFileDTO> list = dao.getListAndFile();
+				ArrayList<ListJoinFileDTO> list = dao.selectListAndFileRandom();
 				Gson gson = new Gson();
 				String rs = gson.toJson(list);
 				System.out.println(rs);

@@ -187,31 +187,33 @@
             </div>
             <div class="row headDiv">
                 <div class="col-12">
-                    <p>BEST5</p>
+                    <p>${ldto.getList_title()}</p>
                 </div>
             </div>
         </div>
         
         <div class="bodyContainer">
-            <div class="restaurantBox">
+        <c:forEach items="${restList}" var="list">
+        	<div class="restaurantBox">
                 <input type="text" class="d-none" value="">
                 <div class="row divBox1">
                     <div class="col-12"></div>
                 </div>
                 <div class="row restContent">
                     <div class="col-4 restaurantImgDiv">
-                        <img src="img/main2.png">
+                        <img src="/restFiles/${list.getSystem_name()}">
                     </div>
                     <div class="col-8 restaurantTxtDiv">
-                        <p>맛집이름</p>
-                        <p>주소</p>
-                        <p>맛집 소개</p>
+                        <p>${list.getRest_name()}</p>
+                        <p>${list.getRest_address()}</p>
+                        <p>${list.getRest_introduction()}</p>
                     </div>
                 </div>
                 <div class="row divBox2">
                     <div class="col-12"></div>
                 </div>
             </div>
+        </c:forEach>
         </div>
     </div>
 

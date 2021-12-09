@@ -186,5 +186,10 @@
             </div>
         </div>
     </div>
+    <script>
+    	$(".listBox").on("click", function(e){
+    		location.href = "${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(e.target).siblings("input").val();
+    	})
+    </script>
 </body>
 </html>

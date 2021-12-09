@@ -234,7 +234,7 @@ public class ListController extends HttpServlet {
 			System.out.println("요청도착");
 			
 			try {
-				ArrayList<ListJoinFileDTO> list = dao.getListAndFileAll();
+				ArrayList<ListJoinFileDTO> list = dao.selectListAndFileAll();
 				System.out.println(list);
 
 				if (list != null) {

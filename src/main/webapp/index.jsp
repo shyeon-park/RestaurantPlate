@@ -474,7 +474,7 @@ a:link {
         // 리스트 클릭 시
         $(document).on("click", ".listBox", function(e){
         	console.log($(e.target).siblings("input"));
-        	location.href="${pageContext.request.contextPath}/toListDetailView.li?seq_list=" + $(e.target).siblings("input").val();
+        	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(e.target).siblings("input").val();
         })
     </script>
 
