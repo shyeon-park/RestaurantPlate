@@ -148,36 +148,17 @@
                 <div class="row mt-3">
                     <div class="col-3 d-flex justify-content-end">닉네임</div>
                     <div class="col-9">
-                        <input type="text" class="form-control w-100" id="nickname" name="nickname"placeholder="영문자, 한글, 숫자 2~16자리">
+                        <input type="text" class="form-control w-100" id="nickname" name="nickname"placeholder="영문자, 한글, 숫자 2~16자리" maxlength="16">
                     </div>
                 </div>
 
 
                 <div class="row mt-3" id="emailBox">
                     <div class="col-3 d-flex justify-content-end">이메일</div>
-                    <div class="col-6">
-                        <input type="text" class="form-control w-100" id="email" name="email" placeholder="이메일 입력">
-                        <input type="hidden" id="emailForm" name="emailForm"> 
-                        <!-- 디세이블드 시키면 from 전송이 되지 않는다 그렇기에 전송용 input을 만듬 -->
-                    </div>
-                    <div class="col-3">
-                        <button type="button" class="w-100 h-100" id="sendEmail">인증번호전송</button>
-                    </div>
-
-                </div>
-
-                <div class="row mt-3 d-none" id="emailAuth">
-                    <div class="col-3 d-flex justify-content-end align-items-start">이메일인증</div>
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <input type="text" class="form-control w-75" id="authNumInput" placeholder="인증번호 입력" maxlength="6">
-                        <div class="ms-1 w-25" id="time"></div>
-                    </div>
-
-                    <div class="col-3">
-                        <button type="button" id="authNumCheck" class="w-100 h-100">확인</button>
+                    <div class="col-9">
+                        <input type="text" class="form-control w-100" id="email" name="email" placeholder="이메일 입력" maxlength="30">
                     </div>
                 </div>
-
 
 
                 <div class="row mt-3" id="phoneBox">
@@ -279,7 +260,7 @@
             let phoneAuthNumCheck = document.getElementById("phoneAuthNumCheck") // phone 인증번호 확인
             let phoneAuthNumInput = document.getElementById("phoneAuthNumInput")// 휴대폰인증번호 Input
 
-            let	emailLicense = false //이메일 인증 완료 여부
+  
             let	phoneLicense = false //휴대폰 인증 완료 여부
             
             //g라는 플래그가 없어야지만 한 번만 찾고 포인터초기화
@@ -334,32 +315,8 @@
                 else if (checkPassword() == "일치") newP = "<div id='pwCheckText'></div>"
                 $("#pwCheck").after(newP)
             })
-
-            // 닉네임 검사
-            nickname.addEventListener("blur", function () {
-                $("#resultNickname").remove();
-                let newP
-                if (regexTest(nicknameRegex, nickname)) {
-                    newP = "<div id ='resultNickname'></div>"
-                } else {
-                    newP = "<div class='d-flex justify-content-start mt-3' id ='resultNickname'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 형식입니다.</p></div>"
-                }
-                $("#nickname").after(newP)
-            })
-
-            //이메일 검사
-            email.addEventListener("blur", function () {
-                $("#resultEmail").remove();
-                let newP
-                if (regexTest(emailRegex, email)) {
-                    newP = "<div id ='resultEmail'></div>"
-                } else {
-                    newP = "<div class='row' id ='resultEmail'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 이메일 형식입니다.</p></div></div>"
-                }
-                $("#emailBox").after(newP)
-            })
-
-            //비밀번호 확인함수
+            
+               //비밀번호 확인함수
             function checkPassword() {
                 if ((pwCheck.value !== "")) {
                     if (pw.value == pwCheck.value) {
@@ -372,6 +329,31 @@
                 }
             }
 
+            // 닉네임 검사
+            nickname.addEventListener("blur", function () {
+                $("#resultNickname").remove();
+                let newP
+                if (regexTest(nicknameRegex, nickname)) {
+                    newP = "<div id ='resultNickname'></div>"
+                } else {
+                    newP = "<div class='d-flex justify-content-start mt-3' id ='resultNickname'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 형식입니다.</p></div>"
+                }
+                $("#nickname").after(newP)
+            })
+			
+              //이메일 검사
+			   email.addEventListener("blur", function () {
+                $("#resultEmail").remove();
+                let newP
+                if (regexTest(emailRegex, email)) {
+                    newP = "<div id ='resultEmail'></div>"
+                } else {
+                    newP = "<div class='row' id ='resultEmail'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 이메일 형식입니다.</p></div></div>"
+                }
+                $("#emailBox").after(newP)
+            })
+
+         
 
             // 정규식검사 함수
             function regexTest(regex, testId) {
@@ -382,76 +364,6 @@
                 return false;
             }
 
-
-            //이메일전송
-            sendEmail.addEventListener("click", function () {
-                console.log(email.value)
-                if (regexTest(emailRegex, email)) {
-                    data = { "email": email.value }
-                    $("#emailAuth").removeClass("d-none");
-                    $("#authNumCheck").attr("disabled", false);
-
-                    var display = $("#time");
-                    // 유효시간 설정
-                    var leftSec = 30;
-                    //버튼클릭시 시간 초기화
-                    clearInterval(emailTimer); //버튼누를 시 초기화 
-                    emailTimerStart(leftSec, display); //클릭시 시간을 화면에 띄운다
-
-                    $.ajax({
-                        type: "post"
-                        , url: "${pageContext.request.contextPath}/sendEmail.mail"
-                        , data: data
-                        , success: function (rs) {
-                            //$("#resultEmail").remove();
-                            console.log("성공")
-                        }, error: function (e) {
-                            console.log(e)
-                        }
-                    })
-                } else {
-                    $("#resultEmail").remove();
-                    let newP
-                    newP = "<div class='row' id ='resultEmail'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 이메일 형식입니다.</p></div></div>"
-                    $("#emailBox").after(newP)
-                    return
-                }
-            })
-            //이메일 인증번호 확인을 누르면 
-            authNumCheck.addEventListener("click", function () {
-                $("#resultEmail").remove();
-                let authNumInput = $("#authNumInput").val()
-                data = { "authNumInput": authNumInput }
-                $.ajax({
-                    type: "post"
-                    , url: "${pageContext.request.contextPath}/authNumCheck.mail"
-                    , data: data
-                    , success: function (rs) {
-                        console.log(rs)
-                        if (rs == "success") {
-                            $("#resultAuth").remove();
-                            $("#emailAuth").addClass("d-none");
-                            $("#sendEmail").html("인증완료")
-                            $("#sendEmail").attr("disabled", true);
-                            email.disabled = true;
-                            emailLicense = true
-                            location.replace(url) 
-                        } 
-                    }, error: function (e) {
-                        console.log(e)
-                    }
-
-                })
-            })
-
-            //이메일 타이머
-            function emailTimerStart(count, display) {
-                var minutes, seconds;
-                emailTimer = setInterval(function () {
-                    displayTime(count, minutes, seconds, display, emailTimer, authNumCheck)
-                    count--
-                }, 1000);
-            }
 
             //폰 타이머
             function phoneTimerStart(count, display) {
@@ -494,7 +406,7 @@
                                 $("#phoneAuth").removeClass("d-none");
                                 var display = $("#phoneTime");
                                 // 유효시간 설정
-                                var leftSec = 30;
+                                var leftSec = 180;
                                 // 버튼 클릭 시 시간 연장
                                 clearInterval(phoneTimer);
                                 phoneTimerStart(leftSec, display);
@@ -569,12 +481,7 @@
 				if(!regexTest(pwRegex,pw)) return pw.focus()
 				if(pw.value != pwCheck.value) return pwCheck.focus();
 				if(!regexTest(nicknameRegex,nickname)) return nickname.focus()
-				if(!emailLicense){
-					 $("#resultAuth").remove();
-                     newP = "<div class='row' id ='resultAuth'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>이메일 인증을 해주세요!</p></div></div>"
-                     $("#emailAuth").after(newP)
-				   return email.focus()
-				}
+				if(!regexTest(emailRegex,email)) return email.focus()
 				if(!phoneLicense){
 					  $("#resultPhoneAuth").remove();
                       newP = "<div class='row' id ='resultPhoneAuth'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>휴대폰 인증을 해주세요!.</p></div></div>"
@@ -583,8 +490,7 @@
 				}
 				if(postCode.value == "") return postCode.focus()
 				
-				$("#emailForm").val(email.value)
-				//디세이블드 된 속성은 form으로 넘어가지지 않기에 전송용 input 만듬
+				
 				$("#signupForm").submit();
 				
 			})

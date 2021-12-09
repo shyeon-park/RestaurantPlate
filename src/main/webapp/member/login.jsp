@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,10 +29,11 @@ a {
 </style>
 </head>
 <body>
+
 	<!-- <p>$ { loginSession.get("nickname")}님환영합니다.</p> -->
 	<c:choose>
 		<c:when test="${!empty loginSession}">
-		<p>로그인 성공</p>
+			<p>로그인 성공</p>
 		</c:when>
 		<c:otherwise>
 			<c:if test="${rs eq 'fail'}">
@@ -40,59 +41,69 @@ a {
 			alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
 			</script>
 			</c:if>
-	<form action = "${pageContext.request.contextPath}/loginProc.mem" method = "post" id="loginForm">
-	<div
-		class="container h-100 d-flex flex-column justify-content-md-center">
-		<div class="row">
-			<div class="col-12 d-flex justify-content-center">
-				<h3 class="mt-3">로그인</h3>
-			</div>
-			<div class="col-12 d-flex justify-content-center mt-3">
-				<img src="../image/logo.jpg" alt="">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<input type="text" class="form-control mt-3" id="id" name = "id"
-					placeholder="맛집 플레이트 ID">
-			</div>
-			<div class="col-12">
-				<input type="password" class="form-control mt-3" id="pw"  name = "pw" placeholder="비밀번호">
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<button type="button" class="btn btn-dark w-100 mt-3" id="btnLogin"
-					style="height: 50px;">로그인</button>
-			</div>
-			<div class="col">
-				<a href="#" class="me-1">아이디 찾기</a> <a href="#" class="me-1">비밀번호
-					찾기</a> <a href="${pageContext.request.contextPath}/signup.mem" class="">회원가입</a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<img src="../image/kakao_login_img.png" alt="" class="w-100 mt-3" id="kakoLoginBtn"
-					style="height: 50px;">
-			</div>
-			<div class="col"></div>
-		</div>
-	</div>
-	 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> <!-- 카카오 로그인 sdk 등록-->
-	<script type="text/javascript">
+			<form action="${pageContext.request.contextPath}/loginProc.mem"
+				method="post" id="loginForm">
+				<div
+					class="container h-100 d-flex flex-column justify-content-md-center">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-center">
+							<h3 class="mt-3">로그인</h3>
+						</div>
+						<div class="col-12 d-flex justify-content-center mt-3">
+							<img src="${pageContext.request.contextPath}/logo.jpg" alt="">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<input type="text" class="form-control mt-3" id="id" name="id"
+								placeholder="맛집 플레이트 ID" onkeyup=enterkey()>
+						</div>
+						<div class="col-12">
+							<input type="password" class="form-control mt-3" id="pw"
+								name="pw" placeholder="비밀번호" onkeyup=enterkey()>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<button type="button" class="btn btn-dark w-100 mt-3"
+								id="btnLogin" style="height: 50px;">로그인</button>
+						</div>
+						<div class="col">
+							<a href="#" class="me-1">아이디 찾기</a> <a href="#" class="me-1">비밀번호
+								찾기</a> <a href="${pageContext.request.contextPath}/signup.mem"
+								class="">회원가입</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<img src="${pageContext.request.contextPath}/kakao_login_img.png"
+								alt="" class="w-100 mt-3" id="kakoLoginBtn"
+								style="height: 50px;">
+						</div>
+						<div class="col"></div>
+					</div>
+				</div>
+				<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+				<!-- 카카오 로그인 sdk 등록-->
+				<script type="text/javascript">
+	
 	 window.Kakao.init("f5b85acc6a4af9096ab0fcf1ad929c7c"); //자바 키 등록
 	 console.log(Kakao.isInitialized()); //초기화 여부 판단 ==> true 정상적으로 초기화
-	
+
     //로그인 버튼 클릭시 
     document.getElementById("btnLogin").addEventListener("click",function(){
-    	if(!idCheck()) return
-    	if(!pwCheck()) return
-    	
-    	//console.log("형식이 모두 맞아요")
-    	$("#loginForm").submit();
+    	loginFormSubmit()
     })
-    
-   
+    function enterkey() {
+         if (window.event.keyCode == 13) {
+        	 loginFormSubmit()
+         }
+     }
+   	function loginFormSubmit(){ //로그인 서브밋 함수
+   		if(!idCheck()) return
+    	if(!pwCheck()) return
+    	$("#loginForm").submit();
+   	}
     
     document.getElementById("kakoLoginBtn").addEventListener("click",function(){
     	kakaoLogin()
@@ -162,9 +173,8 @@ a {
     }
     
     </script>
-		
 		</c:otherwise>
 	</c:choose>
-	
+
 </body>
 </html>
