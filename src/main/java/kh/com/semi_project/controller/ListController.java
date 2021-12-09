@@ -1,9 +1,6 @@
 package kh.com.semi_project.controller;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,6 +18,7 @@ import kh.com.semi_project.dao.ListDAO;
 import kh.com.semi_project.dao.ListFileDAO;
 import kh.com.semi_project.dto.ListDTO;
 import kh.com.semi_project.dto.ListFileDTO;
+import kh.com.semi_project.dto.ListJoinFileDTO;
 
 @WebServlet("*.li")
 public class ListController extends HttpServlet {
@@ -236,7 +234,7 @@ public class ListController extends HttpServlet {
 			System.out.println("요청도착");
 			
 			try {
-				ArrayList<ListDTO> list = dao.selectAll();
+				ArrayList<ListJoinFileDTO> list = dao.getListAndFileAll();
 
 				if (list != null) {
 					request.setAttribute("list", list);

@@ -168,12 +168,12 @@
 
         <div class="bodyContainer">
             <div class="row viewList">
-            <c:forEach items="${dto}" var="Listdto">
+            <c:forEach items="${list}" var="listDto">
             	<div class="col-3 ">
                     <div class="listBox">
-                        <img src="">
-                        <p>list.list_title</p>
-                        <input type="text" class="d-none" value="">
+                        <img src="${listDto.getSystem_name()}">
+                        <p>${listDto.getList_title()}</p>
+                        <input type="text" class="d-none" value="${listDto.getSeq_list}">
                     </div>
                 </div>
             </c:forEach>

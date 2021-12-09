@@ -144,6 +144,26 @@ public class ListDAO {
 			}
 			return list;
 		}
-		
 	}
+	
+	
+	// ListFile 테이블과 조인하여 모든 데이터 조회
+	public ArrayList<ListJoinFileDTO> getListAndFileAll() throws Exception {
+		String sql = "select * from tbl_list JOIN tbl_listFile USING (seq_list)";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			ResultSet rs = pstmt.executeQuery();
+			ArrayList<ListJoinFileDTO> list = new ArrayList<>();
+			while(rs.next()) {
+				int seq_list = rs.getInt("seq_list");
+				String list_title = rs.getString("list_title");
+				String system_name = rs.getString("system_name");
+				list.add(new ListJoinFileDTO(seq_list, list_title, system_name));
+			}
+			return list;
+		}
+	}
+	
 }
