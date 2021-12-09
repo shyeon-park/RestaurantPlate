@@ -48,7 +48,7 @@ a {
 				<h3 class="mt-3">로그인</h3>
 			</div>
 			<div class="col-12 d-flex justify-content-center mt-3">
-				<img src="../image/logo.jpg" alt="">
+				<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
 			</div>
 		</div>
 		<div class="row">
@@ -72,7 +72,7 @@ a {
 		</div>
 		<div class="row">
 			<div class="col-12">
-				<img src="../image/kakao_login_img.png" alt="" class="w-100 mt-3" id="kakoLoginBtn"
+				<img src="${pageContext.request.contextPath}/img/kakao_login_img.png" alt="" class="w-100 mt-3" id="kakoLoginBtn"
 					style="height: 50px;">
 			</div>
 			<div class="col"></div>
