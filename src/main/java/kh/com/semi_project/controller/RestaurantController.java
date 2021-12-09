@@ -96,7 +96,7 @@ public class RestaurantController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/toListDetailView.re")) {   // 해당 리스트에 속해있는 맛집정보 뿌려주기
+		} else if (cmd.equals("/toListDetailView.re")) { // 해당 리스트에 속해있는 맛집정보 뿌려주기
 
 			int seq_list = Integer.parseInt(request.getParameter("seq_list"));
 
@@ -109,6 +109,23 @@ public class RestaurantController extends HttpServlet {
 					request.setAttribute("ldto", ldto);
 					request.setAttribute("restList", restList);
 					request.getRequestDispatcher("/restaurantList/listDetailView.jsp").forward(request, response);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else if (cmd.equals("/toRestDetailView.re")) { // 맛집 상세정보 조회해서 페이지로 뿌려주기
+			System.out.println("요청도착");
+			
+			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+			System.out.println(seq_rest);
+
+			try {
+				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+				
+				if(dto != null) {
+					request.setAttribute("restDto", dto);
+					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

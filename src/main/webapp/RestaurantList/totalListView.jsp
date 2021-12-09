@@ -19,10 +19,20 @@
         * {
             box-sizing: border-box;
         }
+        
+        html {
+        	width: 100%;
+        	height: 100%;
+        }
+        
+        body {
+        	width: 100%;
+        	height: 100%;
+        }
 
         .wrapper {
             width: 100%;
-            height: 4000px;
+            height: 100%;
         }
 
         /* 메인 페이지 헤더부분 */
@@ -187,8 +197,9 @@
         </div>
     </div>
     <script>
-    	$(".listBox").on("click", function(e){
-    		location.href = "${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(e.target).siblings("input").val();
+    	$(".listBox").on("click", function(){
+    		console.log($(this).find("input").val());
+    		location.href = "${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(this).find("input").val();
     	})
     </script>
 </body>

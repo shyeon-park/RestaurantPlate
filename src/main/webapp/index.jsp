@@ -8,9 +8,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -48,34 +48,38 @@
 	box-sizing: border-box;
 }
 
+html {
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
 .wrapper {
 	width: 100%;
 	border: 1px solid grey;
-}
-
-/*메인 페이지 헤더부분*/
-.headerContainer {
-	width: 100%;
-	height: auto;
-	/* border: 1px solid grey; */
-	position: relative;
 }
 
 /*네비*/
 .naviBar {
 	position: fixed;
 	width: 100%;
-	height: 80px;
 	margin: 0;
 	top: 0;
+	z-index: 1;
+	height: 80px;
 	/* opacity: 0.8; */
 }
 
 .menu {
+	position: relative;
 	height: 100%;
 	/* border: 1px solid grey; */
 	/* position: relative; */
-	float: left;
 }
 
 .menu:first-child {
@@ -88,80 +92,66 @@
 	cursor: pointer;
 }
 
-.menu>a {
+.menu > a {
 	color: white;
-	position: relative;
-	top: 30%;
 	font-size: 16px;
 	font-weight: bold;
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+
+.menu > img {
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+
+.menu > img:hover {
+	cursor: pointer;
 }
 
 a:link {
 	text-decoration: none;
 }
 
-/*메인 이미지*/
-.mainImg {
-	width: 100%;
-	/* height: 100%; */
-	margin: 0;
+/* 헤더 */
+.header {
+	width: 100vw;
+	position: relative;
 }
 
-.ImgCls {
-	width: 100%;
-	/* height: 100%; */
-	padding: 0;
-}
 
-#imgs {
-	width: 100%;
-	max-height: 700px;
-	/* opacity: 0.8; */
-	/* max-width:100%;
-            height:auto; */
-}
-
-/*메인 텍스트*/
-.mainTxt {
+.header-txt {
 	position: absolute;
 	width: 100%;
-	top: 30%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
 }
 
-.txtDiv {
-	width: 80%;
-	margin: auto;
-	height: 100%;
-}
-
-.txtDiv>h2 {
+.header-txt>h2 {
 	font-family: '양진체';
 	color: whitesmoke;
 	/* font-weight: bold; */
 	text-shadow: 1px 1px 1px grey;
-	font-size: 40px;
+	font-size: 3vw;
 	text-align: center;
 }
 
-.txtDiv>h2:first-child {
+.header-txt>h2:first-child {
 	margin-top: 40px;
 }
 
 /*검색창*/
-.search {
+.header-search {
 	position: absolute;
-	text-align: center;
-	width: 100%;
-	margin: 0;
-	top: 60%;
-	left: 50%;
-	transform: translate(-50%, 0);
-}
-
-.searchDiv {
-	position: relative;
 	width: 60%;
 	margin: auto;
+	top: 70%;
+	left: 50%;
+	transform: translate(-50%, 0);
 }
 
 #searchBox {
@@ -170,6 +160,7 @@ a:link {
 	border-radius: 4px;
 	border: 1px solid #bbb;
 	opacity: 0.9;
+	padding-left: 20px;
 }
 
 #searchBtn {
@@ -297,6 +288,7 @@ a:link {
 .moleList>a {
 	margin-right: 12px;
 	color: #333;
+	font-weight: bold;
 }
 
 /* footer */
@@ -311,74 +303,71 @@ a:link {
 
 <body>
 	<div class="wrapper">
-		<div class="headerContainer">
-			<div class="row naviBar">
-				<div class="col-2 menu d-flex justify-content-center">
-					<img src="${pageContext.request.contextPath}/img/logo.png"
-						id="logo">
-				</div>
-				<div class="col-2 col-md-6 menu"></div>
-				<c:choose>
-					<c:when test="${!empty loginSession}">
-						<div class="col-2 col-md-1 menu d-flex justify-content-start">
-							<a href="${pageContext.request.contextPath}/logoutProc.mem">로그아웃</a>
-						</div>
+		<div class="row naviBar">
+			<div class="col-2 menu d-flex justify-content-center">
+				<img src="${pageContext.request.contextPath}/img/plateLogo.png" id="logo">
+			</div>
+			<div class="col-2 col-md-7 menu"></div>
+			<c:choose>
+				<c:when test="${!empty loginSession}">
+					<div class="col-2 col-md-1 menu">
+						<a href="#">맛집 리스트</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<a href="#">전체 리뷰</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+						    width="50px" height="50px" id="userPage">
+					</div>
+				</c:when>
 
-						<div class="col-2 col-md-1 menu d-flex justify-content-start">
-							<a href="${pageContext.request.contextPath}/">마이페이지</a>
-						</div>
-					</c:when>
-
-					<c:otherwise>
-						<c:if test="${rs eq 'fail'}">
-							<script type="text/javascript">
+				<c:otherwise>
+					<c:if test="${rs eq 'fail'}">
+						<script type="text/javascript">
 						alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
 						</script>
-						</c:if>
+					</c:if>
 
-						<div class="col-2 col-md-1 menu d-flex justify-content-start">
-							<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
-						</div>
+					<div class="col-2 col-md-1 menu">
+						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
+					</div>
 
-						<div class="col-2 col-md-1 menu d-flex justify-content-start">
-							<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
-						</div>
-					</c:otherwise>
-				</c:choose>
+					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
+						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
+					</div> -->
+					<div class="col-2 col-md-1 menu">
+						<a href="#">맛집 리스트</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<a href="#">전체 리뷰</a>
+					</div>
+				</c:otherwise>
+			</c:choose>
 
+		</div>
 
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">맛집 리스트</a>
-				</div>
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">전체 리뷰</a>
-				</div>
+		<div class="header">
+			<div class="header-img">
+				<img src="${pageContext.request.contextPath}/img/mainImg2.png"
+					style="width: 100%;">
 			</div>
-			<div class="row mainImg">
-				<div class="col-12 ImgCls">
-					<img src="${pageContext.request.contextPath}/img/main2.png"
-						id="imgs">
-				</div>
+			<div class="header-txt d-none d-md-block">
+				<h2>당장 오늘, 점심 뭐먹지? 고민일 땐</h2>
+				<h2>맛집 플레이트</h2>
 			</div>
-			<div class="row mainTxt">
-				<div class="d-none d-md-block col-md-12 txtDiv">
-					<h2>당장 오늘, 점심 뭐먹지? 고민일 땐</h2>
-					<h2>맛집 플레이트</h2>
-				</div>
-			</div>
-			<div class="row search">
-				<div class="col-12 searchDiv">
-					<input type="text" id="searchBox" placeholder=" 맛집명, 주소 검색">
-					<button type="button" class="btn btn-danger" id="searchBtn">
-						<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-							fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			<div class="header-search d-none d-md-block">
+				<input type="text" id="searchBox" placeholder="맛집명, 주소 검색">
+				<button type="button" class="btn btn-danger" id="searchBtn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+						fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path
-								d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                         </svg>
-					</button>
-				</div>
+				</button>
 			</div>
 		</div>
+
 		<div class="bodyContainer1">
 			<div class="row rowBody">
 				<div class="col-6 txtBox">
@@ -418,6 +407,28 @@ a:link {
 		</div>
 
 		<div class="footer"></div>
+		
+		<div class="modal fade" id="modalUser" data-bs-backdrop="static"
+					data-bs-keyboard="false" tabindex="-1"
+					aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+									
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">취소</button>
+								<button type="button" class="btn btn-primary" id="btnReg">등록</button>
+							</div>
+						</div>
+					</div>
+				</div>
 	</div>
 	<script>
          $(document).ready(function(){
@@ -427,7 +438,7 @@ a:link {
          // 메인페이지로 리스트목록 불러오기
          function getListAndFile() {
         	 $.ajax({
-        		 url: "${pageContext.request.contextPath}/toGetList.home",
+        		 url: "${pagContext.request.ContextPath}/getHomeList.li",
         		 dataType: "json"
         	 }).done(function(data){
         		 for(let list of data) {
@@ -449,10 +460,10 @@ a:link {
         $(function () {
             $(window).scroll(function () {
                 let navbar = $(this).scrollTop();
-                if (navbar > 500) {
+                if (navbar > 200) {
                     $(".naviBar").css({
                         "backgroundColor": "white",
-                        "z-index": "1",
+                        "z-index": "99",
                         "box-shadow": "2px 0px 2px 2px grey"
                     });
                     $(".menu").children().css("color", "grey");
@@ -467,17 +478,22 @@ a:link {
             })
         })
 
-        document.getElementById("logo").addEventListener("click", function () {
-            location.href = "#";
+        // 로고 클릭 시
+        $("#logo").on("click", function(){
+        	location.href = "/";
         })
         
         // 리스트 클릭 시
-        $(document).on("click", ".listBox", function(e){
-        	console.log($(e.target).siblings("input"));
-        	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(e.target).siblings("input").val();
+        $(document).on("click", ".listBox", function(){
+        	console.log($(this).find("input").val());
+        	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(this).find("input").val();
+        })
+        
+        // 유저 아이콘 클릭 시
+        $("#userPage").on("click", function(){
+        	$("#modalUser").modal("show");
         })
     </script>
-
 </body>
 
 </html>

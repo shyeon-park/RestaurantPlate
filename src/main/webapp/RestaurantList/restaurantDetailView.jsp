@@ -26,9 +26,19 @@
 	box-sizing: border-box;
 }
 
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
 .wrapper {
 	width: 100%;
-	height: 4000px;
+	height: 100%;
 }
 
 /* 메인 페이지 헤더부분 */
@@ -135,7 +145,8 @@ a:link {
 		<div class="headerContainer">
 			<div class="row naviBar">
 				<div class="col-2 menu d-flex justify-content-center">
-					<img src="${pageContext.request.contextPath}/img/logo.png" id="logo">
+					<img src="${pageContext.request.contextPath}/img/logo.png"
+						id="logo">
 				</div>
 				<div class="col-2 col-md-6 menu"></div>
 				<div class="col-2 col-md-1 menu d-flex justify-content-start">
@@ -177,7 +188,7 @@ a:link {
 	</div>
 
 	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3f2fbb32fd1900763f10f59745f3b5f1"></script>
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a"></script>
 	<script>
 		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 		var options = { //지도를 생성할 때 필요한 기본 옵션

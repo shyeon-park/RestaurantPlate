@@ -20,10 +20,20 @@
         * {
             box-sizing: border-box;
         }
+        
+        html {
+        	width: 100%;
+        	height: 100%;
+        }
+        
+        body {
+        	width: 100%;
+        	height: 100%;
+        }
 
         .wrapper {
             width: 100%;
-            height: 4000px;
+            height: 100%;
         }
 
         /*메인 페이지 헤더부분*/
@@ -195,7 +205,7 @@
         <div class="bodyContainer">
         <c:forEach items="${restList}" var="list">
         	<div class="restaurantBox">
-                <input type="text" class="d-none" value="">
+        		<input type="text" class="d-none" value="${list.getSeq_rest()}">
                 <div class="row divBox1">
                     <div class="col-12"></div>
                 </div>
@@ -216,6 +226,13 @@
         </c:forEach>
         </div>
     </div>
+    <script>
+    	$(".restaurantBox").on("click", function(){
+    		console.log($(this));
+    		console.log($(this).find("input").val());
+    		location.href = "${pageContexr.request.contextPath}/toRestDetailView.re?seq_rest=" + $(this).find("input").val();
+    	})
+    </script>
 
 </body>
 

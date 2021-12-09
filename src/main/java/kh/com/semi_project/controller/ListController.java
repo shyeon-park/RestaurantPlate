@@ -245,6 +245,23 @@ public class ListController extends HttpServlet {
 				e.printStackTrace();
 			}
 
+		} else if (cmd.equals("/getHomeList.li")) {
+			System.out.println("요청도착");
+
+			try {
+				ArrayList<ListJoinFileDTO> list = dao.selectListAndFileRandom();
+				Gson gson = new Gson();
+				String rs = gson.toJson(list);
+				System.out.println(rs);
+
+				if (list != null) {
+					response.getWriter().write(rs);
+				} else {
+					response.getWriter().write("fail");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

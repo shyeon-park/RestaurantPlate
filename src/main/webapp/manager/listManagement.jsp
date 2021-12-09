@@ -19,10 +19,28 @@
 <link href="listManagement.css" rel="stylesheet" type="text/css">
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 <style>
+* {
+	box-sizing: border-box;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+.container {
+	height: 100%;
+}
+
 .list_title>a {
 	position: absolute;
 	top: 50%;
@@ -177,8 +195,8 @@
 										<label style="margin-bottom: 4px;">음식점 주소</label>
 										<div class="col-6">
 											<div class="input-group flex-nowrap">
-												<input type="text" id="postcode" class="form-control" name="postcode"
-													placeholder="우편번호" readonly>
+												<input type="text" id="postcode" class="form-control"
+													name="postcode" placeholder="우편번호" readonly>
 											</div>
 										</div>
 										<div class="col-6">
@@ -305,8 +323,7 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary"
-									id="btnAdd-rest">등록하기</button>
+								<button type="button" class="btn btn-primary" id="btnAdd-rest">등록하기</button>
 							</div>
 						</div>
 					</div>
@@ -315,7 +332,8 @@
 		</div>
 	</div>
 
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script
+		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	//페이지 로드 시 
 	$(document).ready(function(){

@@ -100,7 +100,32 @@ public class RestaurantDAO {
 						                             rest_tel, rest_time, parking_possible, system_name)); 
 			}
 			return list;
-		}
-		
+		}	
+	}
+	
+	// 해당 번호의 맛집정보 조회
+	public RestaurantDTO selectBySeq_rest(int seq_rest) throws Exception {
+			String sql = "SELECT * FROM tbl_rest WHERE seq_rest=?";
+			
+			try(Connection con = this.getConnection();
+					PreparedStatement pstmt = con.prepareStatement(sql);){
+				
+				pstmt.setInt(1, seq_rest);
+				
+				ResultSet rs = pstmt.executeQuery();
+				if(rs.next()) {
+					int seq_list = rs.getInt("seq_list");
+					String rest_name = rs.getString("rest_name");
+					String postCode = rs.getString("postCode");
+					String rest_address = rs.getString("rest_address");
+					String rest_tel = rs.getString("rest_tel");
+					String rest_time = rs.getString("rest_time");
+					String parking_possible = rs.getString("parking_possible");
+					
+					return new RestaurantDTO(seq_rest, seq_list, rest_name, null,
+							  null, null, null, postCode, rest_address, rest_tel, rest_time, parking_possible);
+				}
+			}
+			return null;
 	}
 }
