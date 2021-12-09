@@ -54,7 +54,7 @@ public class HomeController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
 	}
 
+	}
 }
