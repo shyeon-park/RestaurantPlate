@@ -51,20 +51,20 @@ body {
 .naviBar {
 	position: fixed;
 	width: 100%;
-	height: 80px;
 	margin: 0;
 	top: 0;
+	z-index: 1;
+	height: 80px;
 	background-color: white;
-	box-shadow: 0px 0px 2px 2px lightgrey;
-	z-index: 111;
+	box-shadow: 2px 0px 2px 2px grey;
 	/* opacity: 0.8; */
 }
 
 .menu {
+	position: relative;
 	height: 100%;
 	/* border: 1px solid grey; */
-	position: relative;
-	float: left;
+	/* position: relative; */
 }
 
 .menu:first-child {
@@ -77,13 +77,23 @@ body {
 	cursor: pointer;
 }
 
-.menu>a {
+.menu > a {
 	color: grey;
+	font-size: 16px;
+	font-weight: bold;
 	position: absolute;
 	top: 50%;
 	transform: translate(0, -50%);
-	font-size: 16px;
-	font-weight: bold;
+}
+
+.menu > img {
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+}
+
+.menu > img:hover {
+	cursor: pointer;
 }
 
 a:link {
@@ -142,26 +152,50 @@ a:link {
 
 <body>
 	<div class="wrapper">
-		<div class="headerContainer">
-			<div class="row naviBar">
-				<div class="col-2 menu d-flex justify-content-center">
-					<img src="${pageContext.request.contextPath}/img/logo.png"
-						id="logo">
-				</div>
-				<div class="col-2 col-md-6 menu"></div>
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">로그인</a>
-				</div>
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">회원가입</a>
-				</div>
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">맛집 리스트</a>
-				</div>
-				<div class="col-2 col-md-1 menu d-flex justify-content-start">
-					<a href="#">전체 리뷰</a>
-				</div>
+		<div class="row naviBar">
+			<div class="col-2 menu d-flex justify-content-center">
+				<img src="${pageContext.request.contextPath}/img/plateLogo.png" id="logo">
 			</div>
+			<div class="col-2 col-md-7 menu"></div>
+			<c:choose>
+				<c:when test="${!empty loginSession}">
+					<div class="col-2 col-md-1 menu">
+						<a href="#">맛집 리스트</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<a href="#">전체 리뷰</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+						    width="50px" height="50px" id="userPage">
+					</div>
+				</c:when>
+
+				<c:otherwise>
+					<c:if test="${rs eq 'fail'}">
+						<script type="text/javascript">
+						alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
+						</script>
+					</c:if>
+
+					<div class="col-2 col-md-1 menu">
+						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
+					</div>
+
+					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
+						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
+					</div> -->
+					<div class="col-2 col-md-1 menu">
+						<a href="#">맛집 리스트</a>
+					</div>
+					<div class="col-2 col-md-1 menu">
+						<a href="#">전체 리뷰</a>
+					</div>
+				</c:otherwise>
+			</c:choose>
+
+		</div>
+		<div class="headerContainer">
 			<div class="row headDiv">
 				<div class="col-12">
 					<p>맛집이름</p>
@@ -175,20 +209,83 @@ a:link {
 					<div id="map" style="width: 500px; height: 400px;"></div>
 				</div>
 				<div class="col-7 restInfoBox">
-					<p>맛집이름</p>
+					<p>${restDto.getRest_name()}</p>
 					<p>맛집소개</p>
 					<p>맛집주소</p>
 					<p>맛집전화번호</p>
 					<p>맛집영업시간</p>
 					<p>주차</p>
-					<input type="text" class="form-control" value="100">
+				</div>
+				<div class="reviewContainer">
+					<div class="row">
+						<button type="button" id="btnViewWrite">리뷰쓰기</button>
+					</div>
+					<div class="reviewBox"></div>
+
 				</div>
 			</div>
 		</div>
 	</div>
+	</div>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a"></script>
+	<script>
+		// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
+		document.getElementById("btnViewWrite").addEventListener("click", function() {
+			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=100&rest_name=맛집";
+		});
+		$(document).ready(function() {
+			getCommentList();
+		});
+		
+		function getCommentList(){
+			// ajax를 이용해 댓글을 불러오는 작업
+			$.ajax({
+				type : "get"
+				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${seq_rest}"
+				, dataType : "json"
+			
+			}).done(function(data){
+				console.log(data);
+				
+				$(".reviewBox").empty();
+				
+				for(let dto of data){
+					let comment = "<div class='row'>" 
+								+ "<div class='col-2 show_nick'>"
+								+ dto.user_id
+								+ "</div>"
+								+ "<div class='col-10'>"
+								+ "<div>"
+								+ dto.reivew_date 
+								+ "</div>"
+								+ "<div class='reviewDiv-cmt'>"
+								+"<textarea style='border:none' readonly>"
+								+ dto.review_content
+								+ "</textarea>"
+								+ "</div>"
+								+ "</div>"
+								+ "</div>";
+								
+								$(".reviewBox").append(comment);
+								//수정 삭제 버튼 영역
+								if("$(loginSession.get('id'))" == dto.user_id){
+									let btns = "<div>" +
+												"<button type='button' class='btn btn-modifyCmt' value='"+ dto.seq_view +" '>수정</button>" + 
+												"</div>" +
+												"<div>" +
+												"<button type='button' class='btn btn-deleteCmt' value='"+ dto.seq_view +"'>삭제</button>" +
+												"</div>";
+												
+												$(".reviewDiv-cmt:last").after(btns);
+								}
+				}
+			}).fail(function(e){
+				console.log(e);
+			});
+		}
+	</script>
 	<script>
 		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 		var options = { //지도를 생성할 때 필요한 기본 옵션
