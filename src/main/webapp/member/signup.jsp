@@ -269,7 +269,6 @@
             let nicknameRegex = /[ㄱ-힣a-zA-Z0-9]{2,16}/
             let emailRegex = /^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-z]{2,3}(:?\.[a-zA-z]{2,3})?$/
             let phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
-            let emailTimer = null; // 이메일 timer 
             let phoneTimer = null; // sms 인증 timer
 
 
