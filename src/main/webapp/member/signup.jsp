@@ -109,133 +109,99 @@
             </script>
 
             <div class="container">
-                <div class="row ps-5">
-                    <div class="col-12 ps-5">
-                        <h3>회원가입</h3>
-                    </div>
+               <div class="row mt-3">
+            <div class="col-12 col-md-2 d-flex justify-content-lg-end" >닉네임</div>
+            <div class="col-12 col-md-10">
+                <input type="text" class="form-control w-100" id="nickname" name="nickname"placeholder="영문자, 한글, 숫자 2~16자리" maxlength="16">
+            </div>
+        </div>
+
+
+        <div class="row mt-3" id="emailBox">
+            <div class="col-12 col-md-2 d-flex justify-content-lg-end">이메일</div>
+            <div class="col-12 col-md-10">
+                <input type="text" class="form-control w-100" id="email" name="email" placeholder="이메일 입력" maxlength="30">
+            </div>
+        </div>
+
+
+        <div class="row mt-2" id="phoneBox">
+            <div class="col-12 col-md-2 d-flex justify-content-lg-end">휴대폰
+                번호</div>
+            <div class="col-12 col-md-3 d-flex justify-content-lg-end mt-1">
+                <select class="form-select" id="phone1">
+                    <option value="010" selected>010</option>
+                    <option value="011">011</option>
+                    <option value="016">016</option>
+                    <option value="017">017</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 d-flex justify-content-lg-end">
+                <input type="text" class="form-control" id="phone2" maxlength="4">
+            </div>
+            <div class="col-12 col-md-3 d-flex justify-content-lg-end">
+                <input type="text" class="form-control" id="phone3" maxlength="4">
+                <input type="text" class="form-control d-none" id="phone" name="phone">
+            </div>
+            <div class="col-12 col-md-1 d-flex justify-content-lg-end">
+                <button type="button" id="phoneAuthNumSend" class="w-100 h-100">인증</button>
+            </div>
+        </div>
+        <div class="row mt-3 d-none" id="phoneAuth">
+            <div class="col-12 col-md-2 d-flex justify-content-lg-end">휴대폰
+                인증</div>
+            <div class="col-12 col-md-8">
+                <input type="text" class="form-control w-75 " id="phoneAuthNumInput" placeholder="인증번호 입력" maxlength="6">
+                <div class="ms-1 w-25" id="phoneTime"></div>
+            </div>
+
+            <div class="col-12 col-md-2">
+                <button type="button" id="phoneAuthNumCheck" class="w-100 h-100">확인</button>
+            </div>
+        </div>
+        
+            <div class="row mt-3" id=postCodeBox>
+                <div class="col-12 col-md-2 d-flex justify-content-lg-end">우편번호</div>
+                <div class="col-12 col-md-8 d-flex justify-content-lg-end">
+                    <input type="text" class="form-control w-100" id="postCode" name = "postCode" placeholder="우편번호" readonly>
                 </div>
-                <div class="row mt-3">
-                    <!-- Button trigger modal -->
-                    <div class="col-3 d-flex justify-content-end">아이디</div>
-                    <div class="col-6">
-                        <input type="text" class="form-control w-100" id="id" name = "id" placeholder="ID 입력" readonly="readonly">
-                    </div>
-                    <div class="col-3 d-flex justify-content-lg-start">
-                        <button type="button" class="w-100" data-bs-toggle="modal" data-bs-target="#idCheckModal">아이디
-                            확인</button>
-                        <!-- 부트스트랩 modal 사용하기 위한 js cdn -->
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-                            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-                            crossorigin="anonymous"></script>
-                    </div>
+                <div class="col-12 col-md-2 d-flex justify-content-lg-end">
+                    <button type="button" onclick="daumPostcode()" class="w-100 h-100" id ="postCodeSerch">우편 번호
+                        찾기</button>
                 </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-3 d-flex justify-content-end">비밀번호</div>
-                    <div class="col-9">
-                        <input type="password" class="form-control w-100 " id="pw" name="pw" placeholder="영문자+숫자+특수문자 8~16자리">
-
-                    </div>
+            <div class="row mt-3">
+                <div class="col-12 col-md-2 d-flex justify-content-lg-end">도로명주소</div>
+                <div class="postcodeContentBox col-12 col-md-10 d-flex justify-content-lg-end">
+                    <input type="text" class="form-control inputBox" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
                 </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-3 d-flex justify-content-end">비밀번호 확인</div>
-                    <div class="col-9">
-                        <input type="password" class="form-control w-100" id="pwCheck" placeholder="비밀번호 확인">
-                    </div>
+            <div class="row mt-3 detailedAddress">
+                <div class="col-12 col-md-2 d-flex justify-content-lg-end">상세주소</div>
+                <div class="col-12 col-md-10 d-flex justify-content-lg-end">
+                    <input type="text" class="form-control inputBox" id="detailAddr" name = "detailAddr" placeholder="상세주소">
                 </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-3 d-flex justify-content-end">닉네임</div>
-                    <div class="col-9">
-                        <input type="text" class="form-control w-100" id="nickname" name="nickname"placeholder="영문자, 한글, 숫자 2~16자리" maxlength="16">
-                    </div>
+            <div class="row mt-3">
+                <div class="col-12 col-md-2 d-flex justify-content-lg-end">읍/면/동</div>
+                <div class="col-12 col-md-10 d-flex justify-content-lg-end">
+                    <input type="text" class="form-control inputBox" id="extraAddr" name="extraAddr" placeholder="읍/면/동" readonly>
                 </div>
+            </div>
 
-
-                <div class="row mt-3" id="emailBox">
-                    <div class="col-3 d-flex justify-content-end">이메일</div>
-                    <div class="col-9">
-                        <input type="text" class="form-control w-100" id="email" name="email" placeholder="이메일 입력" maxlength="30">
-                    </div>
+            <div class="row mt-3">
+                <div class="col-7 d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary" id="btnBack">홈으로 가기</button>
                 </div>
-
-
-                <div class="row mt-3" id="phoneBox">
-                    <div class="col-3 d-flex justify-content-end align-items-start">휴대폰
-                        번호</div>
-                    <div class="col-2">
-                        <select class="form-select" id="phone1">
-                            <option value="010" selected>010</option>
-                            <option value="011">011</option>
-                            <option value="016">016</option>
-                            <option value="017">017</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" id="phone2" maxlength="4">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" id="phone3" maxlength="4">
-                        <input type="text" class="form-control d-none" id="phone" name="phone">
-                    </div>
-                    <div class="col-3">
-                        <button type="button" id="phoneAuthNumSend" class="w-100 h-100">인증번호 전송</button>
-                    </div>
+                <div class="col-5 d-flex justify-content-start">
+                    <button type="button" class="btn btn-success" id="btnSubmit">수정</button>
                 </div>
-                <div class="row mt-3 d-none" id="phoneAuth">
-                    <div class="col-3 d-flex justify-content-end align-items-center">휴대폰
-                        인증</div>
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <input type="text" class="form-control w-75 " id="phoneAuthNumInput" placeholder="인증번호 입력" maxlength="6">
-                        <div class="ms-1 w-25" id="phoneTime"></div>
-                    </div>
+            </div>
 
-                    <div class="col-3">
-                        <button type="button" id="phoneAuthNumCheck" class="w-100 h-100">확인</button>
-                    </div>
-                </div>
-                
-                    <div class="row mt-3" id=postCodeBox>
-                        <div class="col-3 d-flex justify-content-end align-items-center">우편번호</div>
-                        <div class="postcodeContentBox col-6">
-                            <input type="text" class="form-control w-100" id="postCode" name = "postCode" placeholder="우편번호" readonly>
-                        </div>
-                        <div class="col-3">
-                            <button type="button" onclick="daumPostcode()" class="w-100 h-100" id ="postCodeSerch">우편 번호
-                                찾기</button>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-3 d-flex justify-content-end align-items-center">도로명주소</div>
-                        <div class="postcodeContentBox col-9">
-                            <input type="text" class="form-control inputBox" id="roadAddress" name="roadAddress" placeholder="도로명주소" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3 detailedAddress">
-                        <div class="col-3 d-flex justify-content-end align-items-center">상세주소</div>
-                        <div class="col-9 d-flex justify-content-end align-items-center">
-                            <input type="text" class="form-control inputBox" id="detailAddr" name = "detailAddr" placeholder="상세주소">
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-3 d-flex justify-content-end align-items-center">읍/면/동</div>
-                        <div class="col-9 d-flex justify-content-end align-items-center">
-                            <input type="text" class="form-control inputBox" id="extraAddr" name="extraAddr" placeholder="읍/면/동" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-7 d-flex justify-content-end">
-                            <button type="button" class="btn btn-secondary" id="btnBack">취소</button>
-                        </div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <button type="button" class="btn btn-success" id="btnSubmit">가입</button>
-                        </div>
-                    </div>
+    </div>
 
             </div>
 
@@ -269,6 +235,7 @@
             let nicknameRegex = /[ㄱ-힣a-zA-Z0-9]{2,16}/
             let emailRegex = /^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-z]{2,3}(:?\.[a-zA-z]{2,3})?$/
             let phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
+            let emailTimer = null; // 이메일 timer 
             let phoneTimer = null; // sms 인증 timer
 
 

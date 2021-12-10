@@ -31,6 +31,38 @@ private BasicDataSource bds;
 		return bds.getConnection();
 	}
 	
+	public int deleteById(String id) throws Exception{
+		String sql = "delete from tbl_member where user_id = ?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setString(1, id);
+			int rs = pstmt.executeUpdate();
+			if(rs != 0) return rs;
+		}
+		return -1;		
+	}
+	
+	public int modifyMypage(MemberDTO dto) throws Exception{
+		String sql = "update tbl_member set user_nickname = ?,  user_email = ?, user_phone =?, post_code=?, road_addr =?, detail_addr =?,extra_addr =? where  user_id = ?  ";
+		try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);){
+			pstmt.setString(1, dto.getUser_nickname());
+			pstmt.setString(2, dto.getUser_email());
+			pstmt.setString(3, dto.getUser_phone());
+			pstmt.setString(4, dto.getPost_code());
+			pstmt.setString(5, dto.getRoad_addr());
+			pstmt.setString(6, dto.getDetail_addr());
+			pstmt.setString(7, dto.getExtra_addr());
+			pstmt.setString(8, dto.getUser_id());
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
+	
 	public MemberDTO selectByDto(String id) throws Exception{
 		String sql = "select * from tbl_member where user_id =?";
 		

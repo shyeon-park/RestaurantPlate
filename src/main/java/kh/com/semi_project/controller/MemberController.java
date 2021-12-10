@@ -40,10 +40,10 @@ public class MemberController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=UTF-8"); // printWrite 한글 인코딩
-		
+
 		MemberDAO dao = new MemberDAO();
 		HttpSession session = request.getSession();
-		
+
 		String uri = request.getRequestURI();
 		String ctxPath = request.getContextPath();
 		String cmd = uri.substring(ctxPath.length());
@@ -61,7 +61,7 @@ public class MemberController extends HttpServlet {
 			System.out.println("요청도착");
 			response.sendRedirect("/member/signup.jsp");
 
-			//id 중복검사
+			// id 중복검사
 		} else if (cmd.equals("/checkId.mem")) {
 			String chickId = request.getParameter("chickId");
 			System.out.println("chickId : " + chickId);
@@ -86,18 +86,18 @@ public class MemberController extends HttpServlet {
 			// 회원가입 후 로그인페이지 이동
 		} else if (cmd.equals("/addMember.mem")) {
 			System.out.println("요청도착");
-			session.removeAttribute("phoneAuthNum"); //회원가입 클릭 시 핸드폰 인증번호 세션 삭제
+			session.removeAttribute("phoneAuthNum"); // 회원가입 클릭 시 핸드폰 인증번호 세션 삭제
 			String id = request.getParameter("id");
-			String pw= request.getParameter("pw"); 
+			String pw = request.getParameter("pw");
 			System.out.print(id);
-			boolean regex = Pattern.matches("^[0-9]*$", id); 
-			//카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
-			  System.out.println(regex);
-				if(regex) {
-					pw = "kakaoLogin";
-				}
+			boolean regex = Pattern.matches("^[0-9]*$", id);
+			// 카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
+			System.out.println(regex);
+			if (regex) {
+				pw = "kakaoLogin";
+			}
 			pw = EncryptionUtils.getSHA512(pw); // 비밀번호 암호화
-			
+
 			String nickname = request.getParameter("nickname");
 			String email = request.getParameter("email");
 			String phone = request.getParameter("phone");
@@ -105,47 +105,48 @@ public class MemberController extends HttpServlet {
 			String roadAddress = request.getParameter("roadAddress");
 			String detailAddr = request.getParameter("detailAddr");
 			String extraAddr = request.getParameter("extraAddr");
-			
 
 			MemberDTO dto = new MemberDTO(id, pw, nickname, null, email, phone, postCode, roadAddress, detailAddr,
 					extraAddr, 0);
 			PrintWriter out = response.getWriter();
-			
+
 			try {
 				int rs = dao.insert(dto);
-				if(!regex) { // 카카오 로그인이 아닐 때 
+				if (!regex) { // 카카오 로그인이 아닐 때
 					if (rs != -1) {
 						out.println("<script>alert(\"회원가입에 성공하였습니다.\"); location.href='/member/login.jsp';</script>");
 						out.flush();
-					}else {
-						out.println("<script>alert(\"회원가입에 실패하였습니다. 관리자에게 문의해주세요.(010-5670-5842)\"); location.href='/member/login.jsp';</script>");
+					} else {
+						out.println(
+								"<script>alert(\"회원가입에 실패하였습니다. 관리자에게 문의해주세요.(010-5670-5842)\"); location.href='/member/login.jsp';</script>");
 						out.flush();
 					}
-				}else { // 카카오 로그인
+				} else { // 카카오 로그인
 					if (rs != -1) {
 						HashMap<String, String> loginMap = new HashMap<>();
 						loginMap.put("id", id);
 						loginMap.put("nickname", nickname);
 						session.setAttribute("loginSession", loginMap);
 						response.sendRedirect("/");
-						
-					}else {
-						out.println("<script>alert(\"카카오 회원가입에 실패하였습니다. 관리자에게 문의해주세요.(010-5670-5842)\"); location.href='/member/login.jsp';</script>");
+
+					} else {
+						out.println(
+								"<script>alert(\"카카오 회원가입에 실패하였습니다. 관리자에게 문의해주세요.(010-5670-5842)\"); location.href='/member/login.jsp';</script>");
 						out.flush();
-						}
-				
+					}
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			//로그인 승인
+
+			// 로그인 승인
 		} else if (cmd.equals("/loginProc.mem")) {
 			String id = request.getParameter("id");
 			String pw = request.getParameter("pw");
-			
+
 			pw = EncryptionUtils.getSHA512(pw);
-			System.out.println("id : " + id +"pw : " + pw);
+			System.out.println("id : " + id + "pw : " + pw);
 			try {
 				boolean rs = dao.isLoginOk(id, pw);
 				if (rs) {
@@ -171,35 +172,151 @@ public class MemberController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			//로그아웃 기능
-		}else if (cmd.equals("/logoutProc.mem")) { 
+			// 로그아웃 기능
+		} else if (cmd.equals("/logoutProc.mem")) {
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+			System.out.println(id);
+			// 카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
+
 			session.removeAttribute("loginSession");
 			response.sendRedirect("/");
-			//카카오 로그인을 누르면 id, nickname 값을 kakaoSignup.jsp로 보내준다 
-		}else if(cmd.equals("/kakaoLogin.mem")) {
-			
+			// 카카오 로그인을 누르면 id, nickname 값을 kakaoSignup.jsp로 보내준다
+		} else if (cmd.equals("/kakaoLogin.mem")) {
+
 			System.out.println("요청도착");
-			
+
 			String kakaoId = request.getParameter("kakaoId");
 			String kakaoNickname = request.getParameter("kakaoNickname");
-			System.out.println("kakaoId  : " + kakaoId + " kakaoNickname : "+ kakaoNickname);
-			
+			System.out.println("kakaoId  : " + kakaoId + " kakaoNickname : " + kakaoNickname);
+
 			try {
-				
+
 				MemberDTO dto = dao.selectByDto(kakaoId);
-				if(dto.getUser_id() != null) {
+				if (dto.getUser_id() != null) {
 					HashMap<String, String> loginMap = new HashMap<>();
 					loginMap.put("id", kakaoId);
 					loginMap.put("nickname", kakaoNickname);
 					session.setAttribute("loginSession", loginMap);
 					response.sendRedirect("/");
-				}else {
-					HashMap<String, String>  kakaoInformation= new HashMap<>();
+				} else {
+					HashMap<String, String> kakaoInformation = new HashMap<>();
 					kakaoInformation.put("kakaoId", kakaoId);
 					kakaoInformation.put("kakaoNickname", kakaoNickname);
 					RequestDispatcher rd = request.getRequestDispatcher("/member/kakaoSignup.jsp");
 					request.setAttribute("kakaoInformation", kakaoInformation);
 					rd.forward(request, response);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else if (cmd.equals("/pwInput.mem")) {
+//			//현재 로그인된 사용자의 id 값을 얻어 옴
+//			HashMap<String,String> loginMap = (HashMap)session.getAttribute("loginSession");
+//			String id = loginMap.get("id");
+//			String pw = request.getParameter("pw");
+//			pw = EncryptionUtils.getSHA512(pw);
+//			boolean rs = dao.isLoginOk(id, pw);
+//			
+//			
+//			boolean regex = Pattern.matches("^[0-9]*$", id); 
+//			//카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
+//			if(!regex) {//카카오 아이디이면
+//				
+//			}
+//			 response.sendRedirect("/member/pwInput.jsp");
+
+		} else if (cmd.equals("/mypage.mem")) {
+
+			// 현재 로그인된 사용자의 id 값을 얻어 옴
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+
+			// id값을 이용해서 DB에서 사용자의 정보를 불러 옴.
+			MemberDTO dto;
+			try {
+				dto = dao.selectByDto(id);
+//				System.out.println(dto.getUser_nickname());
+//				System.out.println(dto.getUser_email());
+//				System.out.println(dto.getUser_phone());
+//				System.out.println(dto.getPost_code());
+//				System.out.println(dto.getRoad_addr());
+//				System.out.println(dto.getDetail_addr());
+//				System.out.println(dto.getExtra_addr());
+
+				RequestDispatcher rd = request.getRequestDispatcher("/member/mypage.jsp");
+				request.setAttribute("dto", dto);
+				rd.forward(request, response);
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+		} else if (cmd.equals("/modifyProc.mem")) {
+			String nickname = request.getParameter("nickname");
+			String email = request.getParameter("email");
+			String phone = request.getParameter("phone");
+			String postCode = request.getParameter("postCode");
+			String roadAddress = request.getParameter("roadAddress");
+			String detailAddr = request.getParameter("detailAddr");
+			String extraAddr = request.getParameter("extraAddr");
+
+			
+			//System.out.println("nickname : "+nickname + " email :" + email + " phone : " + phone + " postCode : " +  postCode + "  roadAddress : "+roadAddress +" detailAddr : " + detailAddr  + " extraAddr :"+ extraAddr); 
+			System.out.println("요청도착"+ email);
+			// 현재 로그인된 사용자의 id 값을 얻어 옴
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+
+			// id값을 이용해서 DB에서 사용자의 셋팅를 불러 옴.
+
+			try {
+				MemberDTO dto = new MemberDTO();
+				
+				
+				dto.setUser_id(id);
+				dto.setUser_nickname(nickname);
+				dto.setUser_email(email);
+				dto.setUser_phone(phone);
+				dto.setPost_code(postCode);
+				dto.setRoad_addr(roadAddress);
+				dto.setDetail_addr(detailAddr);
+				dto.setExtra_addr(extraAddr);
+				
+				int rs = dao.modifyMypage(dto);
+				PrintWriter out = response.getWriter();
+				if(rs != -1) {
+					out.println("<script>alert(\"회원정보수정 성공하였습니다.\"); location.href='${pageContext.request.contextPath}/mypage.mem';</script>");
+					out.flush();
+				}else {
+					out.println("<script>alert(\"회원정보수정 실패하였습니다 관리자에게 문의하세요.(010-5670-5842)\"); location.href='${pageContext.request.contextPath}/mypage.mem';</script>");
+					out.flush();
+				}
+				
+				
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+		}else if(cmd.equals("/deleteMember.mem")) { //회원탈퇴 페이지 이동
+			System.out.println("요청도착");
+			response.sendRedirect("/member/deleteMember.jsp");
+		}else if(cmd.equals("/deleteProc.mem")){
+			System.out.println("요청도착");
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+			System.out.println(id);
+			try {
+				int rs = dao.deleteById(id);
+				PrintWriter out = response.getWriter();
+				if(rs != -1) {
+					session.removeAttribute("loginSession");
+					out.println("<script>alert(\"회원삭제가 완료되었습니다.\"); location.href='${pageContext.request.contextPath}/';</script>");
+					out.flush();
+				}else {
+					out.println("<script>alert(\"회원삭제가 실패하였습니다 관리자에게 문의하세요(010-5670-5842).\"); location.href='${pageContext.request.contextPath}/';</script>");
+					out.flush();
 				}
 			}catch(Exception e){
 				e.printStackTrace();

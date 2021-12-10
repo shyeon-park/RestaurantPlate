@@ -107,7 +107,7 @@
 	    let email = document.getElementById("email") // 이메일 인풋창
 	    let emailRegex = /^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-z]{2,3}(:?\.[a-zA-z]{2,3})?$/
 	    let phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
-	    let	emailLicense = false
+	    let	License = false
 	    let	phoneLicense = false
 	    let phoneTimer = null; // sms 인증 timer
 	    let emailTimer = null;
@@ -124,17 +124,6 @@
 	    $("#emailAtuhbtn").click(function(){
 	    	console.log("이메일 인증번호")
 	    })
-	    
-	       email.addEventListener("blur", function () {
-                $("#resultEmail").remove();
-                let newP
-                if (regexTest(emailRegex, email)) {
-                    newP = "<div id ='resultEmail'></div>"
-                } else {
-                    newP = "<div class='row' id ='resultEmail'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>올바르지 않은 이메일 형식입니다.</p></div></div>"
-                }
-                $("#emailBox").after(newP)
-            })
 	    
 	    //#sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn{
 	    //	height: 37px
@@ -337,6 +326,17 @@
 	            }
 	        });
 	    }
+	    
+	    function kakaoLogout() {
+	        if (!Kakao.Auth.getAccessToken()) {
+	          alert('Not logged in.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken())
+	        })
+	      }
+	    
 	    
 	    </script>
 			</c:otherwise>

@@ -16,7 +16,6 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-<link href="index.css" rel="stylesheet" type="text/css">
 <title>추가 정보 입력</title>
 
 <style>
@@ -329,14 +328,8 @@
 
 			btnSubmit.addEventListener("click",function(){
 				
-				if(pw.value != pwCheck.value) return pwCheck.focus();
 				if(!regexTest(nicknameRegex,nickname)) return nickname.focus()
-				if(!emailLicense){
-					 $("#resultAuth").remove();
-                     newP = "<div class='row' id ='resultAuth'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>이메일 인증을 해주세요!</p></div></div>"
-                     $("#emailAuth").after(newP)
-				   return email.focus()
-				}
+				if(!regexTest(emailRegex,email)) return email.focus();
 				if(!phoneLicense){
 					  $("#resultPhoneAuth").remove();
                       newP = "<div class='row' id ='resultPhoneAuth'><div class='col-3 d-flex justify-content-end'></div><div class='col-6 d-flex justify-content-start m-0 mt-3'><p class = 'm-0 ms-3'style='color: red; font-size: 0.8rem;'>휴대폰 인증을 해주세요!.</p></div></div>"
@@ -344,10 +337,7 @@
 				   return phone2.focus()
 				}
 				if(postCode.value == "") return postCode.focus()
-				
-				phone.value = phone1.value + "-" + phone2.value + "-" + phone3.value
 				$("#kakaoSignupForm").submit();
-				
 			})
 			
 			function daumPostcode() {
@@ -388,7 +378,7 @@
                     }
                 }).open();
             }
-        </script>
+        
 
 </script>
 </html>

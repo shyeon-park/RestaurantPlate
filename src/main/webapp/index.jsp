@@ -300,10 +300,96 @@ a:link {
 	border: 1px solid black;
 	background-color: lightgrey;
 }
+
+/* modal */
+  .searchModal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 10;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .search-modal-content {
+            background-color: #fefefe;
+            position: fixed;
+            top: 80px;
+            right: 0px;
+            /* 15% from the top and centered */
+            padding: 20px;
+            width: 350px;
+            /* Could be more or less, depending on screen size */
+        }
+        #modal-body{
+        height: 300px
+        }
 </style>
 </head>
 
 <body>
+
+ <div id="modalMypage" class="searchModal">
+        <div class="search-modal-content">
+            <div id=slideContainer>
+                <div class="d-flex justify-content-around">
+                    <div class="col-6 idSea d-flex justify-content-center m-0">${loginSession.get("nickname")}님
+                        안녕하세요</div>
+                </div>
+                <div class="album">
+                    <div class="searchIdContiner">
+                        <div class="row" id="header">
+                    		<div class="d-flex justify-content-around align-items-center">
+                            <div class="col d-flex justify-content-center">최근 본 맛집</div>
+                            <div class="col d-flex justify-content-center">격하게 가고싶다!</div>
+                            </div>
+                        </div>
+                        <div class="row" id="modal-body">
+                        </div>
+                        <div class="row" id="modal-footer">
+                        <div class="col d-flex justify-content-end">
+                        	<a class ="" href="${pageContext.request.contextPath}/mypage.mem">내정보</a>
+                            <a class ="ms-4" href="${pageContext.request.contextPath}/logoutProc.mem">로그아웃</a>
+                        </div>
+                          
+                            
+                        </div>
+
+                        <button id=btnModal onclick=closeModal()>닫기</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    
+     <script>
+        let modal = document.getElementById("modalMypage")
+        function showModal() {
+            $("#modalMypage").show();
+        }
+        function closeModal() {
+            $('.searchModal').hide();
+        };
+        window.addEventListener('click', (e) => {
+            e.target === modal ? $('.searchModal').hide() : false
+        })
+    </script>
+    
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
@@ -320,7 +406,7 @@ a:link {
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-						    width="50px" height="50px" id="userPage">
+						    width="50px" height="50px" id="userPage" onclick=showModal()>
 					</div>
 				</c:when>
 
@@ -334,10 +420,6 @@ a:link {
 					<div class="col-2 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
 					</div>
-
-					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
-						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
-					</div> -->
 					<div class="col-2 col-md-1 menu">
 						<a href="#">맛집 리스트</a>
 					</div>
@@ -390,34 +472,6 @@ a:link {
 				</div>
 			</div>
 		</div>
-
-
-<<<<<<< HEAD
-        <div class="bodyContainer2">
-            <div class="row">
-                <div class="col-12 tit">
-                    <h2>추천 맛집 리스트</h2>
-                </div>
-            </div>
-            <div class="borderBox"></div>
-        	<div class="borderBox" id="bold"></div>
-            <div class="row viewList">
-            
-            </div>
-            <div class="row">
-            	<div class="col-12 d-flex justify-content-end moleList">
-            		<a href="${pageContext.request.contextPath}/toTotalListView.li">더보기</a>
-            	</div>
-            </div>
-        </div>
-        
-        <div class="footer">
-        	
-        </div>
-    </div>
-    <script>
-
-=======
 		<div class="bodyContainer2">
 			<div class="row">
 				<div class="col-12 tit">
@@ -435,31 +489,8 @@ a:link {
 		</div>
 
 		<div class="footer"></div>
-		
-		<div class="modal fade" id="modalUser" data-bs-backdrop="static"
-					data-bs-keyboard="false" tabindex="-1"
-					aria-labelledby="staticBackdropLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-									
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary" id="btnReg">등록</button>
-							</div>
-						</div>
-					</div>
-				</div>
-	</div>
+
 	<script>
->>>>>>> ed2f2923a400b3f9e8eb108b450d51fad209d605
          $(document).ready(function(){
              getListAndFile();
          })
@@ -519,9 +550,9 @@ a:link {
         })
         
         // 유저 아이콘 클릭 시
-        $("#userPage").on("click", function(){
-        	$("#modalUser").modal("show");
-        })
+      //  $("#userPage").on("click", function(){
+      //  	$("#modalUser").modal("show");
+      //  })
     </script>
 </body>
 
