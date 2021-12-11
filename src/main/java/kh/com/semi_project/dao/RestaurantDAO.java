@@ -46,7 +46,7 @@ public class RestaurantDAO {
 
 	// 맛집 등록 작업
 	public int addRestaurant(RestaurantDTO dto) throws Exception {
-		String sql = "INSERT INTO tbl_rest VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO tbl_rest VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
 
 		try (Connection con = this.getConnection();
 				PreparedStatement pstmt = con.prepareStatement(sql);) {
@@ -91,12 +91,13 @@ public class RestaurantDAO {
 				String sido = rs.getString("sido");
 				String sigungu = rs.getString("sigungu");
 				String bname = rs.getString("bname");
+				String postCode = rs.getString("postCode");
 				String rest_address = rs.getString("rest_address");
 				String rest_tel = rs.getString("rest_tel");
 				String rest_time = rs.getString("rest_time");
 				String parking_possible = rs.getString("parking_possible");
 				String system_name = rs.getString("system_name");
-				list.add(new RestaurantJoinFileDTO(seq_rest, seq_list, rest_name, rest_introduction, sido, sigungu, bname, rest_address,
+				list.add(new RestaurantJoinFileDTO(seq_rest, seq_list, rest_name, rest_introduction, sido, sigungu, bname, postCode, rest_address,
 						                             rest_tel, rest_time, parking_possible, system_name)); 
 			}
 			return list;
@@ -116,16 +117,63 @@ public class RestaurantDAO {
 				if(rs.next()) {
 					int seq_list = rs.getInt("seq_list");
 					String rest_name = rs.getString("rest_name");
+					String rest_introduction = rs.getString("rest_introduction");
 					String postCode = rs.getString("postCode");
 					String rest_address = rs.getString("rest_address");
 					String rest_tel = rs.getString("rest_tel");
 					String rest_time = rs.getString("rest_time");
 					String parking_possible = rs.getString("parking_possible");
+					int mark_count = rs.getInt("mark_count");
 					
-					return new RestaurantDTO(seq_rest, seq_list, rest_name, null,
-							  null, null, null, postCode, rest_address, rest_tel, rest_time, parking_possible);
+					return new RestaurantDTO(seq_rest, seq_list, rest_name, rest_introduction,
+							  null, null, null, postCode, rest_address, rest_tel, rest_time, parking_possible, mark_count);
 				}
 			}
 			return null;
+	}
+	
+	// 추천 카운트 올리는 작업
+	public int markCountUp(int seq_rest) throws Exception {
+		String sql = "UPDATE tbl_rest SET mark_count = mark_count+1 WHERE seq_rest=?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
+	
+	// 추천 카운트 내리는 작업
+	public int markCountDown(int seq_rest) throws Exception {
+		String sql = "UPDATE tbl_rest SET mark_count = mark_count-1 WHERE seq_rest=?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
+	
+	// 총 추천 카운트 불러오는 작업
+	public int getTotalMarkCount(int seq_rest) throws Exception {
+		String sql = "SELECT * FROM tbl_rest WHERE seq_rest = ?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) return rs.getInt("mark_count");
+		}
+		return -1;
 	}
 }

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>맛집 리스트 관리</title>
+<title>관리자 : 리스트 관리</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script
@@ -23,8 +23,15 @@
 	href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
 <style>
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.notosanskr * {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -389,7 +396,7 @@ body {
                     for (let listDto of data) {
                         let totalList = "<tr><td class='seq_list'>" +"<p>"+ listDto.seq_list+"</p>"
                             + "</td><td class='list_title'>"
-                            + "<a href='${pageContext.request.contextPath}/toListDetail.li?seq_list=" + listDto.seq_list + "'>" + listDto.list_title + "</a></td>"
+                            + "<a href='${pageContext.request.contextPath}/toRestManagerView.re?seq_list=" + listDto.seq_list + "'>" + listDto.list_title + "</a></td>"
                             + "<td class='col-1 dynamicBtnCls'>"
                             + "<button type='button' class='btn btn-warning' id='btnModifyList' value='" + listDto.seq_list + "'>수정</button></td>"
                             + "<td class='col-1 dynamicBtnCls'>"

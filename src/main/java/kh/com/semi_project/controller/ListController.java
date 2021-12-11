@@ -3,6 +3,7 @@ package kh.com.semi_project.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -230,14 +231,20 @@ public class ListController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/toTotalListView.li")) {       // 리스트 전체 목록 조회 페이지로 이동
+		} else if (cmd.equals("/toTotalListView.li")) {     // 리스트 전체 목록 조회 페이지로 이동
 			System.out.println("요청도착");
+			
+			Random random = new Random();
+			int rd = random.nextInt(8) + 1;
+			System.out.println(rd);
+			String rdFile = rd + ".png";
+			System.out.println(rdFile);
 			
 			try {
 				ArrayList<ListJoinFileDTO> list = dao.selectListAndFileAll();
-				System.out.println(list);
 
 				if (list != null) {
+					request.setAttribute("random", rdFile);
 					request.setAttribute("list", list);
 					request.getRequestDispatcher("/restaurantList/totalListView.jsp").forward(request, response);
 				}
@@ -245,7 +252,7 @@ public class ListController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-		} else if (cmd.equals("/getHomeList.li")) {
+		} else if (cmd.equals("/getHomeList.li")) { // 메인페이지에 랜덤으로 리스트를 뿌려주는 작업
 			System.out.println("요청도착");
 
 			try {
@@ -262,6 +269,6 @@ public class ListController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		} 
 	}
 }

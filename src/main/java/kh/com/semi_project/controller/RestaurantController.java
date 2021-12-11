@@ -3,20 +3,24 @@ package kh.com.semi_project.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kh.com.semi_project.dao.ListDAO;
+import kh.com.semi_project.dao.RestMarkDAO;
 import kh.com.semi_project.dao.RestaurantDAO;
 import kh.com.semi_project.dao.RestaurantFileDAO;
 import kh.com.semi_project.dto.ListDTO;
+import kh.com.semi_project.dto.RestMarkDTO;
 import kh.com.semi_project.dto.RestaurantDTO;
 import kh.com.semi_project.dto.RestaurantFileDTO;
 import kh.com.semi_project.dto.RestaurantJoinFileDTO;
@@ -77,7 +81,7 @@ public class RestaurantController extends HttpServlet {
 				int seq_rest = dao.getRestaurantSequence();
 
 				int rs = dao.addRestaurant(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu,
-						bname, postcode, address, tel, time, parkingPossible));
+						bname, postcode, address, tel, time, parkingPossible, 0));
 
 				String origin_name = multi.getOriginalFileName("restFile");
 				String system_name = multi.getFilesystemName("restFile");
@@ -96,7 +100,7 @@ public class RestaurantController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/toListDetailView.re")) { // 해당 리스트에 속해있는 맛집정보 뿌려주기
+		} else if (cmd.equals("/toRestaurnatList.re")) { // 리스트의 맛집목록을 파일과 함께 사용자 페이지에 뿌려주기
 
 			int seq_list = Integer.parseInt(request.getParameter("seq_list"));
 
@@ -114,23 +118,71 @@ public class RestaurantController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-		} else if (cmd.equals("/toRestDetailView.re")) { // 맛집 상세정보 조회해서 페이지로 뿌려주기
+		} else if (cmd.equals("/toRestDetailView.re")) { // 로그인 안한 사용자에게 맛집상세정보 뿌려주기
 			System.out.println("요청도착");
-			
+
 			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
 			System.out.println(seq_rest);
 
 			try {
 				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
-				
-				if(dto != null) {
+
+				if (dto != null) {
 					request.setAttribute("restDto", dto);
 					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (cmd.equals("/toRestDetailLoginView.re")) { // 로그인한 사용자에게 맛집상세정보 뿌려주기
+			System.out.println("요청도착");
 
+			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+			HttpSession session = request.getSession();
+			HashMap<String, String> map = (HashMap)session.getAttribute("loginSession");
+			String user_id = map.get("id");
+			System.out.println(seq_rest);
+			System.out.println(user_id);
+			
+			try {
+				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+				RestMarkDAO rmDao = new RestMarkDAO();
+				RestMarkDTO rmDto =  rmDao.checkRestMark(seq_rest, user_id);
+				
+				if(dto != null ) {
+					HashMap<String, Object> restMap = new HashMap<>();
+					restMap.put("restDto", dto);
+					restMap.put("rmDto", rmDto);
+					System.out.println(restMap);
+					request.setAttribute("restMap", restMap);
+					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
+				}
+//				} else if (dto != null && rmDto == null) {
+//					request.setAttribute("restDto", dto);
+//					request.setAttribute("rmDto", null);
+//					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
+//				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+
+		} else if (cmd.equals("/toRestManagerView.re")) { // 관리자 페이지에 맛집목록 뿌려주기
+			int seq_list = Integer.parseInt(request.getParameter("seq_list"));
+
+			try {
+				ListDAO ldao = new ListDAO();
+				ListDTO ldto = ldao.selectBySeq(seq_list);
+				ArrayList<RestaurantJoinFileDTO> restList = dao.selectRestAndFileBySeq(seq_list);
+
+				if (ldto != null && restList != null) {
+					request.setAttribute("ldto", ldto);
+					request.setAttribute("restList", restList);
+					request.getRequestDispatcher("/manager/restaurantManagement.jsp").forward(request, response);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

@@ -46,6 +46,7 @@
 
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -311,7 +312,7 @@ a:link {
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="#">전체 리뷰</a>
@@ -337,7 +338,7 @@ a:link {
 						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
 					</div> -->
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="#">전체 리뷰</a>
@@ -486,7 +487,7 @@ a:link {
         // 리스트 클릭 시
         $(document).on("click", ".listBox", function(){
         	console.log($(this).find("input").val());
-        	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(this).find("input").val();
+        	location.href="${pageContext.request.contextPath}/toRestaurnatList.re?seq_list=" + $(this).find("input").val();
         })
         
         // 유저 아이콘 클릭 시
