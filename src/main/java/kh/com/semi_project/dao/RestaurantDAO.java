@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
+import kh.com.semi_project.dto.ListDTO;
 import kh.com.semi_project.dto.RestaurantDTO;
 import kh.com.semi_project.dto.RestaurantJoinFileDTO;
 
@@ -118,6 +119,9 @@ public class RestaurantDAO {
 					int seq_list = rs.getInt("seq_list");
 					String rest_name = rs.getString("rest_name");
 					String rest_introduction = rs.getString("rest_introduction");
+					String sido = rs.getString("sido");
+					String sigungu = rs.getString("sigungu");
+					String bname = rs.getString("bname");
 					String postCode = rs.getString("postCode");
 					String rest_address = rs.getString("rest_address");
 					String rest_tel = rs.getString("rest_tel");
@@ -126,7 +130,7 @@ public class RestaurantDAO {
 					int mark_count = rs.getInt("mark_count");
 					
 					return new RestaurantDTO(seq_rest, seq_list, rest_name, rest_introduction,
-							  null, null, null, postCode, rest_address, rest_tel, rest_time, parking_possible, mark_count);
+							  sido, sigungu, bname, postCode, rest_address, rest_tel, rest_time, parking_possible, mark_count);
 				}
 			}
 			return null;
@@ -173,6 +177,33 @@ public class RestaurantDAO {
 			
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) return rs.getInt("mark_count");
+		}
+		return -1;
+	}
+	
+	// 맛집 수정
+	public int modifyBySeq(RestaurantDTO dto) throws Exception {
+		String sql = "UPDATE tbl_rest SET rest_name=?, rest_introduction=?, sido=?, sigungu=?, bname=?, postCode=?,"
+				+ " rest_address=?, rest_tel=?, rest_time=?, parking_possible=? WHERE seq_rest=?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setString(1, dto.getRest_name());
+			pstmt.setString(2, dto.getRest_introduction());
+			pstmt.setString(3, dto.getSido());
+			pstmt.setString(4, dto.getSigungu());
+			pstmt.setString(5, dto.getBname());
+			pstmt.setString(6, dto.getPostCode());
+			pstmt.setString(7, dto.getRest_address());
+			pstmt.setString(8, dto.getRest_tel());
+			pstmt.setString(9, dto.getRest_time());
+			pstmt.setString(10, dto.getParking_possible());
+			pstmt.setInt(11, dto.getSeq_rest());
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1 ) return rs;
+			
 		}
 		return -1;
 	}

@@ -98,7 +98,7 @@ public class ListController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/toSelectList.li")) { // 리스트 번호로 해당 리스트 정보불러오기
+		} else if (cmd.equals("/getAllListInfo.li")) { // 리스트 번호로 해당 리스트 정보불러와 json형태로 뿌려주기
 			System.out.println("요청도착");
 
 			try {
