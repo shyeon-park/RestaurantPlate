@@ -30,6 +30,7 @@
 
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -189,21 +190,22 @@ a:link {
 #restName {
 	font-size: 30px;
 	margin-bottom: 0;
-	font-family: 'Noto Sans KR';
+	/* font-family: 'Noto Sans KR'; */
 	font-weight: bold;
 	color: #333;
 }
 
 #restAddress {
 	color: lightgrey;
-	font-family: 'Noto Sans KR';
+	/* font-family: 'Noto Sans KR'; */
 	margin-bottom: 30px;
 	font-size: 14px;
 }
 
+/*
 #restIntro {
 	font-family: 'Noto Sans KR';
-}
+} */
 </style>
 </head>
 
@@ -221,7 +223,7 @@ a:link {
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
@@ -247,7 +249,7 @@ a:link {
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
 			</c:choose>

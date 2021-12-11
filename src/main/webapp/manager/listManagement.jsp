@@ -263,7 +263,7 @@ body {
 										<div class="col-4">
 											<div class="input-group flex-nowrap">
 												<input type="text" id="telNum1" class="form-control"
-													maxlength=3>
+													maxlength=4>
 											</div>
 										</div>
 										<div class="col-4">
@@ -456,7 +456,7 @@ body {
          $(document).on("click", "#btnModifyList", function(e) {
         	 console.log($(e.target).val());
         	 $.ajax({
-        		 url: "${pageContext.request.contextPath}/toSelectList.li?seq_list=" + $(e.target).val(),
+        		 url: "${pageContext.request.contextPath}/getAllListInfo.li?seq_list=" + $(e.target).val(),
         		 type: "get",
         		 dataType: "json"
         	 }).done(function(rs){
@@ -549,7 +549,7 @@ body {
          // 등록하기 버튼 클릭시 (맛집)
         $("#btnAdd-rest").on("click", function(e){
         	// regex
-        	let regexTel = /^[0-9]{10,11}$/g;
+        	let regexTel = /^[0-9]{10,12}$/g;
         	
         	if($("#restName").val() == "") {
         		alert("음식점명을 입력하세요.");
@@ -572,7 +572,7 @@ body {
         		return;
         	}
         	
-        	$("#tel").val($("#telNum1").val() + $("#telNum2").val() + $("#telNum3").val());
+        	$("#tel").val($("#telNum1").val() + "-" + $("#telNum2").val() + "-" + $("#telNum3").val());
         	$("#address").val($("#roadAddress").val() + " " + $("#extraAddress").val() + " " + $("#detailAddress").val());
         	$("#time").val($("#openTime").val() + " ~ " + $("#closeTime").val());
         	
@@ -606,10 +606,8 @@ body {
                 $("#telNum3").val("");
                 $("#openTime").val("");
                 $("#closeTime").val("");
-                $("#inlineCheckbox1").val("");
-                $("#inlineCheckbox2").val("");
                 $("#restFile").val("");
-                $(".hiddenSeqBox").remove();
+                $("#hiddenSeqBox").val("");
                 $("#modalAddRest").modal("hide");
          })
         	

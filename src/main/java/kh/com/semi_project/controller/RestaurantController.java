@@ -12,14 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kh.com.semi_project.dao.ListDAO;
+import kh.com.semi_project.dao.ListFileDAO;
 import kh.com.semi_project.dao.RestMarkDAO;
 import kh.com.semi_project.dao.RestaurantDAO;
 import kh.com.semi_project.dao.RestaurantFileDAO;
 import kh.com.semi_project.dto.ListDTO;
+import kh.com.semi_project.dto.ListFileDTO;
 import kh.com.semi_project.dto.RestMarkDTO;
 import kh.com.semi_project.dto.RestaurantDTO;
 import kh.com.semi_project.dto.RestaurantFileDTO;
@@ -139,17 +142,17 @@ public class RestaurantController extends HttpServlet {
 
 			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
 			HttpSession session = request.getSession();
-			HashMap<String, String> map = (HashMap)session.getAttribute("loginSession");
+			HashMap<String, String> map = (HashMap) session.getAttribute("loginSession");
 			String user_id = map.get("id");
 			System.out.println(seq_rest);
 			System.out.println(user_id);
-			
+
 			try {
 				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
 				RestMarkDAO rmDao = new RestMarkDAO();
-				RestMarkDTO rmDto =  rmDao.checkRestMark(seq_rest, user_id);
-				
-				if(dto != null ) {
+				RestMarkDTO rmDto = rmDao.checkRestMark(seq_rest, user_id);
+
+				if (dto != null) {
 					HashMap<String, Object> restMap = new HashMap<>();
 					restMap.put("restDto", dto);
 					restMap.put("rmDto", rmDto);
@@ -162,8 +165,8 @@ public class RestaurantController extends HttpServlet {
 //					request.setAttribute("rmDto", null);
 //					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
 //				}
-				
-			}catch(Exception e) {
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
@@ -183,7 +186,106 @@ public class RestaurantController extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (cmd.equals("/getAllListInfo.re")) { // 해당 맛집정보를 json형태로 뿌려주기
+			System.out.println("요청도착");
+			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+
+			try {
+				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+
+				Gson gson = new Gson();
+				String rs = gson.toJson(dto);
+
+				if (dto != null) {
+					response.getWriter().write(rs);
+				} else {
+					response.getWriter().write("fail");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} else if(cmd.equals("/modifyRestProc.re")) {  // 맛집 수정
+			System.out.println("요청도착");
+
+			String filePath = request.getServletContext().getRealPath("restFiles");
+			System.out.println(filePath);
+			File dir = new File(filePath);
+			if (!dir.exists()) {
+				dir.mkdir();
+			}
+			int fileSize = 1024 * 1024 * 10;
+
+			System.out.println("filePath : " + filePath);
+			System.out.println("fileSize : " + fileSize);
+
+			try {
+				MultipartRequest multi = new MultipartRequest(request, filePath, fileSize, "utf-8",
+						new DefaultFileRenamePolicy());
+
+				int seq_rest = Integer.parseInt(multi.getParameter("seq_rest"));
+				int seq_list = Integer.parseInt(multi.getParameter("seq_list"));
+				String restName = multi.getParameter("restName");
+				String restIntro = multi.getParameter("restIntro");
+				String sido = multi.getParameter("sido");
+				String sigungu = multi.getParameter("sigungu");
+				String bname = multi.getParameter("bname");
+				String postcode = multi.getParameter("postcode");
+				String address = multi.getParameter("address");
+				String tel = multi.getParameter("tel");
+				String time = multi.getParameter("time");
+				String parkingPossible = multi.getParameter("parkingPossible");
+				int mark_count = Integer.parseInt(multi.getParameter("mark_count"));
+				File uploadFile = multi.getFile("restFile");
+
+				// 새로 업로드한 파일이 있다면
+				if (uploadFile != null) {
+					RestaurantFileDAO daoFile = new RestaurantFileDAO();
+					RestaurantFileDTO dtoFile = daoFile.getFile(seq_rest);
+
+					// 기존에 있던 실제 파일 삭제
+					String deleteFilePath = filePath + File.separator + dtoFile.getSystem_name();
+					File deleteFile = new File(deleteFilePath);
+					if (deleteFile.exists()) {
+						deleteFile.delete();
+						System.out.println("파일이 삭제되었습니다.");
+					} else {
+						System.out.println("파일이 존재하지 않습니다.");
+					}
+
+					// 맛집 정보 수정
+					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu, bname,
+							postcode, address, tel, time, parkingPossible, mark_count));
+
+					// 리스트 파일 정보 수정
+					String origin_name = multi.getOriginalFileName("restFile");
+					String system_name = multi.getFilesystemName("restFile");
+					int rsFile = daoFile.modifyFile(new RestaurantFileDTO(0, seq_rest, origin_name, system_name));
+
+					if (rs == 1 && rsFile == 1) {
+						response.getWriter().write("success");
+					} else {
+						response.getWriter().write("fail");
+					}
+
+				} else { // 새로 업로드한 파일이 없다면
+					// 리스트 정보만 수정
+					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu, bname,
+							postcode, address, tel, time, parkingPossible, mark_count));
+
+					if (rs == 1) {
+						response.getWriter().write("success");
+					} else {
+						response.getWriter().write("fail");
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+			
+			
+		
 	}
 
 }

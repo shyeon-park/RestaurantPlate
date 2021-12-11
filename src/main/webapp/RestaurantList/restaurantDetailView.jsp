@@ -8,7 +8,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>맛집 플레이트 : ${restDto.getRest_name()}</title>
+<title>맛집 플레이트 : 
+	<c:if test="${!empty loginSession}">
+		${restMap.get('restDto').getRest_name()}
+	</c:if>
+	${restDto.getRest_name()}</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -205,7 +209,7 @@ a:link {
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
@@ -231,7 +235,7 @@ a:link {
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
 			</c:choose>
