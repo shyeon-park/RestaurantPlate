@@ -112,7 +112,7 @@ public class RestaurantController extends HttpServlet {
 				if (ldto != null && restList != null) {
 					request.setAttribute("ldto", ldto);
 					request.setAttribute("restList", restList);
-					request.getRequestDispatcher("/restaurantList/listDetailView.jsp").forward(request, response);
+					request.getRequestDispatcher("/RestaurantList/listDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -129,7 +129,7 @@ public class RestaurantController extends HttpServlet {
 
 				if (dto != null) {
 					request.setAttribute("restDto", dto);
-					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
+					request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -155,7 +155,7 @@ public class RestaurantController extends HttpServlet {
 					restMap.put("rmDto", rmDto);
 					System.out.println(restMap);
 					request.setAttribute("restMap", restMap);
-					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
+					request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request, response);
 				}
 //				} else if (dto != null && rmDto == null) {
 //					request.setAttribute("restDto", dto);
