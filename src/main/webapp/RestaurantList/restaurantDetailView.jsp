@@ -393,6 +393,7 @@ a:link {
 				<div class="row">
 					<button type="button" id="btnViewWrite">리뷰쓰기</button>
 				</div>
+				
 				<div class="reviewBox"></div>
 
 			</div>
@@ -405,19 +406,19 @@ a:link {
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a"></script>
 	<script>
 		$(document).ready(function() {
-			getCommentList();
+			getViewList();
 		});
 		
 		// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
 		document.getElementById("btnViewWrite").addEventListener("click", function() {
-			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=100&rest_name=맛집";
+			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
 		});
 		
 		// ajax를 이용해 댓글을 불러오는 작업
-		function getCommentList(){
+		function getViewList(){
 			$.ajax({
 				type : "get"
-				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=" + $("#seq_list").val()
+				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}"
 				, dataType : "json"
 			
 			}).done(function(data){
@@ -426,7 +427,7 @@ a:link {
 				$(".reviewBox").empty();
 				
 				for(let dto of data){
-					let comment = "<div class='row'>" 
+					let review = "<div class='row'>" 
 								+ "<div class='col-2 show_nick'>"
 								+ dto.user_id
 								+ "</div>"
@@ -442,17 +443,17 @@ a:link {
 								+ "</div>"
 								+ "</div>";
 								
-								$(".reviewBox").append(comment);
+								$(".reviewBox").append(review);
 								//수정 삭제 버튼 영역
-								if("$(loginSession.get('id'))" == dto.user_id){
-									let btns = "<div>" +
-												"<button type='button' class='btn btn-modifyCmt' value='"+ dto.seq_view +" '>수정</button>" + 
-												"</div>" +
-												"<div>" +
-												"<button type='button' class='btn btn-deleteCmt' value='"+ dto.seq_view +"'>삭제</button>" +
-												"</div>";
-												
-												$(".reviewDiv-cmt:last").after(btns);
+								if("${loginSession.get('id')}" == dto.user_id){ // 작성자와 로그인 아이디가 같을 경우에만 수정삭제 버튼 추가 
+					          		let btns = "<div class='col-1 d-flex justify-content-center'>"
+					          		 + "<button type='button' class='btn btn-modifyCmt' value='" + dto.seq_view +"'>수정</button>"
+					          		 + "</div>"
+					          		 + "<div class='col-1 d-flex justify-content-center'>"
+					          		 + "<button type='button' class='btn btn-deleteCmt' value='" + dto.seq_view + "'>삭제</button>"
+					          		 + "</div>";
+					          		 // 가장 최신에 만들어진 댓글 영역 옆에 버튼 추가
+					          		$(".contentDiv-cmt:last").after(btns);
 								}
 				}
 			}).fail(function(e){

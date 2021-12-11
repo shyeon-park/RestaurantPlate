@@ -144,5 +144,35 @@ public class ViewDAO {
 			return list;			
 		}
 	}
+	
+public ArrayList<ViewDTO> getViewCheckList(int seq_rest){
+		
+		String sql = "select * from tbl_view where seq_rest = ?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			ArrayList<ViewDTO> list = new ArrayList<>();
+			
+			while(rs.next()) {
+				int seq_view = rs.getInt("seq_view");
+				String user_id = rs.getString("user_id");
+				String review_content = rs.getString("review_content");
+				Date review_date = rs.getDate("review_date");
+				
+				list.add(new ViewDTO(seq_rest, seq_view, user_id, review_content, review_date));
+				
+			}
+			return list;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 
 }
