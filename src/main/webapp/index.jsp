@@ -93,7 +93,7 @@ body {
 	cursor: pointer;
 }
 
-.menu > a {
+.menu>a {
 	color: white;
 	font-size: 16px;
 	font-weight: bold;
@@ -102,13 +102,13 @@ body {
 	transform: translate(0, -50%);
 }
 
-.menu > img {
+.menu>img {
 	position: absolute;
 	top: 50%;
 	transform: translate(0, -50%);
 }
 
-.menu > img:hover {
+.menu>img:hover {
 	cursor: pointer;
 }
 
@@ -121,7 +121,6 @@ a:link {
 	width: 100vw;
 	position: relative;
 }
-
 
 .header-txt {
 	position: absolute;
@@ -306,20 +305,22 @@ a:link {
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
-				<img src="${pageContext.request.contextPath}/img/plateLogo.png" id="logo">
+				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
+					id="logo">
 			</div>
 			<div class="col-2 col-md-7 menu"></div>
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-						    width="50px" height="50px" id="userPage">
+							width="50px" height="50px" id="userPage">
 					</div>
 				</c:when>
 
@@ -338,7 +339,8 @@ a:link {
 						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
 					</div> -->
 					<div class="col-2 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>
@@ -408,28 +410,27 @@ a:link {
 		</div>
 
 		<div class="footer"></div>
-		
+
 		<div class="modal fade" id="modalUser" data-bs-backdrop="static"
-					data-bs-keyboard="false" tabindex="-1"
-					aria-labelledby="staticBackdropLabel" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-									
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-primary" id="btnReg">등록</button>
-							</div>
-						</div>
+			data-bs-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary" id="btnReg">등록</button>
 					</div>
 				</div>
+			</div>
+		</div>
+		<button type="button" class="btn btn-dark" id="managerBtn">관리자</button>
 	</div>
 	<script>
          $(document).ready(function(){
@@ -493,6 +494,11 @@ a:link {
         // 유저 아이콘 클릭 시
         $("#userPage").on("click", function(){
         	$("#modalUser").modal("show");
+        })
+        
+        //
+        $("#managerBtn").on("click", function(){
+        	location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
     </script>
 </body>

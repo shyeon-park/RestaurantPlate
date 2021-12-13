@@ -275,9 +275,9 @@ a:link {
 										<c:when test="${! empty restMap.get('rmDto')}">
 											<script>
 												$(function(){
-													$("#btnRestMark").css("border", "3px solid orange");
-													$("#markIcon").css("color", "orange");
-													$("#markTxt").css("color", "orange");
+													$("#btnRestMark").css("border", "3px solid red");
+													$("#markIcon").css("color", "red");
+													$("#markTxt").css("color", "red");
 												})
 											</script>
 										</c:when>
@@ -337,7 +337,7 @@ a:link {
 						<c:otherwise>
 							<div class="row restCls">
 								<div class="col-10">
-									<p>${restDto.getRest_name()}</p>
+									<p style="font-size: 30px;">${restDto.getRest_name()}</p>
 								</div>
 								<div class="col-2" style="padding: 0px; color: gray; font-size: 14px;">
 									<span>추천수 : </span>
@@ -373,7 +373,7 @@ a:link {
 									<p>영업시간</p>
 								</div>
 								<div class="col-10">
-									<p>restDto.getRest_time()}</p>
+									<p>${restDto.getRest_time()}</p>
 								</div>
 							</div>
 							<div class="row restCls">
@@ -381,7 +381,7 @@ a:link {
 									<p>주차여부</p>
 								</div>
 								<div class="col-10">
-									<p>restDto.getParking_possible()}</p>
+									<p>${restDto.getParking_possible()}</p>
 								</div>
 							</div>
 						</c:otherwise>
@@ -477,9 +477,9 @@ a:link {
         	}).done(function(data){
         		if(data.msg == "successMark") {
         			console.log(data.msg);
-        			$("#btnRestMark").css("border", "3px solid orange");
-        			$("#markIcon").css("color", "orange");
-        			$("#markTxt").css("color", "orange");
+        			$("#btnRestMark").css("border", "3px solid red");
+        			$("#markIcon").css("color", "red");
+        			$("#markTxt").css("color", "red");
         		} else if(data.msg == "cancleMark") {
         			console.log(data.msg);
         			$("#btnRestMark").css("border", "3px solid gray");

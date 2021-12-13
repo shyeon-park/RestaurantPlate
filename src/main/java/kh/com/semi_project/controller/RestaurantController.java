@@ -101,6 +101,7 @@ public class RestaurantController extends HttpServlet {
 				}
 
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 		} else if (cmd.equals("/toRestaurnatList.re")) { // 리스트의 맛집목록을 파일과 함께 사용자 페이지에 뿌려주기
@@ -118,6 +119,7 @@ public class RestaurantController extends HttpServlet {
 					request.getRequestDispatcher("/restaurantList/listDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 
@@ -135,6 +137,7 @@ public class RestaurantController extends HttpServlet {
 					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 		} else if (cmd.equals("/toRestDetailLoginView.re")) { // 로그인한 사용자에게 맛집상세정보 뿌려주기
@@ -167,6 +170,7 @@ public class RestaurantController extends HttpServlet {
 //				}
 
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 
@@ -184,6 +188,7 @@ public class RestaurantController extends HttpServlet {
 					request.getRequestDispatcher("/manager/restaurantManagement.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 		} else if (cmd.equals("/getAllListInfo.re")) { // 해당 맛집정보를 json형태로 뿌려주기
@@ -202,6 +207,7 @@ public class RestaurantController extends HttpServlet {
 					response.getWriter().write("fail");
 				}
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 
@@ -280,10 +286,44 @@ public class RestaurantController extends HttpServlet {
 					}
 				}
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
-		}
+		} else if(cmd.equals("/deleteRestProc.re")) {	// 맛집 삭제
+			System.out.println("요청도착");
+
+			try {
+
+				int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+				RestaurantFileDAO daoFile = new RestaurantFileDAO();
+
+				// 맛집 삭제
+				int rs = dao.deleteBySeq(seq_rest);
+
+				// 실제 경로에 있는 파일 삭제
+				RestaurantFileDTO dtoFile = daoFile.getFile(seq_rest);
+				String system_name = dtoFile.getSystem_name();
+				String deleteFilePath = request.getServletContext().getRealPath("restFiles");
+				String filePath = deleteFilePath + File.separator + system_name;
+				File deleteFile = new File(filePath);
+
+				// 해당 맛집 파일 정보 삭제
+				int rsFile = daoFile.deleteFile(seq_rest);
+
+				if (deleteFile.exists() && rs == 1 && rsFile == 1) {
+					deleteFile.delete();
+					response.getWriter().write("success");
+					System.out.println("파일이 삭제되었습니다.");
+				} else {
+					response.getWriter().write("fail");
+					System.out.println("파일이 존재하지 않습니다.");
+				}
+			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
+				e.printStackTrace();
+			}
 			
+		}
 			
 		
 	}

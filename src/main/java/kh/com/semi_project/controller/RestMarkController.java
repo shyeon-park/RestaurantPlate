@@ -85,6 +85,7 @@ public class RestMarkController extends HttpServlet {
 				}
 				
 			} catch (Exception e) {
+				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
 		}

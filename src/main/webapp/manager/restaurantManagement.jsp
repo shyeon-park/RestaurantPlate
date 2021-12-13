@@ -436,6 +436,25 @@ body {
                 $("#modalModifyRest").modal("hide");
          })
          
+         // 삭제 버튼 클릭시
+        $(document).on("click", "#btnRestDelete", function(e) {
+        	 console.log($(e.target).val());
+        	 if(confirm("정말로 삭제하시겠습니까?")) {
+        		 $.ajax({
+        			 url: "${pageContext.request.contextPath}/deleteRestProc.re?seq_rest=" + $(e.target).val(),
+        			 type: "get"
+        		 }).done(function(data){
+        			 if(data == "success") {
+        				 alert("리스트가 삭제되었습니다.");
+        			 } else if(data == "fail") {
+        				 alert("리스트 삭제에 실패하였습니다.");
+        			 }
+        		 }).fail(function(e){
+        			 console.log(e);
+        		 })
+        	 }
+         })
+         
          
          // 다음 우편번호 api
          function sample4_execDaumPostcode() {

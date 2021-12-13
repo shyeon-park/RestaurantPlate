@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import kh.com.semi_project.dao.ViewDAO;
 import kh.com.semi_project.dto.ViewDTO;
-import kh.com.semi_project.service.ViewService;
+import kh.com.semi_project.service.Service;
 
 @WebServlet("*.vi")
 public class ReviewController extends HttpServlet {
@@ -45,7 +45,7 @@ public class ReviewController extends HttpServlet {
 				int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 				System.out.println("currentPage : " + currentPage);
 
-				ViewService service = new ViewService();
+				Service service = new Service();
 				HashMap<String, Object> naviMap = service.getPageNavi(currentPage);
 				ArrayList<ViewDTO> list = service.getViewList((int) naviMap.get("currentPage"));
 

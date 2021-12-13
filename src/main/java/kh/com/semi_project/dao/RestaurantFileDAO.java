@@ -82,4 +82,18 @@ public class RestaurantFileDAO {
 		}
 		return -1;
 	}
+	
+	// 맛집 이미지(파일) 삭제
+	public int deleteFile(int seq_rest) throws Exception {
+		String sql="DELETE FROM tbl_restFile WHERE seq_rest=?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
 }
