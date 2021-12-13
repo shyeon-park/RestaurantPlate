@@ -15,7 +15,7 @@
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
 
-<title>로그인페이지</title>
+<title>로그인페이지1</title>
 
 <style type="text/css">
 .container {
