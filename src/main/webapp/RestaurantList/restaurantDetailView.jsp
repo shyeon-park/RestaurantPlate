@@ -8,7 +8,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>맛집 플레이트 : 
+	<c:if test="${!empty loginSession}">
+		${restMap.get('restDto').getRest_name()}
+	</c:if>
+	${restDto.getRest_name()}</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -22,8 +26,16 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 
 <style>
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.notosanskr * {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -41,12 +53,6 @@ body {
 	height: 100%;
 }
 
-/* 메인 페이지 헤더부분 */
-.headerContainer {
-	width: 100%;
-	margin-bottom: 100px;
-}
-
 /*네비*/
 .naviBar {
 	position: fixed;
@@ -56,7 +62,7 @@ body {
 	z-index: 1;
 	height: 80px;
 	background-color: white;
-	box-shadow: 2px 0px 2px 2px grey;
+	box-shadow: 2px 0px 2px 2px lightgrey;
 	/* opacity: 0.8; */
 }
 
@@ -101,21 +107,27 @@ a:link {
 }
 
 /* */
+.headerContainer {
+	width: 100%;
+	margin-top: 80px;
+	margin-bottom: 100px;
+}
+
 .headDiv {
 	width: 100%;
-	height: 300px;
 	background-color: #f1f7e7;
 	margin: 0;
 }
 
 .headDiv>div {
 	padding: 0;
+	height: 300px;
 	position: relative;
 }
 
 .headDiv>div>p {
 	position: relative;
-	top: 60%;
+	top: 50%;
 	transform: translate(0, -50%);
 	text-align: center;
 	color: #333;
@@ -129,8 +141,9 @@ a:link {
 }
 
 .restDetailBox {
-	width: 90%;
+	width: 80%;
 	margin: auto;
+	border: 1px solid lightgray;
 }
 
 .mapDiv {
@@ -141,12 +154,45 @@ a:link {
 	padding: 12px;
 }
 
+.restCls {
+	margin-bottom: 8px;
+}
+
+.restCls > .col-2 > p {
+	color: gray;
+}
+
 .restInfoBox>p:first-child {
 	padding-bottom: 12px;
 	border-bottom: 1px solid lightgray;
 	font-size: 30px;
 	font-weight: bold;
 }
+
+.titleMark {
+	text-align: center;
+}
+
+
+#btnRestMark {
+	border-radius: 50%;
+	height: 50px;
+	width: 50px;
+	background-color: white;
+	padding: 0;
+}
+
+#btnRestMark > i {
+	width: 100%;
+	heigth: 100%;
+}
+
+#markTxt {
+	margin: 0;
+	font-weight: bold;
+}
+
+
 </style>
 </head>
 
@@ -160,10 +206,10 @@ a:link {
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
@@ -186,10 +232,10 @@ a:link {
 						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
 					</div> -->
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -206,44 +252,173 @@ a:link {
 		<div class="bodyContainer">
 			<div class="row restDetailBox">
 				<div class="col-5 d-none d-md-block mapDiv">
-					<div id="map" style="width: 500px; height: 400px;"></div>
+					<div id="map" style="width: 100%; height: 400px;"></div>
 				</div>
 				<div class="col-7 restInfoBox">
-					<p>${restDto.getRest_name()}</p>
-					<p>맛집소개</p>
-					<p>맛집주소</p>
-					<p>맛집전화번호</p>
-					<p>맛집영업시간</p>
-					<p>주차</p>
-				</div>
-				<div class="reviewContainer">
-					<div class="row">
-						<button type="button" id="btnViewWrite">리뷰쓰기</button>
-					</div>
-					<div class="reviewBox"></div>
-
+					<c:choose>
+						<c:when test="${!empty loginSession}">
+							<div class="row restCls">
+								<div class="col-10">
+									<p style="font-size: 30px;">${restMap.get('restDto').getRest_name()}</p>
+								</div>
+								<div class="col-2 d-none d-lg-block titleMark" style="padding: 0;">
+									<div style="padding: 0px; color: gray; font-size: 14px; margin-bottom: 6px;">
+										<span>추천수 : </span>
+										<span id="totalMark">${restMap.get('restDto').getMark_count()}</span>
+									</div>
+									<button type="button" id="btnRestMark">
+										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
+									</button>
+									<p id="markTxt">추천해요!</p>
+									<input class="d-none" name="seq_rest" value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
+									<c:choose>
+										<c:when test="${! empty restMap.get('rmDto')}">
+											<script>
+												$(function(){
+													$("#btnRestMark").css("border", "3px solid red");
+													$("#markIcon").css("color", "red");
+													$("#markTxt").css("color", "red");
+												})
+											</script>
+										</c:when>
+										<c:otherwise>
+											<script>
+												$(function(){
+													$("#btnRestMark").css("border", "3px solid gray");
+							    					$("#markIcon").css("color", "gray");
+							    					$("#markTxt").css("color", "gray");
+												})
+											</script>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>소개</p>
+								</div>
+								<div class="col-10">
+									<p>${restMap.get('restDto').getRest_introduction()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>주소</p>
+								</div>
+								<div class="col-10">
+									<p>${restMap.get('restDto').getPostCode()} ${restMap.get('restDto').getRest_address()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>전화번호</p>
+								</div>
+								<div class="col-10">
+									<p>${restMap.get('restDto').getRest_tel()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>영업시간</p>
+								</div>
+								<div class="col-10">
+									<p>${restMap.get('restDto').getRest_time()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>주차여부</p>
+								</div>
+								<div class="col-10">
+									<p>${restMap.get('restDto').getParking_possible()}</p>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="row restCls">
+								<div class="col-10">
+									<p style="font-size: 30px;">${restDto.getRest_name()}</p>
+								</div>
+								<div class="col-2" style="padding: 0px; color: gray; font-size: 14px;">
+									<span>추천수 : </span>
+									<span id="totalMark">${restDto.getMark_count()}</span>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>소개</p>
+								</div>
+								<div class="col-10">
+									<p>${restDto.getRest_introduction()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>주소</p>
+								</div>
+								<div class="col-10">
+									<p>${restDto.getPostCode()} ${restMap.get('restDto').getRest_address()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>전화번호</p>
+								</div>
+								<div class="col-10">
+									<p>${restDto.getRest_tel()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>영업시간</p>
+								</div>
+								<div class="col-10">
+									<p>${restDto.getRest_time()}</p>
+								</div>
+							</div>
+							<div class="row restCls">
+								<div class="col-2">
+									<p>주차여부</p>
+								</div>
+								<div class="col-10">
+									<p>${restDto.getParking_possible()}</p>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
+			
+			<div class="reviewContainer">
+				<div class="row">
+					<button type="button" id="btnViewWrite">리뷰쓰기</button>
+				</div>
+				
+				<div class="reviewBox"></div>
+
+			</div>
 		</div>
-	</div>
+				
+			
 	</div>
 
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a"></script>
 	<script>
-		// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
-		document.getElementById("btnViewWrite").addEventListener("click", function() {
-			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=100&rest_name=맛집";
-		});
 		$(document).ready(function() {
-			getCommentList();
+			getViewList();
 		});
 		
-		function getCommentList(){
-			// ajax를 이용해 댓글을 불러오는 작업
+		// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
+		document.getElementById("btnViewWrite").addEventListener("click", function() {
+			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
+		});
+		
+		// ajax를 이용해 댓글을 불러오는 작업
+		function getViewList(){
 			$.ajax({
 				type : "get"
-				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${seq_rest}"
+				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}"
 				, dataType : "json"
 			
 			}).done(function(data){
@@ -252,7 +427,7 @@ a:link {
 				$(".reviewBox").empty();
 				
 				for(let dto of data){
-					let comment = "<div class='row'>" 
+					let review = "<div class='row'>" 
 								+ "<div class='col-2 show_nick'>"
 								+ dto.user_id
 								+ "</div>"
@@ -268,23 +443,58 @@ a:link {
 								+ "</div>"
 								+ "</div>";
 								
-								$(".reviewBox").append(comment);
+								$(".reviewBox").append(review);
 								//수정 삭제 버튼 영역
-								if("$(loginSession.get('id'))" == dto.user_id){
-									let btns = "<div>" +
-												"<button type='button' class='btn btn-modifyCmt' value='"+ dto.seq_view +" '>수정</button>" + 
-												"</div>" +
-												"<div>" +
-												"<button type='button' class='btn btn-deleteCmt' value='"+ dto.seq_view +"'>삭제</button>" +
-												"</div>";
-												
-												$(".reviewDiv-cmt:last").after(btns);
+								if("${loginSession.get('id')}" == dto.user_id){ // 작성자와 로그인 아이디가 같을 경우에만 수정삭제 버튼 추가 
+					          		let btns = "<div class='col-1 d-flex justify-content-center'>"
+					          		 + "<button type='button' class='btn btn-modifyCmt' value='" + dto.seq_view +"'>수정</button>"
+					          		 + "</div>"
+					          		 + "<div class='col-1 d-flex justify-content-center'>"
+					          		 + "<button type='button' class='btn btn-deleteCmt' value='" + dto.seq_view + "'>삭제</button>"
+					          		 + "</div>";
+					          		 // 가장 최신에 만들어진 댓글 영역 옆에 버튼 추가
+					          		$(".contentDiv-cmt:last").after(btns);
 								}
 				}
 			}).fail(function(e){
 				console.log(e);
 			});
 		}
+		
+		// 로고 클릭 시
+        $("#logo").on("click", function(){
+        	location.href = "/";
+        })
+        
+        // 마크버튼 클릭 시
+        $("#btnRestMark").on("click", function(){
+        	let seq_rest = $("#seq_rest").val();
+        	console.log(seq_rest);
+        	
+        	$.ajax({
+        		url: "${pageContext.request.contextPath}/restmarkProc.mr?seq_rest=" + seq_rest,
+        		type: "get",
+        		dataType: "json"
+        	}).done(function(data){
+        		if(data.msg == "successMark") {
+        			console.log(data.msg);
+        			$("#btnRestMark").css("border", "3px solid red");
+        			$("#markIcon").css("color", "red");
+        			$("#markTxt").css("color", "red");
+        		} else if(data.msg == "cancleMark") {
+        			console.log(data.msg);
+        			$("#btnRestMark").css("border", "3px solid gray");
+        			$("#markIcon").css("color", "gray");
+        			$("#markTxt").css("color", "gray");
+        		}
+        		
+        		$("#totalMark").html("");
+        		$("#totalMark").html(data.totalCount);
+        	}).fail(function(e){
+        		console.log(e);
+        	})
+        }) 
+		
 	</script>
 	<script>
 		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스

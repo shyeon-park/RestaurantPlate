@@ -104,5 +104,75 @@ public class ViewDAO {
 			return list;
 		}
 	}
+	
+	public int countAll() throws Exception {
+		String sql = "select count(*) from tbl_view";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) return rs.getInt(1);
+		}
+		return -1;
+	}
+	
+	public ArrayList<ViewDTO> getViewList(int startRange, int endRange) throws Exception{
+		String sql = "select * from"
+				+ "(select row_number() over(order by seq_view desc) 순위,"
+				+ "a.* from tbl_view a)"
+				+ "where 순위 between ? and ?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, startRange);
+			pstmt.setInt(2, endRange);
+			
+			ResultSet rs = pstmt.executeQuery();
+			ArrayList<ViewDTO> list = new ArrayList<>();
+			while(rs.next()) {
+				int seq_rest = rs.getInt("seq_rest");
+				int seq_view = rs.getInt("seq_view");
+				String user_id = rs.getString("user_id");
+				String review_content = rs.getString("review_content");
+				Date review_date = rs.getDate("review_date");
+				
+				list.add(new ViewDTO(seq_rest, seq_view, user_id, review_content, review_date));
+			}
+			return list;			
+		}
+	}
+	
+public ArrayList<ViewDTO> getViewCheckList(int seq_rest){
+		
+		String sql = "select * from tbl_view where seq_rest = ?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			pstmt.setInt(1, seq_rest);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			ArrayList<ViewDTO> list = new ArrayList<>();
+			
+			while(rs.next()) {
+				int seq_view = rs.getInt("seq_view");
+				String user_id = rs.getString("user_id");
+				String review_content = rs.getString("review_content");
+				Date review_date = rs.getDate("review_date");
+				
+				list.add(new ViewDTO(seq_rest, seq_view, user_id, review_content, review_date));
+				
+			}
+			return list;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 
 }

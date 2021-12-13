@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>전체 리스트: 더보기</title>
+<title>맛집 플레이트 : 전체 리스트 더보기</title>
 
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
@@ -21,8 +21,15 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 
 <style>
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.notosanskr * {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -40,12 +47,6 @@ body {
 	height: 100%;
 }
 
-/* 메인 페이지 헤더부분 */
-.headerContainer {
-	width: 100%;
-	margin-bottom: 100px;
-}
-
 /*네비*/
 .naviBar {
 	position: fixed;
@@ -55,7 +56,7 @@ body {
 	z-index: 1;
 	height: 80px;
 	background-color: white;
-	box-shadow: 2px 0px 2px 2px grey;
+	box-shadow: 2px 0px 2px 2px lightgrey;
 	/* opacity: 0.8; */
 }
 
@@ -99,27 +100,34 @@ a:link {
 	text-decoration: none;
 }
 /* 헤드 영역 */
+.headerContainer {
+	width: 100%;
+	margin-top: 80px;
+	margin-bottom: 80px;
+}
+
 .headDiv {
 	width: 100%;
-	height: 300px;
-	background-color: #f1f7e7;
+	/*background-color: #f1f7e7;*/
 	margin: 0;
 }
 
 .headDiv>div {
 	padding: 0;
+	height: 400px;
 	position: relative;
 }
 
 .headDiv>div>p {
-	position: relative;
-	top: 60%;
-	transform: translate(0, -50%);
-	text-align: center;
-	color: #333;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: whitesmoke;
 	font-weight: bold;
 	font-size: 40px;
 }
+
 
 /* 리스트 목록 영역 */
 .bodyContainer {
@@ -179,10 +187,10 @@ a:link {
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
@@ -205,10 +213,10 @@ a:link {
 						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
 					</div> -->
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -218,7 +226,8 @@ a:link {
 
 			<div class="row headDiv">
 				<div class="col-12">
-					<p>전체 맛집 리스트 목록</p>
+					<img src="${pageContext.request.contextPath}/img/random/${random}" style="width: 100%; height: 100%">
+					<p>맛집 리스트 전체목록</p>
 				</div>
 			</div>
 		</div>
@@ -239,14 +248,17 @@ a:link {
 		</div>
 	</div>
 	<script>
-		$(".listBox")
-				.on(
-						"click",
-						function() {
-							console.log($(this).find("input").val());
-							location.href = "${pageContext.request.contextPath}/toListDetailView.re?seq_list="
-									+ $(this).find("input").val();
-						})
+		// 리스트 박스 클릭 시
+		$(".listBox").on("click", function() {
+			console.log($(this).find("input").val());
+			location.href = "${pageContext.request.contextPath}/toRestaurnatList.re?seq_list="
+							+ $(this).find("input").val();		
+		})
+						
+		// 로고 클릭 시
+        $("#logo").on("click", function(){
+        	location.href = "/";
+        })
 	</script>
 </body>
 </html>

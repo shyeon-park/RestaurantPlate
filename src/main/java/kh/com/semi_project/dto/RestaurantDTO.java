@@ -13,14 +13,13 @@ public class RestaurantDTO {
 	private String rest_tel;
 	private String rest_time;
 	private String parking_possible;
+	private int mark_count;
 	
 	public RestaurantDTO() {}
 
-	
-
 	public RestaurantDTO(int seq_rest, int seq_list, String rest_name, String rest_introduction, String sido,
 			String sigungu, String bname, String postCode, String rest_address, String rest_tel, String rest_time,
-			String parking_possible) {
+			String parking_possible, int mark_count) {
 		super();
 		this.seq_rest = seq_rest;
 		this.seq_list = seq_list;
@@ -34,9 +33,8 @@ public class RestaurantDTO {
 		this.rest_tel = rest_tel;
 		this.rest_time = rest_time;
 		this.parking_possible = parking_possible;
+		this.mark_count = mark_count;
 	}
-
-
 
 	public int getSeq_rest() {
 		return seq_rest;
@@ -178,6 +176,14 @@ public class RestaurantDTO {
 
 	public void setParking_possible(String parking_possible) {
 		this.parking_possible = parking_possible;
+	}
+
+	public int getMark_count() {
+		return mark_count;
+	}
+
+	public void setMark_count(int mark_count) {
+		this.mark_count = mark_count;
 	}
 	
 }

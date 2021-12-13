@@ -49,6 +49,7 @@
 
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans KR';
 }
 
 html {
@@ -95,7 +96,7 @@ body {
 	cursor: pointer;
 }
 
-.menu > a {
+.menu>a {
 	color: white;
 	font-size: 16px;
 	font-weight: bold;
@@ -104,13 +105,13 @@ body {
 	transform: translate(0, -50%);
 }
 
-.menu > img {
+.menu>img {
 	position: absolute;
 	top: 50%;
 	transform: translate(0, -50%);
 }
 
-.menu > img:hover {
+.menu>img:hover {
 	cursor: pointer;
 }
 
@@ -123,7 +124,6 @@ a:link {
 	width: 100vw;
 	position: relative;
 }
-
 
 .header-txt {
 	position: absolute;
@@ -402,20 +402,22 @@ a:link {
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
-				<img src="${pageContext.request.contextPath}/img/plateLogo.png" id="logo">
+				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
+					id="logo">
 			</div>
 			<div class="col-2 col-md-7 menu"></div>
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-						    width="50px" height="50px" id="userPage" onclick=showModal()>
+						   width="50px" height="50px" id="userPage" onclick=showModal()>
 					</div>
 				</c:when>
 
@@ -430,10 +432,11 @@ a:link {
 						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
-						<a href="#">전체 리뷰</a>
+						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -498,7 +501,9 @@ a:link {
 		</div>
 
 		<div class="footer"></div>
-
+		</div>
+		<button type="button" class="btn btn-dark" id="managerBtn">관리자</button>
+	</div>
 	<script>
          $(document).ready(function(){
              getListAndFile();
@@ -555,7 +560,7 @@ a:link {
         // 리스트 클릭 시
         $(document).on("click", ".listBox", function(){
         	console.log($(this).find("input").val());
-        	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(this).find("input").val();
+        	location.href="${pageContext.request.contextPath}/toRestaurnatList.re?seq_list=" + $(this).find("input").val();
         })
         </script>
          <script src="https://developers.kakao.com/sdk/js/kakao.js"></script><!-- 카카오 cdn -->
@@ -579,6 +584,16 @@ a:link {
 	          console.log('로그아웃완료')
 	        })
 	      }
+        
+        // 유저 아이콘 클릭 시
+        $("#userPage").on("click", function(){
+        	$("#modalUser").modal("show");
+        })
+        
+        //
+        $("#managerBtn").on("click", function(){
+        	location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
+        })
     </script>
    
 </body>

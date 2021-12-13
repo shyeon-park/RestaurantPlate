@@ -8,6 +8,7 @@ public class RestaurantJoinFileDTO {
 	private String sido;
 	private String sigungu;
 	private String bname;
+	private String postCode;
 	private String rest_address;
 	private String rest_tel;
 	private String rest_time;
@@ -17,7 +18,7 @@ public class RestaurantJoinFileDTO {
 	public RestaurantJoinFileDTO() {}
 
 	public RestaurantJoinFileDTO(int seq_rest, int seq_list, String rest_name, String rest_introduction, String sido,
-			String sigungu, String bname, String rest_address, String rest_tel, String rest_time,
+			String sigungu, String bname, String postCode, String rest_address, String rest_tel, String rest_time,
 			String parking_possible, String system_name) {
 		super();
 		this.seq_rest = seq_rest;
@@ -27,6 +28,7 @@ public class RestaurantJoinFileDTO {
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.bname = bname;
+		this.postCode = postCode;
 		this.rest_address = rest_address;
 		this.rest_tel = rest_tel;
 		this.rest_time = rest_time;
@@ -88,6 +90,14 @@ public class RestaurantJoinFileDTO {
 
 	public void setBname(String bname) {
 		this.bname = bname;
+	}
+	
+	public String getPostCode() {
+		return postCode;
+	}
+	
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
 	}
 
 	public String getRest_address() {

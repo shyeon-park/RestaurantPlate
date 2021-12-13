@@ -35,7 +35,7 @@
 	<body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">맛집 플레이트</a>
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/">맛집 플레이트</a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarText"
 				aria-controls="navbarText" aria-expanded="false"
