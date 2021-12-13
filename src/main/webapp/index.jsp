@@ -411,25 +411,6 @@ a:link {
 
 		<div class="footer"></div>
 
-		<div class="modal fade" id="modalUser" data-bs-backdrop="static"
-			data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body"></div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary" id="btnReg">등록</button>
-					</div>
-				</div>
-			</div>
-		</div>
 		<button type="button" class="btn btn-dark" id="managerBtn">관리자</button>
 	</div>
 	<script>
