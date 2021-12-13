@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import kh.com.semi_project.dao.ViewDAO;
 import kh.com.semi_project.dto.ViewDTO;
 import kh.com.semi_project.service.Service;
@@ -94,7 +96,29 @@ public class ReviewController extends HttpServlet {
 				e.printStackTrace();
 				response.sendRedirect("/Error/error.er");
 			}
+		}else if(cmd.equals("/toDetailViewProc.vi")) {
+			System.out.println("요청 도착");
+			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+			System.out.println("seq_rest : " + seq_rest);
+			
+			ArrayList<ViewDTO> list = dao.getViewCheckList(seq_rest);
+			//list를 json으로 변환
+			Gson gson = new Gson();
+			String rs = gson.toJson(list);
+			
+			// 아래 writer와 같지만 단순히 변수만 만들어서 사용한 것
+//			PrintWriter out = response.getWriter();
+//			out.write("success");
+			
+			
+			if(list != null) {
+				//success 문자열을 반환
+				response.getWriter().write(rs);
+			}else {
+				//fail 문자열을 반환
+			}
 		}
+
 	}
 
 }

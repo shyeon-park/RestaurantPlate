@@ -264,7 +264,7 @@ public class ListController extends HttpServlet {
 				if (list != null) {
 					request.setAttribute("random", rdFile);
 					request.setAttribute("list", list);
-					request.getRequestDispatcher("/restaurantList/totalListView.jsp").forward(request, response);
+					request.getRequestDispatcher("/RestaurantList/totalListView.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				response.sendRedirect("/Error/error.jsp");
