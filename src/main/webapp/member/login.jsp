@@ -87,6 +87,7 @@ a {
 						<div class="col"></div>
 					</div>
 				</div>
+				</form>
 				<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 				<!-- 카카오 로그인 sdk 등록-->
 				<script type="text/javascript">
