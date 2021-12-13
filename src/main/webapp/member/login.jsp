@@ -21,11 +21,9 @@
 .container {
 	width: 400px;
 }
-
 #sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn {
 	height: 37px
 }
-
 a {
 	font-size: small;
 	text-decoration: none;
@@ -33,17 +31,15 @@ a {
 }
 </style>
 </head>
-
 <body>
-	
 	<c:choose>
 		<c:when test="${!empty loginSession}">
-			<p>로그인 성공</p>
+			<script type="text/javascript">location.href = "${pageContext.request.contextPath}/home"</script>
 		</c:when>
 		<c:otherwise>
 			<c:if test="${rs eq 'fail'}">
 				<script type="text/javascript">
-				alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
+				alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.");
 				</script>
 			</c:if>
 
@@ -56,7 +52,7 @@ a {
 							<h3 class="mt-3">로그인</h3>
 						</div>
 						<div class="col-12 d-flex justify-content-center mt-3">
-							<img src="${pageContext.request.contextPath}/logo.jpg" alt="">
+							<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
 						</div>
 					</div>
 					<div class="row">
@@ -83,7 +79,8 @@ a {
 					</div>
 					<div class="row">
 						<div class="col-12">
-							<img src="${pageContext.request.contextPath}/kakao_login_img.png"
+							<img
+								src="${pageContext.request.contextPath}/img/kakao_login_img.png"
 								alt="" class="w-100 mt-3" id="kakoLoginBtn"
 								style="height: 50px;">
 						</div>
@@ -93,51 +90,8 @@ a {
 				<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 				<!-- 카카오 로그인 sdk 등록-->
 				<script type="text/javascript">
-		
-		<form action = "${pageContext.request.contextPath}/loginProc.mem" method = "post" id="loginForm">
-		<div>
-			class="container h-100 d-flex flex-column justify-content-md-center">
-			<div class="row">
-				<div class="col-12 d-flex justify-content-center">
-					<h3 class="mt-3">로그인</h3>
-				</div>
-				<div class="col-12 d-flex justify-content-center mt-3">
-					<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<input type="text" class="form-control mt-3" id="id" name = "id"
-						placeholder="맛집 플레이트 ID">
-				</div>
-				<div class="col-12">
-					<input type="password" class="form-control mt-3" id="pw"  name = "pw" placeholder="비밀번호">
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<button type="button" class="btn btn-dark w-100 mt-3" id="btnLogin"
-						style="height: 50px;">로그인</button>
-				</div>
-				<div class="col">
-					<a href="#" class="me-1">아이디 찾기</a> <a href="#" class="me-1">비밀번호
-						찾기</a> <a href="${pageContext.request.contextPath}/signup.mem" class="">회원가입</a>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12">
-					<img src="${pageContext.request.contextPath}/img/kakao_login_img.png" alt="" class="w-100 mt-3" id="kakoLoginBtn"
-						style="height: 50px;">
-				</div>
-				<div class="col"></div>
-			</div>
-		</div>
-		 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-				<!-- 카카오 로그인 sdk 등록-->
-				<script type="text/javascript">
 		 window.Kakao.init("f5b85acc6a4af9096ab0fcf1ad929c7c"); 
 		 console.log(Kakao.isInitialized()); //초기화 여부 판단 == true 정상적으로 초기화 
-	
 	    //로그인 버튼 클릭시 
 	    document.getElementById("btnLogin").addEventListener("click",function(){
 	    	loginFormSubmit()
@@ -218,12 +172,10 @@ a {
 	            }
 	        });
 	    }
-	    
-	    
 	    </script>
 		</c:otherwise>
 	</c:choose>
-	
+
 	<!-- =============================비밀번호 찾기 모달 영역 ============================= -->
 	<div class="modal fade" id="pwModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -261,7 +213,8 @@ a {
 									<div class="col d-flex mt-2 d-none" id="ponAuthBox2">
 										<input type="text" class="form-control w-75 me-3"
 											name="phoneAuthNumInput" id="phoneAuthNumInput2"
-											placeholder="인증번호를 입력하세요" style="font-size: 1rem;" maxlength="6">
+											placeholder="인증번호를 입력하세요" style="font-size: 1rem;"
+											maxlength="6">
 										<button type="button" class="w-25" id="phoneAtuhbtn2" disabled>완료</button>
 									</div>
 								</div>
@@ -270,13 +223,15 @@ a {
 					</div>
 				</div>
 				<div class="modal-footer">
-				<div class="ms-1 col-12 d-flex justify-content-center align-items-center d-none" id="phoneTime2"></div>
-				<div class="col-12 d-flex justify-content-center d-none" id="getPw"></div>
+					<div
+						class="ms-1 col-12 d-flex justify-content-center align-items-center d-none"
+						id="phoneTime2"></div>
+					<div class="col-12 d-flex justify-content-center d-none" id="getPw"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- =============================비밀번호 찾기 모달 영역 끝   ============================================ -->
 	<script type="text/javascript">
 	  let phoneTimer2 = null; // sms 인증 timer
@@ -405,59 +360,55 @@ a {
 					</script>
 
 	<!--================================ 아이디찾기 모달 영역  ================================-->
-		<div class="modal fade" id="IdModal" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="searchIdContiner">
+	<div class="modal fade" id="IdModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="searchIdContiner">
 
-							<div class="row">
-								<div class="col smsSendController">
-									<div class="d-flex justify-content-start align-items-center">
-										<input type="radio" id="sms" name="chk" value="SMS"
-											checked="checked">
-										<div>SMS 인증</div>
+						<div class="row">
+							<div class="col smsSendController">
+								<div class="d-flex justify-content-start align-items-center">
+									<input type="radio" id="sms" name="chk" value="SMS"
+										checked="checked">
+									<div>SMS 인증</div>
+								</div>
+								<div id="smsBox">
+									<div class="col d-flex mt-2">
+										<input type="text" class="form-control w-75 me-3" name="phone"
+											id="phone" placeholder="010-0000-0000"
+											style="font-size: 1rem;" maxlength="13">
+										<button type="button" class="w-25" id="sendPhonebtn">전송</button>
+
 									</div>
-									<div id="smsBox">
-										<div class="col d-flex mt-2">
-											<input type="text" class="form-control w-75 me-3"
-												name="phone" id="phone" placeholder="010-0000-0000"
-												style="font-size: 1rem;" maxlength="13">
-											<button type="button" class="w-25" id="sendPhonebtn">전송</button>
-
-										</div>
-										<div class="col d-flex mt-2 d-none" id="ponAuthBox">
-											<input type="text" class="form-control w-75 me-3"
-												name="phoneAuthNumInput" id="phoneAuthNumInput"
-												placeholder="인증번호를 입력하세요" style="font-size: 1rem;" maxlength="6">
-											<button type="button" class="w-25" id="phoneAtuhbtn" disabled>완료</button>
-										</div>
+									<div class="col d-flex mt-2 d-none" id="ponAuthBox">
+										<input type="text" class="form-control w-75 me-3"
+											name="phoneAuthNumInput" id="phoneAuthNumInput"
+											placeholder="인증번호를 입력하세요" style="font-size: 1rem;"
+											maxlength="6">
+										<button type="button" class="w-25" id="phoneAtuhbtn" disabled>완료</button>
 									</div>
-
-
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<div
-							class="ms-1 col-12 d-flex justify-content-center align-items-center d-none"
-							id="phoneTime"></div>
-						<div class="col-12 d-flex justify-content-center d-none"
-							id="getId"></div>
-					</div>
+				</div>
+				<div class="modal-footer">
+					<div
+						class="ms-1 col-12 d-flex justify-content-center align-items-center d-none"
+						id="phoneTime"></div>
+					<div class="col-12 d-flex justify-content-center d-none" id="getId"></div>
 				</div>
 			</div>
 		</div>
-
+	</div>
 	<script>
-	    
 	    let phone = document.getElementById("phone") //핸드폰 번호 합친것
 	    let phoneAuthNumInput = document.getElementById("phoneAuthNumInput")
 	    let email = document.getElementById("email") // 이메일 인풋창
@@ -618,8 +569,8 @@ a {
 	        
 	        /* =======================모달영역 끝 =========================== */
 	    </script>
-	    
-	    	<script
+
+	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>

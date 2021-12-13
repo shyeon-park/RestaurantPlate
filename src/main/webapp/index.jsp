@@ -586,11 +586,6 @@ a:link {
 	        })
 	      }
         
-        // 유저 아이콘 클릭 시
-        $("#userPage").on("click", function(){
-        	$("#modalUser").modal("show");
-        })
-        
         //
         $("#managerBtn").on("click", function(){
         	location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
