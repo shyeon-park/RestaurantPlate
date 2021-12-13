@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import kh.com.semi_project.dao.MemberDAO;
 import kh.com.semi_project.dto.MemberDTO;
+import utils.AuthNumberCreate;
 import utils.EncryptionUtils;
 
 /**
@@ -177,10 +178,9 @@ public class MemberController extends HttpServlet {
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
 			String id = loginMap.get("id");
 			System.out.println(id);
-			// 카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
 
 			session.removeAttribute("loginSession");
-			response.sendRedirect("/");
+			response.sendRedirect("/home");
 			// 카카오 로그인을 누르면 id, nickname 값을 kakaoSignup.jsp로 보내준다
 		} else if (cmd.equals("/kakaoLogin.mem")) {
 
@@ -198,7 +198,7 @@ public class MemberController extends HttpServlet {
 					loginMap.put("id", kakaoId);
 					loginMap.put("nickname", kakaoNickname);
 					session.setAttribute("loginSession", loginMap);
-					response.sendRedirect("/");
+					response.sendRedirect("/home");
 				} else {
 					HashMap<String, String> kakaoInformation = new HashMap<>();
 					kakaoInformation.put("kakaoId", kakaoId);
@@ -212,22 +212,55 @@ public class MemberController extends HttpServlet {
 			}
 
 		} else if (cmd.equals("/pwInput.mem")) {
-//			//현재 로그인된 사용자의 id 값을 얻어 옴
-//			HashMap<String,String> loginMap = (HashMap)session.getAttribute("loginSession");
-//			String id = loginMap.get("id");
-//			String pw = request.getParameter("pw");
-//			pw = EncryptionUtils.getSHA512(pw);
-//			boolean rs = dao.isLoginOk(id, pw);
-//			
-//			
-//			boolean regex = Pattern.matches("^[0-9]*$", id); 
-//			//카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
-//			if(!regex) {//카카오 아이디이면
-//				
-//			}
-//			 response.sendRedirect("/member/pwInput.jsp");
+			// 현재 로그인된 사용자의 id 값을 얻어 옴
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+		
+			// 카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
+			boolean regex = Pattern.matches("^[0-9]*$", id);
+			// 카카오 아이디이면 이용불가 페이지로 이동
+			if (regex) response.sendRedirect("/member/notAvailable.jsp");
+		    //카카오 로그인이 아니면 패스워드 이동 페이지 이동
+			else response.sendRedirect("/member/pwInput.jsp");
+			
 
-		} else if (cmd.equals("/mypage.mem")) {
+		}else if(cmd.equals("/changePw.mem")){
+			// 현재 로그인된 사용자의 id 값을 얻어 옴
+			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
+			String id = loginMap.get("id");
+			String pw = request.getParameter("pw");
+			String changePw = request.getParameter("changePw");
+			pw = EncryptionUtils.getSHA512(pw);
+			changePw = EncryptionUtils.getSHA512(changePw);
+			PrintWriter out = response.getWriter();
+			try {
+				if(dao.isLoginOk(id, pw)) {//로그인 성공 시
+					int rs = dao.changePw(id, changePw);
+					if(rs != -1) {
+						session.removeAttribute("loginSession");
+						out.println("<script>alert(\"비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요\"); location.href='/home';</script>");
+						out.flush();
+						}else {
+						out.println("<script>alert(\"비밀번호 변경에 실패하였습니다.\"); location.href='/member/pwInput.jsp';</script>");	
+						out.flush();
+						}
+						
+				}else {
+					out.println("<script>alert(\"PW를 확인해주세요. \"); location.href='/member/pwInput.jsp';</script>");
+					out.flush();
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+				
+			
+			
+		}else if (cmd.equals("/mypage.mem")) {
 
 			// 현재 로그인된 사용자의 id 값을 얻어 옴
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
@@ -261,9 +294,10 @@ public class MemberController extends HttpServlet {
 			String detailAddr = request.getParameter("detailAddr");
 			String extraAddr = request.getParameter("extraAddr");
 
-			
-			//System.out.println("nickname : "+nickname + " email :" + email + " phone : " + phone + " postCode : " +  postCode + "  roadAddress : "+roadAddress +" detailAddr : " + detailAddr  + " extraAddr :"+ extraAddr); 
-			System.out.println("요청도착"+ email);
+			// System.out.println("nickname : "+nickname + " email :" + email + " phone : "
+			// + phone + " postCode : " + postCode + " roadAddress : "+roadAddress +"
+			// detailAddr : " + detailAddr + " extraAddr :"+ extraAddr);
+			System.out.println("요청도착" + email);
 			// 현재 로그인된 사용자의 id 값을 얻어 옴
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
 			String id = loginMap.get("id");
@@ -272,8 +306,7 @@ public class MemberController extends HttpServlet {
 
 			try {
 				MemberDTO dto = new MemberDTO();
-				
-				
+
 				dto.setUser_id(id);
 				dto.setUser_nickname(nickname);
 				dto.setUser_email(email);
@@ -282,27 +315,28 @@ public class MemberController extends HttpServlet {
 				dto.setRoad_addr(roadAddress);
 				dto.setDetail_addr(detailAddr);
 				dto.setExtra_addr(extraAddr);
-				
+
 				int rs = dao.modifyMypage(dto);
 				PrintWriter out = response.getWriter();
-				if(rs != -1) {
-					out.println("<script>alert(\"회원정보수정 성공하였습니다.\"); location.href='${pageContext.request.contextPath}/mypage.mem';</script>");
+				if (rs != -1) {
+					out.println(
+							"<script>alert(\"마이페이지 수정 완료 완료되었습니다.\"); location.href='/mypage.mem';</script>");
 					out.flush();
-				}else {
-					out.println("<script>alert(\"회원정보수정 실패하였습니다 관리자에게 문의하세요.(010-5670-5842)\"); location.href='${pageContext.request.contextPath}/mypage.mem';</script>");
+				} else {
+					out.println(
+							"<script>alert(\"마이페이지 수정 실패 되었습니다. 다시 시도해주세요\"); location.href='/mypage.mem';</script>");
 					out.flush();
 				}
-				
-				
+
 			} catch (Exception e) {
 
 				e.printStackTrace();
 			}
 
-		}else if(cmd.equals("/deleteMember.mem")) { //회원탈퇴 페이지 이동
+		} else if (cmd.equals("/deleteMember.mem")) { // 회원탈퇴 페이지 이동
 			System.out.println("요청도착");
 			response.sendRedirect("/member/deleteMember.jsp");
-		}else if(cmd.equals("/deleteProc.mem")){
+		} else if (cmd.equals("/deleteProc.mem")) {
 			System.out.println("요청도착");
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
 			String id = loginMap.get("id");
@@ -310,18 +344,83 @@ public class MemberController extends HttpServlet {
 			try {
 				int rs = dao.deleteById(id);
 				PrintWriter out = response.getWriter();
-				if(rs != -1) {
+				if (rs != -1) {
 					session.removeAttribute("loginSession");
-					out.println("<script>alert(\"회원삭제가 완료되었습니다.\"); location.href='${pageContext.request.contextPath}/';</script>");
+					out.println(
+							"<script>alert(\"회원삭제가 완료되었습니다.\"); location.href='/home';</script>");
 					out.flush();
-				}else {
-					out.println("<script>alert(\"회원삭제가 실패하였습니다 관리자에게 문의하세요(010-5670-5842).\"); location.href='${pageContext.request.contextPath}/';</script>");
+				} else {
+					out.println(
+							"<script>alert(\"회원삭제가 실패하였습니다 관리자에게 문의하세요(010-5670-5842).\"); location.href='/home';</script>");
 					out.flush();
 				}
-			}catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			// 인증이 성공했을때 id를 보내준다.
+		} else if (cmd.equals("/searchId.mem")) {
+			String phone = request.getParameter("phone");
+			String id;
+			session.removeAttribute("phoneAuthNum");// 인증번호 세션 삭제
+			try {
+				id = dao.selectById(phone);
+				if (id.equals("x")) {
+					// 등록된 아이디가 없을 시
+					response.getWriter().write("x");
+				} else {
+					boolean regex = Pattern.matches("^[0-9]*$", id);
+					if (regex) {
+						// 카카오 로그인일 시
+						response.getWriter().write("kakao");
+					} else {
+						// 등록된 아이디에 마지막 3자리를 ***변환
+						id = id.replace(id.substring(id.length() - 3), "***");
+						System.out.println("id : " + id);
+						response.getWriter().write(id);
+					}
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// 비밀번호 찾기할때 필요한 ID를 불러온다
+		} else if (cmd.equals("/searchPw.mem")) {
+			String id = request.getParameter("id");
+			System.out.println(id);
+			try {
+				MemberDTO dto = dao.selectByDto(id);
+
+				if (dto.getUser_id() != null) {
+					response.getWriter().write("success");
+				} else
+					response.getWriter().write("fail");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// 인증이 성공하였을 때 임시비밀번호를 생성해서 보내준다.
+		} else if (cmd.equals("/tempPw.mem")) {
+			String id = request.getParameter("id");
+			String phone2 = request.getParameter("phone2");
+			System.out.println(id + " : " + phone2);
+
+			session.removeAttribute("phoneAuthNum");// 인증번호 세션 삭제
+
+			AuthNumberCreate anc = new AuthNumberCreate();
+			String tempPw = anc.pwGenerate();
+			String tempPw1 = EncryptionUtils.getSHA512(tempPw);
+
+			try {
+				int rs = dao.modifyPw(id, phone2, tempPw1);
+				if (rs != -1)
+					response.getWriter().write(tempPw);
+				else
+					response.getWriter().write("fail");
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

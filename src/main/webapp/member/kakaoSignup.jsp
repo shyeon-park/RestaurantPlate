@@ -147,6 +147,9 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
+
+
+
 			let nickname = document.getElementById("nickname") // 닉네임 인풋창
             let email = document.getElementById("email") // 이메일 인풋창
             let sendEmail = document.getElementById("sendEmail") // 이메일 인증번호 전송 버튼
@@ -378,7 +381,11 @@
                     }
                 }).open();
             }
-        
+				//새로고침 값 유지 함수
+				 window.addEventListener('beforeunload', (event) => { 
+
+				 	window.location.reload(true);
+				 	});
 
 </script>
 </html>

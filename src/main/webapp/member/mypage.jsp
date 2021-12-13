@@ -34,6 +34,8 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active"
 						aria-current="page" href="${pageContext.request.contextPath}/mypage.mem">내정보 수정</a></li>
+						<li class="nav-item"><a class="nav-link"
+						aria-current="page" href="${pageContext.request.contextPath}/pwInput.mem">비밀번호 재설정</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/deleteMember.mem">회원탈퇴</a></li>
 				</ul>
 

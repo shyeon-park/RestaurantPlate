@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -337,6 +338,13 @@ a:link {
         #modal-body{
         height: 300px
         }
+        
+        
+        /*로그아웃*/
+        #logoutBtn{
+        text-decoration: none;
+        cursor: pointer;
+        }
 </style>
 </head>
 
@@ -362,7 +370,8 @@ a:link {
                         <div class="row" id="modal-footer">
                         <div class="col d-flex justify-content-end">
                         	<a class ="" href="${pageContext.request.contextPath}/mypage.mem">내정보</a>
-                            <a class ="ms-4" href="${pageContext.request.contextPath}/logoutProc.mem">로그아웃</a>
+                            <a class ="ms-4" id="logoutBtn" onclick=kakaoLogout()>로그아웃</a>
+       
                         </div>
                           
                             
@@ -548,12 +557,30 @@ a:link {
         	console.log($(this).find("input").val());
         	location.href="${pageContext.request.contextPath}/toListDetailView.re?seq_list=" + $(this).find("input").val();
         })
-        
-        // 유저 아이콘 클릭 시
-      //  $("#userPage").on("click", function(){
-      //  	$("#modalUser").modal("show");
-      //  })
+        </script>
+         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script><!-- 카카오 cdn -->
+         <script>
+         $("#logoutBtn").click(function () {
+        	 setTimeout(function() {
+			location.href = "${pageContext.request.contextPath}/logoutProc.mem";
+        	 }, 100);
+		})
+         
+        	
+        	
+         Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.
+         console.log(Kakao.isInitialized()); // sdk초기화여부판단
+   		   function kakaoLogout() { // 카카오 로그아웃 함수
+	        if (!Kakao.Auth.getAccessToken()) {
+	        	console.log('로그인되어있지않습니다.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          console.log('로그아웃완료')
+	        })
+	      }
     </script>
+   
 </body>
 
 </html>

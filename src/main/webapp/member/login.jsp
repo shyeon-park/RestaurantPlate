@@ -1,210 +1,101 @@
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-		pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="UTF-8">
-	<link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-		crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.6.0.js"
-		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-		crossorigin="anonymous"></script>
-	
-	<title>로그인페이지</title>
-	
-	<style type="text/css">
-	.container {
-		width: 400px;
-	}
-	.btnsz{
-		height: 30px
-		display: flex;
-	        justify-content: center;
-	        align-items: center;
-	}
-	#sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn{
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	crossorigin="anonymous"></script>
+
+<title>로그인페이지</title>
+
+<style type="text/css">
+.container {
+	width: 400px;
+}
+
+#sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn {
 	height: 37px
-	}
-	a {
-		font-size: small;
-		text-decoration: none;
-		color: black;
-	}
-	</style>
-	</head>
+}
+
+a {
+	font-size: small;
+	text-decoration: none;
+	color: black;
+}
+</style>
+</head>
+
+<body>
 	
-	<body>
-		 <!-- 아이디찾기 모달 영역-->
-	    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	        <div class="modal-dialog">
-	            <div class="modal-content">
-	                <div class="modal-header">
-	                    <h5 class="modal-title" id="exampleModalLabel">인증방법 선택</h5>
-	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	                </div>
-	                <div class="modal-body">
-	                    <div class="searchIdContiner">
-	
-	                        <div class="row">
-	                            <div class="col smsSendController">
-	                                <div class="d-flex justify-content-start align-items-center">
-	                                    <input type="radio" id="sms" name="chk" value="SMS" checked="checked">
-	                                    <div>SMS 인증</div>
-	                                </div>
-	                                <div id="smsBox">
-	                                    <div class="col d-flex mt-2">
-	                                        <input type="text" class="form-control w-75 me-3" name="phone"
-	                                            placeholder="010-0000-0000" style="font-size: 1rem ;">
-	                                        <button type="button" class="w-25" id="sendPhonebtn">전송</button>
-	                                        
-	                                    </div>
-	                                    <div class="col d-flex mt-2">
-	                                        <input type="text" class="form-control w-75 me-3" name="phoneAuth"
-	                                            placeholder="인증번호를 입력하세요" style="font-size: 1rem ;">
-	                                        <button type="button" class="w-25" id="phoneAtuhbtn">완료</button>
-	                                    </div>
-	                                </div>
-	
-	                            </div>
-	                            <div class="emailSendController">
-	                                <div class="d-flex justify-content-start align-items-center mt-3">
-	                                    <input type="radio" id="email" name="chk" value="EMAIL">
-	                                    <div>이메일 인증</div>
-	                                </div>
-									<div id="emailBox" class = d-none>
-	                                <div class="col d-flex justify-content-start align-items-center mt-2">
-	                                    <input type="text" class="form-control w-75 me-3" name="email"
-	                                        placeholder="이메일을 입력하세요" style="font-size: 1rem ;">
-	                                    <button type="button" class="w-25" id ="sendEmailbtn">전송</button>
-	                                    
-	                                </div>
-	                                  <div class="col d-flex mt-2">
-	                                        <input type="text" class="form-control w-75 me-3" name="emailAuth"
-	                                            placeholder="인증번호를 입력하세요" style="font-size: 1rem ;">
-	                                        <button type="button" class="w-25" id="emailAtuhbtn">완료</button>
-	                                    </div>
-	                                    </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="modal-footer">
-	                   
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	
-	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-	        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-	        crossorigin="anonymous"></script>
-	    <script>
-	    let phone = document.getElementById("phone") //핸드폰 번호 합친것
-	    let email = document.getElementById("email") // 이메일 인풋창
-	    let emailRegex = /^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-z]{2,3}(:?\.[a-zA-z]{2,3})?$/
-	    let phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
-	    let	License = false
-	    let	phoneLicense = false
-	    let phoneTimer = null; // sms 인증 timer
-	    let emailTimer = null;
-	    et phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
-	    $("#sendPhonebtn").click(function(){
-	    	console.log("핸드폰전송")
-	    })
-	    $("#phoneAtuhbtn").click(function(){
-	    	console.log("sms 인증번호")
-	    })
-	    $("#sendEmailbtn").click(function(){
-	    	console.log("이메일전송")
-	    })
-	    $("#emailAtuhbtn").click(function(){
-	    	console.log("이메일 인증번호")
-	    })
-	    
-	    //#sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn{
-	    //	height: 37px
-	    //	}
-	        $("input[name='chk']:radio").change(function (e) {
-	            //라디오 버튼 값을 가져온다.
-	            let noticeCat = this.value;
-	
-	            console.log(noticeCat);
-	            if (e.target.value == "SMS") {
-	                $("#emailBox").addClass("d-none")
-	                $("#smsBox").removeClass("d-none")
-	                console.log("인증번호 전송페이지")
-	            } else {
-	                $("#smsBox").addClass("d-none")
-	                $("#emailBox").removeClass("d-none")
-	                console.log("인증번호 전송페이지")
-	            }
-	        });
-	
-	    </script>
-		<!-- <p>$ { loginSession.get("nickname")}님환영합니다.</p> -->
-		<c:choose>
-			<c:when test="${!empty loginSession}">
-				<p>로그인 성공</p>
-			</c:when>
-			<c:otherwise>
-				<c:if test="${rs eq 'fail'}">
-					<script type="text/javascript">
+	<c:choose>
+		<c:when test="${!empty loginSession}">
+			<p>로그인 성공</p>
+		</c:when>
+		<c:otherwise>
+			<c:if test="${rs eq 'fail'}">
+				<script type="text/javascript">
 				alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
 				</script>
-				</c:if>
-	
-				<form action="${pageContext.request.contextPath}/loginProc.mem"
-					method="post" id="loginForm">
-					<div
-						class="container h-100 d-flex flex-column justify-content-md-center">
-						<div class="row">
-							<div class="col-12 d-flex justify-content-center">
-								<h3 class="mt-3">로그인</h3>
-							</div>
-							<div class="col-12 d-flex justify-content-center mt-3">
-								<img src="${pageContext.request.contextPath}/logo.jpg" alt="">
-							</div>
+			</c:if>
+
+			<form action="${pageContext.request.contextPath}/loginProc.mem"
+				method="post" id="loginForm">
+				<div
+					class="container h-100 d-flex flex-column justify-content-md-center">
+					<div class="row">
+						<div class="col-12 d-flex justify-content-center">
+							<h3 class="mt-3">로그인</h3>
 						</div>
-						<div class="row">
-							<div class="col-12">
-								<input type="text" class="form-control mt-3" id="id" name="id"
-									placeholder="맛집 플레이트 ID" onkeyup=enterkey()>
-							</div>
-							<div class="col-12">
-								<input type="password" class="form-control mt-3" id="pw"
-									name="pw" placeholder="비밀번호" onkeyup=enterkey()>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<button type="button" class="btn btn-dark w-100 mt-3"
-									id="btnLogin" style="height: 50px;">로그인</button>
-							</div>
-							<div class="col">
-								<a href="#" class="me-1" data-bs-toggle="modal" data-bs-target="#exampleModal">아이디 찾기</a> <a href="#" class="me-1">비밀번호
-									찾기</a> <a href="${pageContext.request.contextPath}/signup.mem"
-									class="">회원가입</a>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<img src="${pageContext.request.contextPath}/kakao_login_img.png"
-									alt="" class="w-100 mt-3" id="kakoLoginBtn"
-									style="height: 50px;">
-							</div>
-							<div class="col"></div>
+						<div class="col-12 d-flex justify-content-center mt-3">
+							<img src="${pageContext.request.contextPath}/logo.jpg" alt="">
 						</div>
 					</div>
-					<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-					<!-- 카카오 로그인 sdk 등록-->
-					<script type="text/javascript">
+					<div class="row">
+						<div class="col-12">
+							<input type="text" class="form-control mt-3" id="id" name="id"
+								placeholder="맛집 플레이트 ID" onkeyup=enterkey()>
+						</div>
+						<div class="col-12">
+							<input type="password" class="form-control mt-3" id="pw"
+								name="pw" placeholder="비밀번호" onkeyup=enterkey()>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<button type="button" class="btn btn-dark w-100 mt-3"
+								id="btnLogin" style="height: 50px;">로그인</button>
+						</div>
+						<div class="col">
+							<a href="#" class="me-1" data-bs-toggle="modal"
+								data-bs-target="#IdModal">아이디 찾기</a> <a href="#" class="me-1"
+								data-bs-toggle="modal" data-bs-target="#pwModal">비밀번호 찾기</a> <a
+								href="${pageContext.request.contextPath}/signup.mem" class="">회원가입</a>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<img src="${pageContext.request.contextPath}/kakao_login_img.png"
+								alt="" class="w-100 mt-3" id="kakoLoginBtn"
+								style="height: 50px;">
+						</div>
+						<div class="col"></div>
+					</div>
+				</div>
+				<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+				<!-- 카카오 로그인 sdk 등록-->
+				<script type="text/javascript">
 		
 		<form action = "${pageContext.request.contextPath}/loginProc.mem" method = "post" id="loginForm">
-		<div
+		<div>
 			class="container h-100 d-flex flex-column justify-content-md-center">
 			<div class="row">
 				<div class="col-12 d-flex justify-content-center">
@@ -241,10 +132,11 @@
 				<div class="col"></div>
 			</div>
 		</div>
-		 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> <!-- 카카오 로그인 sdk 등록-->
-		<script type="text/javascript">
-		 window.Kakao.init("f5b85acc6a4af9096ab0fcf1ad929c7c"); //자바 키 등록
-		 console.log(Kakao.isInitialized()); //초기화 여부 판단 ==> true 정상적으로 초기화
+		 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+				<!-- 카카오 로그인 sdk 등록-->
+				<script type="text/javascript">
+		 window.Kakao.init("f5b85acc6a4af9096ab0fcf1ad929c7c"); 
+		 console.log(Kakao.isInitialized()); //초기화 여부 판단 == true 정상적으로 초기화 
 	
 	    //로그인 버튼 클릭시 
 	    document.getElementById("btnLogin").addEventListener("click",function(){
@@ -327,20 +219,409 @@
 	        });
 	    }
 	    
-	    function kakaoLogout() {
-	        if (!Kakao.Auth.getAccessToken()) {
-	          alert('Not logged in.')
-	          return
-	        }
-	        Kakao.Auth.logout(function() {
-	          alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken())
-	        })
-	      }
-	    
 	    
 	    </script>
-			</c:otherwise>
-		</c:choose>
+		</c:otherwise>
+	</c:choose>
 	
-	</body>
-	</html>
+	<!-- =============================비밀번호 찾기 모달 영역 ============================= -->
+	<div class="modal fade" id="pwModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">비밀번호 찾기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+
+					<div>아이디를 입력하세요</div>
+					<div class="d-flex">
+						<input type="text" class="form-control w-75 me-3" id="pwModalId">
+						<button type="button" class="w-25" id="pwModalSendId">전송</button>
+					</div>
+
+					<div class="searchpwContiner d-none">
+						<div class="row">
+							<div class="col smsSendController">
+								<div class="d-flex justify-content-start align-items-center">
+									<input type="radio" id="sms1" name="chk1" value="SMS"
+										checked="checked">
+									<div>SMS 인증</div>
+								</div>
+								<div id="smsBox2">
+									<div class="col d-flex mt-2">
+										<input type="text" class="form-control w-75 me-3"
+											name="phone2" id="phone2" placeholder="010-0000-0000"
+											style="font-size: 1rem;" maxlength="13">
+										<button type="button" class="w-25" id="sendPhonebtn2">전송</button>
+
+									</div>
+									<div class="col d-flex mt-2 d-none" id="ponAuthBox2">
+										<input type="text" class="form-control w-75 me-3"
+											name="phoneAuthNumInput" id="phoneAuthNumInput2"
+											placeholder="인증번호를 입력하세요" style="font-size: 1rem;" maxlength="6">
+										<button type="button" class="w-25" id="phoneAtuhbtn2" disabled>완료</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+				<div class="ms-1 col-12 d-flex justify-content-center align-items-center d-none" id="phoneTime2"></div>
+				<div class="col-12 d-flex justify-content-center d-none" id="getPw"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- =============================비밀번호 찾기 모달 영역 끝   ============================================ -->
+	<script type="text/javascript">
+	  let phoneTimer2 = null; // sms 인증 timer
+					$("#pwModalId").val
+					
+					  document.getElementById("pwModalSendId").addEventListener("click",function(){
+						  if(pwModalIdCheck()){
+							  
+							  let data={"id" : $("#pwModalId").val() }
+							  $.ajax({
+				                    type: "post"
+				                    , url: "${pageContext.request.contextPath}/searchPw.mem"
+				                    , data: data
+				                    , success: function (rs) {
+				                        console.log(rs)
+				                        if (rs == "success") {
+				                        	$(".searchpwContiner").removeClass("d-none")     
+				                        	
+				                        } else {
+				                           alert("존재하지않는 아이디입니다.")
+				                        }
+				                    }, error: function (e) {
+				                        console.log(e)
+				                    }
+				                })
+						  }
+						  
+					    })
+					    
+					    document.getElementById("sendPhonebtn2").addEventListener("click",function(){
+					    	  if (regexTest(phoneRegex, phone2)) {
+					                $("#phoneAtuhbtn2").attr("disabled", false);
+					                $("#phoneTime2").removeClass("d-none");
+					                $("#ponAuthBox2").removeClass("d-none");
+					                let data = { "rphone": phone2.value }
+						      $.ajax({
+				                    type: "post"
+				                    , url: "${pageContext.request.contextPath}/SmsSend.sms"
+				                    , data: data
+				                    , success: function (rs) {
+				                        console.log(rs)
+				                        if (rs == "success") {
+				                            $("#phoneAtuhbtn2").removeClass("d-none");
+				                            var display = $("#phoneTime2");
+				                            // 유효시간 설정
+				                            var leftSec = 180;
+				                            // 버튼 클릭 시 시간 연장
+				                            clearInterval(phoneTimer2);
+				                            phoneTimerStart2(leftSec, display);
+				                        } else {
+				                        	alert("인증번호 전송 실패")
+				                        }
+				                    }, error: function (e) {
+				                        console.log(e)
+				                    }
+				               	})
+					  	 }else{
+					  		 alert("올바르지 않은 phone 형식입니다.")
+					  	 }
+				
+					    })
+					    		//폰 타이머
+					            function phoneTimerStart2(count, display) {
+					                var minutes, seconds;
+					                phoneTimer2 = setInterval(function () {
+					                    displayTime(count, minutes, seconds, display, phoneTimer, phoneAtuhbtn2)
+					                    count--
+					                }, 1000);
+					            }
+	  
+						        function pwModalIdCheck() {
+							    let regex = /^[a-zA-Z][a-zA-Z0-9_]{5,11}$/g
+							    let id =  document.getElementById("pwModalId")
+							    if (!check(regex,id.value, id, "올바르지 않은 Id 형식입니다.")) {
+							    return false;
+							    }
+							    return true;
+						    }
+					
+						        //sms인증 확인 시 
+						        phoneAtuhbtn2.addEventListener("click", function () {
+						            data = { "phoneAuthNumInput": $("#phoneAuthNumInput2").val() }
+						            console.log(data)
+						            
+						            $.ajax({
+						                type: "post"
+						                , url: "${pageContext.request.contextPath}/phoneAuthNumSend.sms"
+						                , data: data
+						                , success: function (rs) {
+						                    console.log(rs)
+						                    if (rs == "success") {
+						                        //$("#resultPhoneAuth2").remove();
+						                        $("#sendPhonebtn2").html("인증완료")
+						                        $("#sendPhonebtn2").attr("disabled", true);
+						                        $("#phone2").attr("disabled", true);
+						                        $("#phoneTime2").addClass("d-none");
+						                        $("#ponAuthBox2").addClass("d-none");
+						                    
+						                        let phoneNumber = phone.value
+						                        
+						                        $.ajax({
+						                        	  type: "post"
+						                                  , url: "${pageContext.request.contextPath}/tempPw.mem"
+						                                  , data: {"id": $("#pwModalId").val(), "phone2" : $("#phone2").val() }
+						                                  , success: function (rs) {
+						                                	   $("#getPw").html("");
+						                                	   $("#getPw").removeClass("d-none");
+						                                	  if(rs != "fail"){
+						                                		  $("#getPw").html("발급된 임시비밀번호는 " + rs + " 입니다.");
+						                                	  }else{
+						                                		  $("#getPw").html("비밀번호 발급에 실패하였습니다. 관리자에게 문의해주세요(010-5670-5842)");
+						                                	  }
+						                                		 
+						                                  }, error: function (e) {
+						                                      console.log(e)
+						                                  }
+						                        })
+						                    } else {
+						                      alert("인증번호가 틀렸습니다.")
+						                    }
+						                }, error: function (e) {
+						                    console.log(e)
+						                }
+						            })
+						        })
+					</script>
+
+	<!--================================ 아이디찾기 모달 영역  ================================-->
+		<div class="modal fade" id="IdModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">아이디 찾기</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="searchIdContiner">
+
+							<div class="row">
+								<div class="col smsSendController">
+									<div class="d-flex justify-content-start align-items-center">
+										<input type="radio" id="sms" name="chk" value="SMS"
+											checked="checked">
+										<div>SMS 인증</div>
+									</div>
+									<div id="smsBox">
+										<div class="col d-flex mt-2">
+											<input type="text" class="form-control w-75 me-3"
+												name="phone" id="phone" placeholder="010-0000-0000"
+												style="font-size: 1rem;" maxlength="13">
+											<button type="button" class="w-25" id="sendPhonebtn">전송</button>
+
+										</div>
+										<div class="col d-flex mt-2 d-none" id="ponAuthBox">
+											<input type="text" class="form-control w-75 me-3"
+												name="phoneAuthNumInput" id="phoneAuthNumInput"
+												placeholder="인증번호를 입력하세요" style="font-size: 1rem;" maxlength="6">
+											<button type="button" class="w-25" id="phoneAtuhbtn" disabled>완료</button>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div
+							class="ms-1 col-12 d-flex justify-content-center align-items-center d-none"
+							id="phoneTime"></div>
+						<div class="col-12 d-flex justify-content-center d-none"
+							id="getId"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<script>
+	    
+	    let phone = document.getElementById("phone") //핸드폰 번호 합친것
+	    let phoneAuthNumInput = document.getElementById("phoneAuthNumInput")
+	    let email = document.getElementById("email") // 이메일 인풋창
+	    let emailRegex = /^[a-zA-Z][a-zA-Z0-9_.]+@[a-zA-Z0-9]+\.[a-zA-z]{2,3}(:?\.[a-zA-z]{2,3})?$/
+	    let phoneRegex = /[0-9]{3}-[0-9]{4}-[0-9]{4}/
+	    let	phoneLicense = false
+	    let phoneTimer = null; // sms 인증 timer
+	    
+	    
+	    let sendPhonebtn = document.getElementById("sendPhonebtn")// 핸드폰 전송
+	    let phoneAtuhbtn = document.getElementById("phoneAtuhbtn")// 핸드폰 인증번호 확인
+	    let sendEmailbtn = document.getElementById("sendEmailbtn")// 이메일 전송
+	    let emailAtuhbtn = document.getElementById("emailAtuhbtn")// 이메일 인증번호 확인
+	    
+	    /* =======================모달영역=========================== */
+	    //모달을 초기화 해준다.
+	    $('.modal').on('hidden.bs.modal', function (e) { 
+  			//아이디 찾기 모달
+  			phone.value = ""
+  			$("#phone").removeAttr("disabled");
+  			$("#sendPhonebtn").removeAttr("disabled");
+  			$("#getId").html("");
+  			$("#sendPhonebtn").html("전송");
+  			$("#phoneAuthNumInput").val("");
+  			
+  			
+  			//비밀번호 찾기 모달
+  			$("#phoneAuthNumInput2").val("");
+  			$("#phone2").val("");
+  			$("#phone2").removeAttr("disabled");
+  			$("#pwModalId").val("");
+  			$("#sendPhonebtn2").html("전송");
+  			$("#sendPhonebtn2").removeAttr("disabled");
+  			$("#getPw").html("");
+			$(".searchpwContiner").addClass("d-none");  			
+  			//location.href ="${pageContext.request.contextPath}/login.mem"
+		})
+	    
+	    //sms인증문자 전송 시 
+        sendPhonebtn.addEventListener("click", function () {
+            $("#resultPhone").remove();
+            if (regexTest(phoneRegex, phone)) {
+                $("#phoneAtuhbtn").attr("disabled", false);
+                $("#phoneTime").removeClass("d-none");
+                $("#ponAuthBox").removeClass("d-none");
+                data = { "rphone": phone.value }
+               
+                $.ajax({
+                    type: "post"
+                    , url: "${pageContext.request.contextPath}/SmsSend.sms"
+                    , data: data
+                    , success: function (rs) {
+                        console.log(rs)
+                        if (rs == "success") {
+                            $("#phoneAtuhbtn").removeClass("d-none");
+                            var display = $("#phoneTime");
+                            // 유효시간 설정
+                            var leftSec = 180;
+                            // 버튼 클릭 시 시간 연장
+                            clearInterval(phoneTimer);
+                            phoneTimerStart(leftSec, display);
+                        } else {
+                        	 alert("인증번호 전송 실패.")
+                        }
+                    }, error: function (e) {
+                        console.log(e)
+                    }
+                })
+               
+            } else {
+            	 alert("올바르지 않은 형식입니다.")
+            }
+        })
+        
+        
+	    //sms인증 확인 시 
+        phoneAtuhbtn.addEventListener("click", function () {
+            data = { "phoneAuthNumInput": phoneAuthNumInput.value }
+            
+            $.ajax({
+                type: "post"
+                , url: "${pageContext.request.contextPath}/phoneAuthNumSend.sms"
+                , data: data
+                , success: function (rs) {
+                    console.log(rs)
+                    if (rs == "success") {
+                        $("#resultPhoneAuth").remove();
+                        $("#sendPhonebtn").html("인증완료")
+                        $("#sendPhonebtn").attr("disabled", true);
+                        $("#phone").attr("disabled", true);
+                        $("#phoneTime").addClass("d-none");
+                        $("#ponAuthBox").addClass("d-none");
+                    
+                        phoneLicense = true;
+                        let phoneNumber = phone.value
+                        
+                        $.ajax({
+                        	  type: "post"
+                                  , url: "${pageContext.request.contextPath}/searchId.mem"
+                                  , data: {"phone":phoneNumber}
+                                  , success: function (rs) {
+                                	   $("#getId").html("");
+                                	   $("#getId").removeClass("d-none");
+                                	  if(rs == "x"){
+                                		  $("#getId").html("등록된 아이디가 없습니다.");
+                                	  }else if(rs == "kakao"){
+                                		  $("#getId").html("카카오 sns로 회원가입 하였습니다.");
+                                	  }else{
+                                		  $("#getId").html("등록된 ID는 "+rs+" 입니다.");
+                                	  }
+                                		 
+                                  }, error: function (e) {
+                                      console.log(e)
+                                  }
+                        })
+                    } else {
+                    	 alert("인증번호가 틀렸습니다.")
+                    }
+                }, error: function (e) {
+                    console.log(e)
+                }
+            })
+        })
+        
+			
+       //폰 타이머
+            function phoneTimerStart(count, display) {
+                var minutes, seconds;
+                phoneTimer = setInterval(function () {
+                    displayTime(count, minutes, seconds, display, phoneTimer, phoneAtuhbtn)
+                    count--
+                }, 1000);
+            }
+	    
+		// 시,분,초를 화면에 표시하는 기능 
+	       function displayTime(count, minutes, seconds, display, timerId, buttonId) {
+               minutes = parseInt(count / 60, 10);
+               seconds = parseInt(count % 60, 10);
+               minutes = minutes < 10 ? "0" + minutes : minutes;
+               seconds = seconds < 10 ? "0" + seconds : seconds;
+               display.html(minutes + ":" + seconds);
+               // 타이머 끝
+               if (count < 0) {
+                   clearInterval(timerId);
+                   display.html("시간초과");
+                   buttonId.disabled = true;
+               }
+           }
+
+	     // 정규식검사 함수
+        function regexTest(regex, testId) {
+            let regexCheck = regex
+            if (regexCheck.test(testId.value)) {
+                return true;
+            }
+            return false;
+        }
+	        
+	        /* =======================모달영역 끝 =========================== */
+	    </script>
+	    
+	    	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+		crossorigin="anonymous"></script>
+</body>
+</html>

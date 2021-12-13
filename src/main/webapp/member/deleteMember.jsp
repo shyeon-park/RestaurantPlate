@@ -29,6 +29,9 @@
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="${pageContext.request.contextPath}/mypage.mem">내정보 수정</a></li>
+                        <li class="nav-item"><a class="nav-link"
+						aria-current="page"
+						href="${pageContext.request.contextPath}/pwInput.mem">비밀번호 재설정</a></li>
                         <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/deleteMember.mem">회원탈퇴</a></li>
                     </ul>
 
@@ -52,7 +55,10 @@
             let delMember = document.getElementById("delMember")
             delMember.addEventListener("click",function(){
             	unlinkApp()
-                location.href = "${pageContext.request.contextPath}/deleteProc.mem"
+            	setTimeout(function() {
+            	location.href = "${pageContext.request.contextPath}/deleteProc.mem"
+				}, 100);
+                //함수가 실행중에 넘어가서 0.3초 딜레이 부여
                 	
             })
             Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.

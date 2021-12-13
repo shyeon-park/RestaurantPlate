@@ -62,6 +62,34 @@ private BasicDataSource bds;
 		}
 		return -1;
 	}
+	//비밀번호변경
+	public int changePw(String id, String password) throws Exception{
+		String sql = "update tbl_member set user_password = ? where user_id=?";
+		try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);){
+			pstmt.setString(1, password);
+			pstmt.setString(2, id);
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
+	//임시비밀번호 발급
+	public int modifyPw(String id, String phone, String password) throws Exception{
+		String sql = "update tbl_member set user_password = ? where user_id=? and user_phone =?";
+		try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);){
+			pstmt.setString(1, password);
+			pstmt.setString(2, id);
+			pstmt.setString(3, phone);
+			
+			
+			int rs = pstmt.executeUpdate();
+			if(rs != -1) return rs;
+		}
+		return -1;
+	}
 	
 	public MemberDTO selectByDto(String id) throws Exception{
 		String sql = "select * from tbl_member where user_id =?";
@@ -87,6 +115,24 @@ private BasicDataSource bds;
 			}
 			return dto;
 	   }
+	}
+	
+	
+	public String selectById(String phone) throws Exception{
+		String sql = "select * from tbl_member where user_phone =?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			pstmt.setString(1, phone);
+			String id ;
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				id = rs.getString(1);
+				return rs.getString(1);
+			}
+			return "x";
+	   }
+		
 	}
 	public int insert(MemberDTO dto) throws Exception{
 		String sql = "insert into TBL_MEMBER values(? ,? ,? ,DEFAULT ,? ,? ,? ,? , ?, ?,0)";
