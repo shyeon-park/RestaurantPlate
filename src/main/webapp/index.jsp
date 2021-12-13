@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -18,6 +19,7 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+
 <title>맛집 플레이트</title>
 <style>
 @font-face {
@@ -37,6 +39,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+5
 
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
@@ -298,10 +301,104 @@ a:link {
 	border: 1px solid black;
 	background-color: lightgrey;
 }
+
+/* modal */
+  .searchModal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 10;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .search-modal-content {
+            background-color: #fefefe;
+            position: fixed;
+            top: 80px;
+            right: 0px;
+            /* 15% from the top and centered */
+            padding: 20px;
+            width: 350px;
+            /* Could be more or less, depending on screen size */
+        }
+        #modal-body{
+        height: 300px
+        }
+        
+        
+        /*로그아웃*/
+        #logoutBtn{
+        text-decoration: none;
+        cursor: pointer;
+        }
 </style>
 </head>
 
 <body>
+
+ <div id="modalMypage" class="searchModal">
+        <div class="search-modal-content">
+            <div id=slideContainer>
+                <div class="d-flex justify-content-around">
+                    <div class="col-6 idSea d-flex justify-content-center m-0">${loginSession.get("nickname")}님
+                        안녕하세요</div>
+                </div>
+                <div class="album">
+                    <div class="searchIdContiner">
+                        <div class="row" id="header">
+                    		<div class="d-flex justify-content-around align-items-center">
+                            <div class="col d-flex justify-content-center">최근 본 맛집</div>
+                            <div class="col d-flex justify-content-center">격하게 가고싶다!</div>
+                            </div>
+                        </div>
+                        <div class="row" id="modal-body">
+                        </div>
+                        <div class="row" id="modal-footer">
+                        <div class="col d-flex justify-content-end">
+                        	<a class ="" href="${pageContext.request.contextPath}/mypage.mem">내정보</a>
+                            <a class ="ms-4" id="logoutBtn" onclick=kakaoLogout()>로그아웃</a>
+       
+                        </div>
+                          
+                            
+                        </div>
+
+                        <button id=btnModal onclick=closeModal()>닫기</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    
+     <script>
+        let modal = document.getElementById("modalMypage")
+        function showModal() {
+            $("#modalMypage").show();
+        }
+        function closeModal() {
+            $('.searchModal').hide();
+        };
+        window.addEventListener('click', (e) => {
+            e.target === modal ? $('.searchModal').hide() : false
+        })
+    </script>
+    
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
@@ -320,7 +417,7 @@ a:link {
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-							width="50px" height="50px" id="userPage">
+						   width="50px" height="50px" id="userPage" onclick=showModal()>
 					</div>
 				</c:when>
 
@@ -334,10 +431,6 @@ a:link {
 					<div class="col-2 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
 					</div>
-
-					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
-						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
-					</div> -->
 					<div class="col-2 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
 							리스트</a>
@@ -391,8 +484,6 @@ a:link {
 				</div>
 			</div>
 		</div>
-
-
 		<div class="bodyContainer2">
 			<div class="row">
 				<div class="col-12 tit">
@@ -410,25 +501,6 @@ a:link {
 		</div>
 
 		<div class="footer"></div>
-
-		<div class="modal fade" id="modalUser" data-bs-backdrop="static"
-			data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel">리스트 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body"></div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-primary" id="btnReg">등록</button>
-					</div>
-				</div>
-			</div>
 		</div>
 		<button type="button" class="btn btn-dark" id="managerBtn">관리자</button>
 	</div>
@@ -490,6 +562,28 @@ a:link {
         	console.log($(this).find("input").val());
         	location.href="${pageContext.request.contextPath}/toRestaurnatList.re?seq_list=" + $(this).find("input").val();
         })
+        </script>
+         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script><!-- 카카오 cdn -->
+         <script>
+         $("#logoutBtn").click(function () {
+        	 setTimeout(function() {
+			location.href = "${pageContext.request.contextPath}/logoutProc.mem";
+        	 }, 100);
+		})
+         
+        	
+        	
+         Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.
+         console.log(Kakao.isInitialized()); // sdk초기화여부판단
+   		   function kakaoLogout() { // 카카오 로그아웃 함수
+	        if (!Kakao.Auth.getAccessToken()) {
+	        	console.log('로그인되어있지않습니다.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          console.log('로그아웃완료')
+	        })
+	      }
         
         // 유저 아이콘 클릭 시
         $("#userPage").on("click", function(){
@@ -501,6 +595,7 @@ a:link {
         	location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
     </script>
+   
 </body>
 
 </html>
