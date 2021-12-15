@@ -614,8 +614,10 @@ body {
 							
 						
 				console.log(data)
-				let startNevi = data.startNavi
-				let endNevi = data.endNavi
+				let startNevi = (Number)data.startNavi;
+				let endNevi = (Number)data.endNavi;
+				console.log(startNevi);
+				console.log(endNevi);
 				let list = ""
 				for(let dto of data.list){
 					list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
@@ -625,13 +627,13 @@ body {
 				 let str2 = ""
 						
 						if(data.needPrev == true){
-							str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + startNavi + ")-1);'>Prev</a></li>";
+							str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(" + startNavi + "));'>Prev</a></li>";
 						}
 						for(let j = data.startNavi; j <= data.endNavi; j++){
 							str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(" + j + ");'>" + j + "</a></li>";
 						}
 						if(data.needNext == true){
-							str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + endNevi + ")+1);'>Next</a></li>";
+							str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + endNevi + "));'>Next</a></li>";
 						}
 				
 				let nav = ""
@@ -653,47 +655,6 @@ body {
 			});
 		}
 	
-	
-    document.addEventListener('click',function(e){
- 	   //console.log(e.target.className)
- 	   //console.log(e.target.innerHTML)
- 	   if(e.target.className == "dd"){
- 		   let currentPage=""
- 		   if(e.target.id == "aa" && e.target.innerHTML == "Next") {
- 			   getCommentList(Number(endNevi)+1)
-        		//currentPage= data.startNavi+1
-            	}
-            	if(e.target.id == "bb" && e.target.innerHTML == "Previous"){
-            		getCommentList(Number(startNevi)-1)
-            		//currentPage= data.startNavi-1
-            	}
-            	if(e.target.id == "cc" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-            		currentPage=e.target.innerHTML
-            		getCommentList(currentPage)
-            	}  
- 	   }
-     });
-	
-	
-    document.addEventListener('click',function(e){
- 	   //console.log(e.target.className)
- 	   //console.log(e.target.innerHTML)
- 	   if(e.target.className == "page-link"){
- 		   let currentPage=""
- 		   if(e.target.className == "page-link" && e.target.innerHTML == "Next") {
- 			   getCommentList(Number(endNevi)+1)
-        		//currentPage= data.startNavi+1
-            	}
-            	if(e.target.className == "page-link" && e.target.innerHTML == "Previous"){
-            		getCommentList(Number(startNevi)-1)
-            		//currentPage= data.startNavi-1
-            	}
-            	if(e.target.className == "page-link" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-            		currentPage=e.target.innerHTML
-            		getCommentList(currentPage)
-            	}  
- 	   }
-     });
     
     
 	// 리스트 관리 스크립트 영역
@@ -711,8 +672,8 @@ body {
 	        	$(".btnCls").empty();
 	        	$(".naviTd").empty();
 	        	
-	        	let startNavi = data.startNavi;
-				let endNavi = data.endNavi;
+	        	let startNavi = Number(data.startNavi);
+				let endNavi = Number(data.endNavi);
 				
 
 				let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
@@ -742,13 +703,13 @@ body {
 		
 				
 				if(data.needPrev == true){
-					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
+					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + (startNavi-1) + ");'>Prev</a></li>";
 				}
-				for(let j = data.startNavi; j <= data.endNavi; j++){
+				for(let j = data.startNavi; j < data.endNavi+1; j++){
 					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
 				}
 				if(data.needNext == true){
-					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
+					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + (endNavi+1) + ");'>Next</a></li>";
 				}
 				
 				let nav = "<td colspan='5' class='naviTd'>"
@@ -983,28 +944,117 @@ body {
 	
 	
 	
-		document.addEventListener('click',function(e){
-			console.log(e.target.className);
- 	   		//console.log(e.target.className)
- 	   		//console.log(e.target.innerHTML)
-			if(e.target.className == "page-link listPage"){
-     		   let currentPage="";
-     		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
-     			  getListByCurrentPage(Number(endNavi)+1);
-            		//currentPage= data.startNavi+1
-	               	}
-	               	if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
-	               		getListByCurrentPage(Number(startNavi)-1);
-	               		//currentPage= data.startNavi-1
-	               	}
-	               	if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-	               		console.log(e.target.innerHTML);
-	               		currentPage=e.target.innerHTML;
-	               		getListByCurrentPage(currentPage);
-	               		
-	               	}  
-     	   }
-     	});
+	
+	
+	function getViewList(currentPage){
+      a=2;
+      $.ajax({
+         type : "get"
+         , url : "${pageContext.request.contextPath}/managerReviewProc.vi?currentPage=" +currentPage
+         , dataType : "json"
+      
+      }).done(function(data){
+         console.log(data);
+         $("thead").empty();
+         $("tbody").empty();
+         startNevi = data.startNavi
+         endNevi = data.endNavi
+         
+         let reviewTitle = "<tr>"
+         + "<th class='col-md-2'>음식점 이름</th>"
+         + "<th class='col-md-3'>글쓴이</th>"
+         + "<th class='col-md-2'>작성일</th>"
+         + "<th class='col-md-3'>리뷰 내용</th>"
+         + "<th class='col-md-2'>삭제</th>"
+         + "</tr>";
+         
+         $("thead").append(reviewTitle);
+         
+         for(let dto of data.list){
+            console.log(dto.reivew)
+            let review = "<tr>"
+            + "<td>"+ dto.rest_name + "</td>" 
+            + "<td>" + dto.user_name + "</td>"
+            +  "<td>" + dto.review_date + "</td>" 
+            + "<td>" + dto.review_content +"</td>"
+            + "<td><button type='button' class='btn btn-deleteCmt' id='btnDelete' value='" + dto.seq_view + "'>삭제</button></td>"
+            + "</tr>";
+            $("tbody").append(review);
+         }
+         let str =""
+             let str1 = ""
+             let str2 = ""
+            if(data.needPrev == true){
+               str = "<li class='page-item'><div class='page-link 2' id= 'aa'>Previous</div></li>"
+            }
+            for(let j = data.startNavi; j<data.endNavi; j++){
+               str1 += "<li class='page-item'><div class='page-link 2' id= 'bb'>"+j+"</div></li>"
+            }
+            if(data.needNext == true){
+               str2 = "<li class='page-item'><button type ='button' class='page-link 2'>Next</div></li>"
+            }
+            let nav = ""
+               
+               nav = "<td colspan=5>"
+                  +"<nav class='col' aria-label='Page navigation example'>"
+                  +"<ul class='pagination justify-content-center'>"
+                   +str+str1+str2
+                  +"</ul>"  
+                  +"</nav>"     
+                  +"</td>"      
+                 $("tbody").append(nav)
+
+      
+      }).fail(function(e){
+         console.log(e);
+      });
+      
+      }
+    
+    document.addEventListener('click',function(e){
+        if(e.target.id == 'btnDelete'){
+           let seq_view = e.target.value;
+           if(confirm("정말로 삭제하시겠습니까?")) {
+              $.ajax({
+                 url: "/managerViewDelete.vi?seq_view="+ seq_view,
+                 type: "get"
+              }).done(function(data){
+                 if(data == "success") {
+                    alert("리뷰가 삭제되었습니다.");
+                   getViewList(1);
+                 } else if(data == "fail") {
+                    alert("리뷰 삭제에 실패하였습니다.");
+                 }
+              }).fail(function(e){
+                 console.log(e);
+              })
+           }
+         
+         }
+        });
+    
+    
+    document.addEventListener('click',function(e){
+        //console.log(e.target.className)
+        //console.log(e.target.innerHTML)
+        if(e.target.className == "page-link 2"){
+           if(e.target.className == "page-link 2" && e.target.innerHTML == "Next") {
+            getViewList( Number(endNevi)+1)
+               //currentPage= data.startNavi+1
+                }
+                if(e.target.className == "page-link 2" && e.target.innerHTML == "Previous"){
+                   getViewList(Number(startNevi)-1)
+                   //currentPage= data.startNavi-1
+                }
+                if(e.target.className == "page-link 2" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+                   currentPage=e.target.innerHTML
+                   getViewList(currentPage)
+                   
+                }  
+        }
+     
+      });
+	
 	
 	</script>
 

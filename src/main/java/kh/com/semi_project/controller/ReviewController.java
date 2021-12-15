@@ -176,7 +176,33 @@ public class ReviewController extends HttpServlet {
 			}
 			
 			
-		}
+		}else if (cmd.equals("/managerReviewProc.vi")) {
+	         System.out.println("요청 도착");
+	         try {
+	            int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	            System.out.println("currentPage : " + currentPage);
+
+	            Service service = new Service();
+	            HashMap<String, Object> naviMap = service.getPageNavi(currentPage);
+	            ArrayList<ViewDTO> list = service.getViewList((int) naviMap.get("currentPage"));
+	            naviMap.put("list", list);
+	            System.out.println(list);
+
+	            if (list != null) {
+	               Gson gson = new Gson();
+	               String rs = gson.toJson(naviMap);
+	               response.getWriter().write(rs);
+	            } else {
+	               response.getWriter().write("fail");
+	            }
+
+	         } catch (Exception e) {
+	            e.printStackTrace();
+	            response.sendRedirect("/Error/error.jsp");
+
+	         }
+
+	      }
 
 	}
 
