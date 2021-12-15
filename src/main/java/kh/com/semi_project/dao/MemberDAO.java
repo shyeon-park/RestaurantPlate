@@ -226,8 +226,8 @@ private BasicDataSource bds;
 	}	
 	
 	public int nullcheck(String[] str) throws Exception {
-		  if (str == null) return -1;
-		  else return 1;
+		  if (str == null) return 1;
+		  else return -1;
    
 		}
 	

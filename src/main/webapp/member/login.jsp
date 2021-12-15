@@ -42,6 +42,14 @@ a {
 
 #btnHome {
 	cursor: pointer;
+<<<<<<< HEAD
+}	
+
+
+#btnHome {
+	cursor: pointer;
+=======
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 }
 
 /* footer */
@@ -263,7 +271,7 @@ a {
 	    </script>
 		</c:otherwise>
 	</c:choose>
-
+	
 	<!-- =============================비밀번호 찾기 모달 영역 ============================= -->
 	<div class="modal fade" id="pwModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">

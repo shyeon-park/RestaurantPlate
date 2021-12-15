@@ -617,9 +617,25 @@ textarea {
 			</div>
 
 			<div class="reviewContainer">
+<<<<<<< HEAD
+				<c:choose>
+					<c:when test="${empty loginSession}">
+						<div class="row">
+							<input type="button" id="btnViewWrite" disabled value="리뷰쓰기">
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="row">
+							<input type="button" id="btnViewWrite" value="리뷰쓰기">
+						</div>
+					</c:otherwise>
+				</c:choose>
+
+=======
 				<div class="reviewTitle">
 					<span>리뷰</span>
 				</div>
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 				<div class="reviewBox"></div>
 			</div>
 		</div>
@@ -666,10 +682,13 @@ textarea {
 		getViewList();
 	});
 	
+<<<<<<< HEAD
+=======
 	$(document).on("hover", ".m-1", function(){
 		$("#contentRv").css("backgroundColor", "lightgrey");
 	})
 	
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 	// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
 	document.getElementById("btnViewWrite").addEventListener("click", function() {
 		location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
@@ -689,7 +708,11 @@ textarea {
 			
 			for(let dto of data){
 				console.log(dto.reivew)
+<<<<<<< HEAD
+				let review = "<div class='row m-1'>"
+=======
 				let review = "<div class='row m-1' style='border-bottom: 2px solid lightgray; padding-top: 30px; padding-bottom: 30px;'>"
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 					 + "<div class='col-12 d-flex justify-content-start cmt-info'>"
 					 +  dto.user_name
 					 + "</div>"
@@ -697,7 +720,11 @@ textarea {
 		             + dto.review_date
 		             + "</div>"
 		             + "<div class='col-10 d-flex justify-content-start reviewDiv-cmt'>"
+<<<<<<< HEAD
+		             + "<textarea class='form-control' class='content-cmt' name='view_comment' readonly>"
+=======
 		             + "<textarea id='contentRv' class='form-control' class='content-cmt' name='view_comment' readonly style='background-color: white; border: none;'>"
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 		             + dto.review_content
 		             + "</textarea>"
 		             + "</div>"
@@ -745,10 +772,16 @@ textarea {
        			 if(data == "success") {
        				 alert("리뷰가 삭제되었습니다.");
 <<<<<<< HEAD
+<<<<<<< HEAD
        				getViewList();
 =======
        				 getViewList();
 >>>>>>> e4c648718d9b354daf23b398a978968dcc5aa64a
+=======
+=======
+       				 getViewList();
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
+>>>>>>> 6883f0474f20ae695b93bebb41cd57ea55880769
        			 } else if(data == "fail") {
        				 alert("리뷰 삭제에 실패하였습니다.");
        			 }

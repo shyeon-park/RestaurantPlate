@@ -54,7 +54,11 @@
 			<tbody>
 				<c:forEach items="${list}" var="dto">
 					<tr>
+<<<<<<< HEAD
+						<td><a href="${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=${dto.getRest_name()}&currentPage=${naviMap.get('currentPage')}">${dto.getRest_name()}</a></td>
+=======
 						<td><a href="${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=${dto.getSeq_rest()}">${dto.getRest_name()}</a></td>
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 						<td>${dto.getUser_id()}</td>
 						<td>${dto.getReview_date()}</td>
 					</tr>
