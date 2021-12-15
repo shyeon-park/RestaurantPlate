@@ -666,6 +666,7 @@ textarea {
        		 }).done(function(data){
        			 if(data == "success") {
        				 alert("리뷰가 삭제되었습니다.");
+       				getViewList();
        			 } else if(data == "fail") {
        				 alert("리뷰 삭제에 실패하였습니다.");
        			 }

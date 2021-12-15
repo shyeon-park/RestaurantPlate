@@ -145,7 +145,7 @@ public class ReviewController extends HttpServlet {
 				int rs = dao.modify(seq_view,review_content);
 				
 				if(rs != -1) {
-					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re?seq_rest="+seq_rest);
+					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re");
 					request.setAttribute("seq_rest",seq_rest);
 					rd.forward(request, response);
 				}
@@ -175,8 +175,43 @@ public class ReviewController extends HttpServlet {
 			}
 			
 			
-		}
+		}else if(cmd.equals("/managerReview.vi")) {
+			System.out.println("요청 도착");
+			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+			System.out.println(currentPage);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/View/managerVIew.jsp");
+			request.setAttribute("currentPage", currentPage);
+			rd.forward(request, response);
+			
+		}else if(cmd.equals("/managerReviewProc.vi")) {
+			System.out.println("요청 도착");
+			try {
+				int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+				System.out.println("currentPage : " + currentPage);
 
+				Service service = new Service();
+				HashMap<String, Object> naviMap = service.getPageNavi(currentPage);
+				ArrayList<ViewDTO> list = service.getViewList((int) naviMap.get("currentPage"));
+				naviMap.put("list", list);
+				System.out.println(list);
+				
+
+				if (list != null) {
+					Gson gson = new Gson();
+					String rs = gson.toJson(naviMap);
+					response.getWriter().write(rs);
+				}else {
+						response.getWriter().write("fail");
+					}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+				response.sendRedirect("/Error/error.jsp");
+				
+			}
+
+	}
 	}
 
 }

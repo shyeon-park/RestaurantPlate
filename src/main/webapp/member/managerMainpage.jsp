@@ -150,7 +150,7 @@ a{
             //location.href = ""
         })
         document.getElementById("review").addEventListener("click",function(){
-            //location.href = ""
+            location.href = "/View/managerRevIew.vi";
         })
   
         function getCommentList(currentPage){			
