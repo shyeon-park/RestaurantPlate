@@ -9,7 +9,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>맛집 플레이트 : ${ldto.getList_title()}</title>
-
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
@@ -20,6 +21,7 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -57,7 +59,7 @@ body {
 	z-index: 1;
 	height: 80px;
 	background-color: white;
-	box-shadow: 2px 0px 2px 2px lightgrey;
+	box-shadow: 2px 2px 4px 0px lightgrey;
 	/* opacity: 0.8; */
 }
 
@@ -107,7 +109,7 @@ a:link {
 	/* border: 1px solid grey; */
 	position: relative;
 	margin-top: 80px;
-	margin-bottom: 100px;
+	margin-bottom: 150px;
 }
 
 .headDiv {
@@ -135,9 +137,9 @@ a:link {
 
 /* 바디영역 */
 .bodyContainer {
-	width: 50%;
+	width: 40%;
 	margin: auto;
-	height: 600px;
+	margin-bottom: 150px;
 }
 
 .restaurantBox {
@@ -156,15 +158,15 @@ a:link {
 }
 
 .divBox1 {
-	width: 100%;
-	height: 30px;
-	border-bottom: 1px solid lightgray;
+	/*width: 100%;
+	height: 30px;*/
+	/*border-bottom: 1px solid lightgray;*/
 }
 
 .divBox2 {
-	width: 100%;
-	height: 30px;
-	border-top: 1px solid lightgray;
+	/*width: 100%;
+	height: 30px;*/
+	/*border-top: 1px solid lightgray;*/
 }
 
 .restContent {
@@ -206,10 +208,136 @@ a:link {
 #restIntro {
 	font-family: 'Noto Sans KR';
 } */
+
+/* footer */
+.footer {
+	width: 100%;
+	/*height: 400px;*/
+	background-color: #333;
+}
+
+.footerData {
+	width: 40%;
+	height: 100%;
+	margin: auto;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.footer i {
+	margin-left: 8px;
+	margin-right: 8px;
+	color: white;
+}
+
+.footer span {
+	color: white;
+	margin-bottom: 8px;
+	font-family: 'Noto Sans KR'
+}
+
+.footer a {
+	color: white;
+	font-family: 'Noto Sans KR'
+}
+
+
+/* modal */
+  .searchModal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 10;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .search-modal-content {
+            background-color: #fefefe;
+            position: fixed;
+            top: 80px;
+            right: 0px;
+            /* 15% from the top and centered */
+            padding: 20px;
+            width: 350px;
+            /* Could be more or less, depending on screen size */
+        }
+        #modal-body{
+        height: 300px
+        }
+        
+        
+        /*로그아웃*/
+        #logoutBtn{
+        text-decoration: none;
+        cursor: pointer;
+        }
 </style>
 </head>
 
 <body>
+
+<div id="modalMypage" class="searchModal">
+        <div class="search-modal-content">
+            <div id=slideContainer>
+                <div class="d-flex justify-content-around">
+                    <div class="col-6 idSea d-flex justify-content-center m-0">${loginSession.get("nickname")}님
+                        안녕하세요</div>
+                </div>
+                <div class="album">
+                    <div class="searchIdContiner">
+                        <div class="row" id="header">
+                    		<div class="d-flex justify-content-around align-items-center">
+                            <div class="col d-flex justify-content-center">최근 본 맛집</div>
+                            <div class="col d-flex justify-content-center">격하게 가고싶다!</div>
+                            </div>
+                        </div>
+                        <div class="row" id="modal-body">
+                        </div>
+                        <div class="row" id="modal-footer">
+                        <div class="col d-flex justify-content-end">
+                        	<a class ="" href="${pageContext.request.contextPath}/mypage.mem">내정보</a>
+                            <a class ="ms-4" id="logoutBtn" onclick=kakaoLogout()>로그아웃</a>
+       
+                        </div>
+                          
+                            
+                        </div>
+
+                        <button id=btnModal onclick=closeModal()>닫기</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        let modal = document.getElementById("modalMypage")
+        function showModal() {
+            $("#modalMypage").show();
+        }
+        function closeModal() {
+            $('.searchModal').hide();
+        };
+        window.addEventListener('click', (e) => {
+            e.target === modal ? $('.searchModal').hide() : false
+        })
+    </script>
+    
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
@@ -227,7 +355,7 @@ a:link {
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-							width="50px" height="50px" id="userPage">
+							width="50px" height="50px" id="userPage" onclick=showModal()>
 					</div>
 				</c:when>
 
@@ -286,24 +414,44 @@ a:link {
 				</div>
 			</c:forEach>
 		</div>
+		
+		<div class="footer">
+			<div class="footerData">
+				<div class="row" style="margin-bottom: 80px;">
+					<div class="col-12 d-flex justify-content-center">
+						<i class="fab fa-instagram-square fa-5x"></i>
+						<i class="fab fa-facebook fa-5x"></i>
+						<i class="fab fa-twitter-square fa-5x"></i>
+						<i class="fab fa-line fa-5x"></i>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">InFo</a> · <a href="/">Support</a> · <a href="/">Marketing</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">Terms of Use</a> · <a href="/">Privacy Policy</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span>서울특별시 강남구 ooo로 ooo, ooo타워</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span>고객센터: 02-000-0000</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="color: grey;">© 2021 kh 3, Restaurant exploration team. All rights reserved.</span>
+					</div>
+					
+				</div>
+			</div>
+		</div>
 	</div>
 	<script>
-	<c:choose>
-		<c:when test="${!empty loginSession}">
-			$(".restaurantBox").on("click", function(){
-				location.href = "${pageContext.request.contextPath}/toRestDetailLoginView.re?seq_rest=" + $("#seq_rest").val();
-			})
-		</c:when>
-		<c:otherwise>
-			// 로그인 안한 사용자가 맛집 클릭 시
-			$(".restaurantBox").on("click", function() {
-				console.log($(this));
-				console.log($(this).find("input").val());
-				location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + $("#seq_rest").val();
-			})
-		</c:otherwise>
-	</c:choose>
-						
+		// 맛집박스 클릭 시
+		$(".restaurantBox").on("click", function(){
+			location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + $(this).find("input").val();
+		})	
+		
 		// 로고 클릭 시
         $("#logo").on("click", function(){
         	location.href = "/";

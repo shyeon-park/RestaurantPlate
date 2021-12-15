@@ -218,4 +218,28 @@ public class RestaurantDAO {
 		}
 		return -1;
 	}
+	
+	// 검색한 결과 뿌려주기
+	public ArrayList<RestaurantJoinFileDTO> getSearchResult(String searchWord) throws Exception {
+		String sql = "SELECT * FROM tbl_rest JOIN tbl_restFile USING(seq_rest)"
+				+ " WHERE rest_name LIKE ? OR rest_address LIKE ? OR bname LIKE ?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setString(1, "%" + searchWord + "%");
+			pstmt.setString(2, "%" + searchWord + "%");
+			pstmt.setString(3, "%" + searchWord + "%");
+			
+			ResultSet rs = pstmt.executeQuery();
+			ArrayList<RestaurantJoinFileDTO> list = new ArrayList<>();
+			while(rs.next()) {
+				int seq_rest = rs.getInt("seq_rest");
+				String rest_name = rs.getString("rest_name");
+				String rest_address = rs.getString("rest_address");
+				String system_name = rs.getString("system_name");
+				list.add(new RestaurantJoinFileDTO(seq_rest, 0, rest_name, null, null, null, null, null, rest_address, null, null, null, system_name));
+			}
+			return list;
+		}
+	}
 }

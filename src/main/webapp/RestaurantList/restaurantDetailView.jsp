@@ -8,12 +8,12 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>맛집 플레이트 : 
-	<c:if test="${!empty loginSession}">
+<title>맛집 플레이트 : <c:if test="${!empty loginSession}">
 		${restMap.get('restDto').getRest_name()}
-	</c:if>
-	${restDto.getRest_name()}</title>
-
+	</c:if> ${restDto.getRest_name()}
+</title>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
@@ -24,9 +24,12 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+	crossorigin="anonymous" />
 
 <style>
-
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 .notosanskr * {
@@ -59,10 +62,10 @@ body {
 	width: 100%;
 	margin: 0;
 	top: 0;
-	z-index: 1;
+	z-index: 99;
 	height: 80px;
 	background-color: white;
-	box-shadow: 2px 0px 2px 2px lightgrey;
+	box-shadow: 2px 2px 4px 0px lightgrey;
 	/* opacity: 0.8; */
 }
 
@@ -83,7 +86,7 @@ body {
 	cursor: pointer;
 }
 
-.menu > a {
+.menu>a {
 	color: grey;
 	font-size: 16px;
 	font-weight: bold;
@@ -92,13 +95,13 @@ body {
 	transform: translate(0, -50%);
 }
 
-.menu > img {
+.menu>img {
 	position: absolute;
 	top: 50%;
 	transform: translate(0, -50%);
 }
 
-.menu > img:hover {
+.menu>img:hover {
 	cursor: pointer;
 }
 
@@ -158,7 +161,7 @@ a:link {
 	margin-bottom: 8px;
 }
 
-.restCls > .col-2 > p {
+.restCls>.col-2>p {
 	color: gray;
 }
 
@@ -173,7 +176,6 @@ a:link {
 	text-align: center;
 }
 
-
 #btnRestMark {
 	border-radius: 50%;
 	height: 50px;
@@ -182,7 +184,7 @@ a:link {
 	padding: 0;
 }
 
-#btnRestMark > i {
+#btnRestMark>i {
 	width: 100%;
 	heigth: 100%;
 }
@@ -192,28 +194,152 @@ a:link {
 	font-weight: bold;
 }
 
+/* footer */
+.footer {
+	width: 100%;
+	/*height: 400px;*/
+	background-color: #333;
+}
 
+.footerData {
+	width: 40%;
+	height: 100%;
+	margin: auto;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.footer i {
+	margin-left: 8px;
+	margin-right: 8px;
+	color: white;
+}
+
+.footer span {
+	color: white;
+	margin-bottom: 8px;
+	font-family: 'Noto Sans KR'
+}
+
+.footer a {
+	color: white;
+	font-family: 'Noto Sans KR'
+}
+
+/* modal */
+.searchModal {
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 10;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: rgb(0, 0, 0);
+	/* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4);
+	/* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.search-modal-content {
+	background-color: #fefefe;
+	position: fixed;
+	top: 80px;
+	right: 0px;
+	/* 15% from the top and centered */
+	padding: 20px;
+	width: 350px;
+	/* Could be more or less, depending on screen size */
+}
+
+#modal-body {
+	height: 300px
+}
+
+/*로그아웃*/
+#logoutBtn {
+	text-decoration: none;
+	cursor: pointer;
+}
 </style>
 </head>
 
 <body>
+
+	<div id="modalMypage" class="searchModal">
+		<div class="search-modal-content">
+			<div id=slideContainer>
+				<div class="d-flex justify-content-around">
+					<div class="col-6 idSea d-flex justify-content-center m-0">${loginSession.get("nickname")}님
+						안녕하세요</div>
+				</div>
+				<div class="album">
+					<div class="searchIdContiner">
+						<div class="row" id="header">
+							<div class="d-flex justify-content-around align-items-center">
+								<div class="col d-flex justify-content-center">최근 본 맛집</div>
+								<div class="col d-flex justify-content-center">격하게 가고싶다!</div>
+							</div>
+						</div>
+						<div class="row" id="modal-body"></div>
+						<div class="row" id="modal-footer">
+							<div class="col d-flex justify-content-end">
+								<a class="" href="${pageContext.request.contextPath}/mypage.mem">내정보</a>
+								<a class="ms-4" id="logoutBtn" onclick=kakaoLogout()>로그아웃</a>
+
+							</div>
+
+
+						</div>
+
+						<button id=btnModal onclick=closeModal()>닫기</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<script>
+        let modal = document.getElementById("modalMypage")
+        function showModal() {
+            $("#modalMypage").show();
+        }
+        function closeModal() {
+            $('.searchModal').hide();
+        };
+        window.addEventListener('click', (e) => {
+            e.target === modal ? $('.searchModal').hide() : false
+        })
+    </script>
+
 	<div class="wrapper">
 		<div class="row naviBar">
 			<div class="col-2 menu d-flex justify-content-center">
-				<img src="${pageContext.request.contextPath}/img/plateLogo.png" id="logo">
+				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
+					id="logo">
 			</div>
 			<div class="col-2 col-md-7 menu"></div>
 			<c:choose>
 				<c:when test="${!empty loginSession}">
 					<div class="col-2 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-						    width="50px" height="50px" id="userPage">
+							width="50px" height="50px" id="userPage" onclick=showModal()>
 					</div>
 				</c:when>
 
@@ -232,7 +358,8 @@ a:link {
 						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
 					</div> -->
 					<div class="col-2 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="col-2 col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>
@@ -254,23 +381,93 @@ a:link {
 				<div class="col-5 d-none d-md-block mapDiv">
 					<div id="map" style="width: 100%; height: 400px;"></div>
 				</div>
-				<div class="col-7 restInfoBox">
+				<script type="text/javascript"
+					src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a&libraries=services"></script>
+				<script>
+					var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    				mapOption = {
+        				center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        				level: 3 // 지도의 확대 레벨
+    				};  
+				
+					// 지도를 생성합니다    
+					var map = new kakao.maps.Map(mapContainer, mapOption); 
+				
+					// 주소-좌표 변환 객체를 생성합니다
+					var geocoder = new kakao.maps.services.Geocoder();
+
+					// 주소로 좌표를 검색합니다
 					<c:choose>
 						<c:when test="${!empty loginSession}">
-							<div class="row restCls">
-								<div class="col-10">
-									<p style="font-size: 30px;">${restMap.get('restDto').getRest_name()}</p>
-								</div>
-								<div class="col-2 d-none d-lg-block titleMark" style="padding: 0;">
-									<div style="padding: 0px; color: gray; font-size: 14px; margin-bottom: 6px;">
-										<span>추천수 : </span>
-										<span id="totalMark">${restMap.get('restDto').getMark_count()}</span>
-									</div>
+							geocoder.addressSearch("${restMap.get('restDto').getRest_address()}", function(result, status) {
+
+    						// 정상적으로 검색이 완료됐으면 
+     						if (status === kakao.maps.services.Status.OK) {
+
+        						var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+       							// 결과값으로 받은 위치를 마커로 표시합니다
+        						var marker = new kakao.maps.Marker({
+            						map: map,
+            						position: coords
+       			 				});
+
+        						// 인포윈도우로 장소에 대한 설명을 표시합니다
+        						var infowindow = new kakao.maps.InfoWindow({
+            						content: '<div style="width:150px;text-align:center;padding:6px 0;">' + "${restMap.get('restDto').getRest_name()}" + '</div>'
+        						});
+        						infowindow.open(map, marker);
+
+        						// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        						map.setCenter(coords);
+    						} 
+						});
+						</c:when>
+						<c:otherwise>
+							geocoder.addressSearch("${restDto.getRest_address()}", function(result, status) {
+
+	    					// 정상적으로 검색이 완료됐으면 
+	     					if (status === kakao.maps.services.Status.OK) {
+
+	        					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+	       						// 결과값으로 받은 위치를 마커로 표시합니다
+	        					var marker = new kakao.maps.Marker({
+	            					map: map,
+	            					position: coords
+	       			 			});
+
+	        					// 인포윈도우로 장소에 대한 설명을 표시합니다
+	        					var infowindow = new kakao.maps.InfoWindow({
+	            					content: '<div style="width:150px;text-align:center;padding:6px 0;">' + "${restDto.getRest_name()}" + '</div>'
+	        					});
+	        					infowindow.open(map, marker);
+
+	        					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+	        					map.setCenter(coords);
+	    					} 
+						});
+						</c:otherwise>
+					</c:choose>
+				</script>
+				<div class="col-7 restInfoBox">
+					<div class="row restCls">
+						<div class="col-10">
+							<p style="font-size: 30px;">${restMap.get('restDto').getRest_name()}</p>
+						</div>
+						<div class="col-2 d-none d-lg-block titleMark" style="padding: 0;">
+							<div
+								style="padding: 0px; color: gray; font-size: 14px; margin-bottom: 6px;">
+								<span>추천수 : </span> <span id="totalMark">${restMap.get('restDto').getMark_count()}</span>
+							</div>
+							<c:choose>
+								<c:when test="${!empty loginSession}">
 									<button type="button" id="btnRestMark">
 										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
 									</button>
 									<p id="markTxt">추천해요!</p>
-									<input class="d-none" name="seq_rest" value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
+									<input class="d-none" name="seq_rest"
+										value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
 									<c:choose>
 										<c:when test="${! empty restMap.get('rmDto')}">
 											<script>
@@ -282,7 +479,7 @@ a:link {
 											</script>
 										</c:when>
 										<c:otherwise>
-											<script>
+										<script>
 												$(function(){
 													$("#btnRestMark").css("border", "3px solid gray");
 							    					$("#markIcon").css("color", "gray");
@@ -291,119 +488,118 @@ a:link {
 											</script>
 										</c:otherwise>
 									</c:choose>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>소개</p>
-								</div>
-								<div class="col-10">
-									<p>${restMap.get('restDto').getRest_introduction()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>주소</p>
-								</div>
-								<div class="col-10">
-									<p>${restMap.get('restDto').getPostCode()} ${restMap.get('restDto').getRest_address()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>전화번호</p>
-								</div>
-								<div class="col-10">
-									<p>${restMap.get('restDto').getRest_tel()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>영업시간</p>
-								</div>
-								<div class="col-10">
-									<p>${restMap.get('restDto').getRest_time()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>주차여부</p>
-								</div>
-								<div class="col-10">
-									<p>${restMap.get('restDto').getParking_possible()}</p>
-								</div>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<div class="row restCls">
-								<div class="col-10">
-									<p style="font-size: 30px;">${restDto.getRest_name()}</p>
-								</div>
-								<div class="col-2" style="padding: 0px; color: gray; font-size: 14px;">
-									<span>추천수 : </span>
-									<span id="totalMark">${restDto.getMark_count()}</span>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>소개</p>
-								</div>
-								<div class="col-10">
-									<p>${restDto.getRest_introduction()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>주소</p>
-								</div>
-								<div class="col-10">
-									<p>${restDto.getPostCode()} ${restMap.get('restDto').getRest_address()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>전화번호</p>
-								</div>
-								<div class="col-10">
-									<p>${restDto.getRest_tel()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>영업시간</p>
-								</div>
-								<div class="col-10">
-									<p>${restDto.getRest_time()}</p>
-								</div>
-							</div>
-							<div class="row restCls">
-								<div class="col-2">
-									<p>주차여부</p>
-								</div>
-								<div class="col-10">
-									<p>${restDto.getParking_possible()}</p>
-								</div>
-							</div>
-						</c:otherwise>
-					</c:choose>
+								</c:when>
+								<c:otherwise>
+									<button type="button" id="btnRestMark" disabled>
+										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
+									</button>
+									<script>
+										$(function(){
+											$("#btnRestMark").css("border", "3px solid gray");
+				    						$("#markIcon").css("color", "gray");
+				    						$("#markTxt").css("color", "gray");
+										})
+									</script>
+									<p id="markTxt">추천해요!</p>
+									<input class="d-none" name="seq_rest"
+										value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
+								</c:otherwise>
+							</c:choose>
+						</div>
+						
+					</div>
+					<div class="row restCls">
+						<div class="col-2">
+							<p>소개</p>
+						</div>
+						<div class="col-10">
+							<p>${restMap.get('restDto').getRest_introduction()}</p>
+						</div>
+					</div>
+					<div class="row restCls">
+						<div class="col-2">
+							<p>주소</p>
+						</div>
+						<div class="col-10">
+							<p>${restMap.get('restDto').getPostCode()}
+								${restMap.get('restDto').getRest_address()}</p>
+						</div>
+					</div>
+					<div class="row restCls">
+						<div class="col-2">
+							<p>전화번호</p>
+						</div>
+						<div class="col-10">
+							<p>${restMap.get('restDto').getRest_tel()}</p>
+						</div>
+					</div>
+					<div class="row restCls">
+						<div class="col-2">
+							<p>영업시간</p>
+						</div>
+						<div class="col-10">
+							<p>${restMap.get('restDto').getRest_time()}</p>
+						</div>
+					</div>
+					<div class="row restCls">
+						<div class="col-2">
+							<p>주차여부</p>
+						</div>
+						<div class="col-10">
+							<p>${restMap.get('restDto').getParking_possible()}</p>
+						</div>
+					</div>
+
 				</div>
 			</div>
-			
+
 			<div class="reviewContainer">
 				<div class="row">
 					<button type="button" id="btnViewWrite">리뷰쓰기</button>
 				</div>
-				
+
 				<div class="reviewBox"></div>
 
 			</div>
 		</div>
-				
-			
+
+		<div class="footer">
+			<div class="footerData">
+				<div class="row" style="margin-bottom: 80px;">
+					<div class="col-12 d-flex justify-content-center">
+						<i class="fab fa-instagram-square fa-5x"></i> <i
+							class="fab fa-facebook fa-5x"></i> <i
+							class="fab fa-twitter-square fa-5x"></i> <i
+							class="fab fa-line fa-5x"></i>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">InFo</a> · <a
+							href="/">Support</a> · <a href="/">Marketing</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">Terms of Use</a>
+							· <a href="/">Privacy Policy</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span>서울특별시 강남구 ooo로 ooo, ooo타워</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span>고객센터: 02-000-0000</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="color: grey;">© 2021 kh 3, Restaurant
+							exploration team. All rights reserved.</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 
-	<script type="text/javascript"
-		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6ff8deedbebce1fe90adb84cc3728d4a"></script>
 	<script>
 		$(document).ready(function() {
 			getViewList();
@@ -495,39 +691,6 @@ a:link {
         	})
         }) 
 		
-	</script>
-	<script>
-		var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-		var options = { //지도를 생성할 때 필요한 기본 옵션
-			center : new kakao.maps.LatLng(37.213297511073065,
-					127.04461056874126), //지도의 중심좌표.
-			level : 3
-		//지도의 레벨(확대, 축소 정도)
-		};
-
-		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-		let btnZoomIn = document.getElementById("btnZoomIn");
-		let btnZoomOut = document.getElementById("btnZoomOut");
-		btnZoomIn.addEventListener("click", zoomIn);
-		btnZoomOut.addEventListener("click", zoomOut);
-		function zoomIn() {
-			// 현재 지도의 레벨을 얻어옵니다
-			var level = map.getLevel();
-
-			// 지도를 1레벨 내립니다 (지도가 확대됩니다)
-			map.setLevel(level - 1);
-
-		}
-
-		function zoomOut() {
-			// 현재 지도의 레벨을 얻어옵니다
-			var level = map.getLevel();
-
-			// 지도를 1레벨 올립니다 (지도가 축소됩니다)
-			map.setLevel(level + 1);
-
-		}
 	</script>
 </body>
 

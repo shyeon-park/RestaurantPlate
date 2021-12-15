@@ -14,12 +14,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 
 <title>로그인페이지1</title>
 
 <style type="text/css">
 .container {
 	width: 400px;
+	padding-top: 100px;
 }
 #sendPhonebtn, #phoneAtuhbtn, #sendEmailbtn, #emailAtuhbtn {
 	height: 37px
@@ -29,8 +33,43 @@ a {
 	text-decoration: none;
 	color: black;
 }
+<<<<<<< HEAD
 #btnHome{
 cursor: pointer;
+=======
+
+/* footer */
+.footer {
+	margin-top: 100px;
+	width: 100%;
+	/*height: 400px;*/
+	background-color: #333;
+}
+
+.footerData {
+	width: 40%;
+	height: 100%;
+	margin: auto;
+	padding-top: 80px;
+	padding-bottom: 80px;
+}
+
+.footer i {
+	margin-left: 16px;
+	margin-right: 16px;
+	color: white;
+}
+
+.footer span {
+	color: white;
+	margin-bottom: 8px;
+	font-family: 'Noto Sans KR'
+}
+
+.footer a {
+	color: white;
+	font-family: 'Noto Sans KR'
+>>>>>>> ec688fb14985101ab02615a782c2a680498a63b1
 }
 </style>
 </head>
@@ -91,6 +130,37 @@ cursor: pointer;
 					</div>
 				</div>
 				</form>
+				
+				<div class="footer">
+			<div class="footerData">
+				<div class="row" style="margin-bottom: 80px;">
+					<div class="col-12 d-flex justify-content-center">
+						<i class="fab fa-instagram-square fa-5x"></i>
+						<i class="fab fa-facebook fa-5x"></i>
+						<i class="fab fa-twitter-square fa-5x"></i>
+						<i class="fab fa-line fa-5x"></i>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">InFo</a> · <a href="/">Support</a> · <a href="/">Marketing</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="font-size: 20px;"><a href="/">Terms of Use</a> · <a href="/">Privacy Policy</a></span>
+					</div>
+					<div class="col-12 d-flex justify-content-center" >
+						<span>서울특별시 강남구 ooo로 ooo, ooo타워</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span>고객센터: 02-000-0000</span>
+					</div>
+					<div class="col-12 d-flex justify-content-center">
+						<span style="color: grey;">© 2021 kh 3, Restaurant exploration team. All rights reserved.</span>
+					</div>
+					
+				</div>
+			</div>
+		</div>
 				<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 				<!-- 카카오 로그인 sdk 등록-->
 				<script type="text/javascript">

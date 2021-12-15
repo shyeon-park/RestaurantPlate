@@ -39,7 +39,6 @@ body {
 	height: 100%;
 	padding: 0;
 	width: 80%;
-	padding-top: 100px;
 	margin: auto;
 }
 
@@ -52,6 +51,7 @@ body {
 	width: 100%;
 	border: 1px solid black;
 	position: relative;
+	background-color: #333;
 }
 
 .header>div {
@@ -64,11 +64,12 @@ body {
 .header>div>p:first-child {
 	font-size: 30px;
 	font-weight: bold;
+	color: white;
 }
 
 .header>div>p:last-child {
 	font-size: 18px;
-	color: gray;
+	color: lightgray;
 }
 
 .restCls {
@@ -134,11 +135,11 @@ body {
 					<p>${list.getRest_address()}</p>
 				</div>
 				<div class="col-1 restDiv d-flex justify-content-center">
-					<button type="button" class="btn btn-success" id="btnRestModify"
+					<button type="button" class="btn btn-success btnRestModify"
 						value="${list.getSeq_rest()}">수정</button>
 				</div>
 				<div class="col-1 restDiv d-flex justify-content-center">
-					<button type="button" class="btn btn-dark" id="btnRestDelete"
+					<button type="button" class="btn btn-dark btnRestDelete"
 						value="${list.getSeq_rest()}">삭제</button>
 				</div>
 			</div>
@@ -332,7 +333,7 @@ body {
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	// 수정버튼 클릭시
-    $("#btnRestModify").on("click", function(e) {
+    $(".btnRestModify").on("click", function(e) {
    	 	console.log($(e.target).val());
    	 	$("#hiddenSeqBox").val($(e.target).val());
    	 
@@ -437,7 +438,7 @@ body {
          })
          
          // 삭제 버튼 클릭시
-        $(document).on("click", "#btnRestDelete", function(e) {
+        $(".btnRestDelete").on("click", function(e) {
         	 console.log($(e.target).val());
         	 if(confirm("정말로 삭제하시겠습니까?")) {
         		 $.ajax({
