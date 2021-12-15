@@ -93,7 +93,7 @@ public class ListController extends HttpServlet {
 			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			System.out.println("currentPage : " + currentPage);
 			Service service = new Service();
-			HashMap<String, Object> naviMap = service.getPageNavi(currentPage);
+			HashMap<String, Object> naviMap = service.getListPageNavi(currentPage);
 			ArrayList<ListDTO> list = service.getRestaurantList((int) naviMap.get("currentPage"));
 			naviMap.put("list", list);
 
@@ -241,6 +241,7 @@ public class ListController extends HttpServlet {
 					String origin_name = multi.getOriginalFileName("listImg");
 					String system_name = multi.getFilesystemName("listImg");
 					int rsFile = daoFile.modifyFile(new ListFileDTO(0, seq_list, origin_name, system_name));
+					
 
 					if (rs == 1 && rsFile == 1) {
 						response.getWriter().write("success");
