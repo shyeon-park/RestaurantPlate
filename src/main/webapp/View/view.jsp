@@ -54,7 +54,7 @@
 			<tbody>
 				<c:forEach items="${list}" var="dto">
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/restaraurant.re?seq_rest=${dto.getSeq_rest()}&currentPage=${naviMap.get('currentPage')}">${dto.getSeq_rest()}</a></td>
+						<td><a href="${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=${dto.getRest_name()}&currentPage=${naviMap.get('currentPage')}">${dto.getRest_name()}</a></td>
 						<td>${dto.getUser_id()}</td>
 						<td>${dto.getReview_date()}</td>
 					</tr>

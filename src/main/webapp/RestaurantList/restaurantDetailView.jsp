@@ -479,7 +479,7 @@ a:link {
 											</script>
 										</c:when>
 										<c:otherwise>
-										<script>
+											<script>
 												$(function(){
 													$("#btnRestMark").css("border", "3px solid gray");
 							    					$("#markIcon").css("color", "gray");
@@ -506,7 +506,7 @@ a:link {
 								</c:otherwise>
 							</c:choose>
 						</div>
-						
+
 					</div>
 					<div class="row restCls">
 						<div class="col-2">
@@ -554,9 +554,18 @@ a:link {
 			</div>
 
 			<div class="reviewContainer">
-				<div class="row">
-					<button type="button" id="btnViewWrite">리뷰쓰기</button>
-				</div>
+				<c:choose>
+					<c:when test="${empty loginSession}">
+						<div class="row">
+							<input type="button" id="btnViewWrite" disabled value="리뷰쓰기">
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="row">
+							<input type="button" id="btnViewWrite" value="리뷰쓰기">
+						</div>
+					</c:otherwise>
+				</c:choose>
 
 				<div class="reviewBox"></div>
 
@@ -601,61 +610,94 @@ a:link {
 	</div>
 
 	<script>
-		$(document).ready(function() {
-			getViewList();
-		});
+	$(document).ready(function() {
+		getViewList();
+	});
+	
+	// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
+	document.getElementById("btnViewWrite").addEventListener("click", function() {
+		location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
+	});
+	
+	// ajax를 이용해 리뷰을 불러오는 작업
+	function getViewList(){
+		$.ajax({
+			type : "get"
+			, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}"
+			, dataType : "json"
 		
-		// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
-		document.getElementById("btnViewWrite").addEventListener("click", function() {
-			location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
-		});
-		
-		// ajax를 이용해 댓글을 불러오는 작업
-		function getViewList(){
-			$.ajax({
-				type : "get"
-				, url : "${pageContext.request.contextPath}/toDetailViewProc.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}"
-				, dataType : "json"
+		}).done(function(data){
+			console.log(data);
 			
-			}).done(function(data){
-				console.log(data);
-				
-				$(".reviewBox").empty();
-				
-				for(let dto of data){
-					let review = "<div class='row'>" 
-								+ "<div class='col-2 show_nick'>"
-								+ dto.user_id
-								+ "</div>"
-								+ "<div class='col-10'>"
-								+ "<div>"
-								+ dto.reivew_date 
-								+ "</div>"
-								+ "<div class='reviewDiv-cmt'>"
-								+"<textarea style='border:none' readonly>"
-								+ dto.review_content
-								+ "</textarea>"
-								+ "</div>"
-								+ "</div>"
-								+ "</div>";
-								
-								$(".reviewBox").append(review);
-								//수정 삭제 버튼 영역
-								if("${loginSession.get('id')}" == dto.user_id){ // 작성자와 로그인 아이디가 같을 경우에만 수정삭제 버튼 추가 
-					          		let btns = "<div class='col-1 d-flex justify-content-center'>"
-					          		 + "<button type='button' class='btn btn-modifyCmt' value='" + dto.seq_view +"'>수정</button>"
-					          		 + "</div>"
-					          		 + "<div class='col-1 d-flex justify-content-center'>"
-					          		 + "<button type='button' class='btn btn-deleteCmt' value='" + dto.seq_view + "'>삭제</button>"
-					          		 + "</div>";
-					          		 // 가장 최신에 만들어진 댓글 영역 옆에 버튼 추가
-					          		$(".contentDiv-cmt:last").after(btns);
-								}
-				}
-			}).fail(function(e){
-				console.log(e);
-			});
+			$(".reviewBox").empty();
+			
+			for(let dto of data){
+				console.log(dto.reivew)
+				let review = "<div class='row m-1'>"
+					 + "<div class='col-12 d-flex justify-content-start cmt-info'>"
+					 +  dto.user_name
+					 + "</div>"
+		             + "<div class='col-12 d-flex justify-content-start cmt-info'>"
+		             + dto.review_date
+		             + "</div>"
+		             + "<div class='col-10 d-flex justify-content-start reviewDiv-cmt'>"
+		             + "<textarea class='form-control' class='content-cmt' name='view_comment' readonly>"
+		             + dto.review_content
+		             + "</textarea>"
+		             + "</div>"
+		             + "</div>"
+		             // 댓글 동적 요소 추가
+		             $(".reviewBox").append(review);
+		             
+		          	// 수정 삭제 버튼 영역	
+		          	if("${loginSession.get('id')}" == dto.user_id){ // 작성자와 로그인 아이디가 같을 경우에만 수정삭제 버튼 추가 
+		          		let btns = "<div class='col-1 d-flex justify-content-center'>"
+		          		 + "<button type='button' class='btn btn-modifyCmt' id='btnModify' value='" + dto.seq_view +"'>수정</button>"
+		          		 + "</div>"
+		          		 + "<div class='col-1 d-flex justify-content-center'>"
+		          		 + "<button type='button' class='btn btn-deleteCmt' id='btnDelete' value='" + dto.seq_view + "'>삭제</button>"
+		          		 + "</div>";
+		          		 // 가장 최신에 만들어진 댓글 영역 옆에 버튼 추가
+		          		$(".reviewDiv-cmt:last").after(btns);
+		          	}
+
+							
+			}
+			
+		
+		}).fail(function(e){
+			console.log(e);
+		});
 		}
+	
+	document.addEventListener('click',function(e){
+        if(e.target.id == 'btnModify'){
+      	   let seq_view = e.target.value;
+      	   console.log(seq_view);
+      	  location.href="/toDetailViewModify.vi?seq_view=" + seq_view;
+         }
+        });
+	 
+	 document.addEventListener('click',function(e){
+        if(e.target.id == 'btnDelete'){
+      	  let seq_view = e.target.value;
+      	  if(confirm("정말로 삭제하시겠습니까?")) {
+       		 $.ajax({
+       			 url: "/toDetailViewDelete.vi?seq_view="+ seq_view +"&seq_rest=${restMap.get('restDto').getSeq_rest()}",
+       			 type: "get"
+       		 }).done(function(data){
+       			 if(data == "success") {
+       				 alert("리뷰가 삭제되었습니다.");
+       			 } else if(data == "fail") {
+       				 alert("리뷰 삭제에 실패하였습니다.");
+       			 }
+       		 }).fail(function(e){
+       			 console.log(e);
+       		 })
+       	 }
+			
+         }
+        });
 		
 		// 로고 클릭 시
         $("#logo").on("click", function(){
