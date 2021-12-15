@@ -768,7 +768,8 @@ a:link {
         
         //
         $("#managerBtn").on("click", function(){
-        	location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
+        	location.href = "${pageContext.request.contextPath}/manager/managerMainpage.jsp?currentPage=1";
+        	//location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         
     </script>

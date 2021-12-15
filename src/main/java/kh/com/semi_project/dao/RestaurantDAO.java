@@ -242,4 +242,20 @@ public class RestaurantDAO {
 			return list;
 		}
 	}
+	
+	// 검색한 결과 수 뿌려주기
+	public int getSearchCount(String searchWord) throws Exception {
+		String sql = "SELECT COUNT(*) FROM tbl_rest WHERE rest_name LIKE ? OR rest_address LIKE ? OR bname LIKE ?";
+		
+		try(Connection con = this.getConnection();
+				PreparedStatement pstmt = con.prepareStatement(sql);) {
+			pstmt.setString(1, "%" + searchWord + "%");
+			pstmt.setString(2, "%" + searchWord + "%");
+			pstmt.setString(3, "%" + searchWord + "%");
+			
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) return rs.getInt(1);
+		}
+		return -1;
+	}
 }
