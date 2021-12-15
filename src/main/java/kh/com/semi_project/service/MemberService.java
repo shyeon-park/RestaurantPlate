@@ -12,7 +12,7 @@ private MemberDAO dao = new MemberDAO();
 	//하나의 데이터 페이지에 보여질 데이터 수 
 	private int recordCntPerPage = 10;
 	//네비게이션 범위를 얼마로 잡아줄지
-	private int naviCntPerPage = 10;
+	private int naviCntPerPage = 5;
 	
 	
 	public HashMap<String, Object> getPageNavi(int currentPage){
