@@ -772,9 +772,16 @@ textarea {
        			 if(data == "success") {
        				 alert("리뷰가 삭제되었습니다.");
 <<<<<<< HEAD
+<<<<<<< HEAD
+       				getViewList();
+=======
+       				 getViewList();
+>>>>>>> e4c648718d9b354daf23b398a978968dcc5aa64a
+=======
 =======
        				 getViewList();
 >>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
+>>>>>>> 6883f0474f20ae695b93bebb41cd57ea55880769
        			 } else if(data == "fail") {
        				 alert("리뷰 삭제에 실패하였습니다.");
        			 }

@@ -117,7 +117,7 @@ a {
             location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         document.getElementById("review").addEventListener("click",function(){
-            //location.href = ""
+            location.href = "${pageContext.request.contextPath}/View/managerVIew.jsp";
         })
   		*/
 			$.ajax({
@@ -183,6 +183,10 @@ a {
             });
 
     </script>
+<<<<<<< HEAD
+    
+=======
 
+>>>>>>> 6883f0474f20ae695b93bebb41cd57ea55880769
 </body>
 </html>
