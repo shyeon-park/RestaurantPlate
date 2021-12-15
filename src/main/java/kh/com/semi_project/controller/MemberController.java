@@ -420,7 +420,7 @@ public class MemberController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/getMemberList.mem")) {
+		} else if (cmd.equals("/toMemberManagement.mem")) {
 			System.out.println("요청도착");
 			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			System.out.println("currentPage : " + currentPage);
@@ -433,10 +433,11 @@ public class MemberController extends HttpServlet {
 				Gson gson = new Gson();
 				String rs = gson.toJson(naviMap);
 				response.getWriter().write(rs);
-			}else {
-				response.getWriter().write("fail");
-			}
-		} else if (cmd.equals("/checkBoxDelMem.mem")) {
+			}else response.getWriter().write("fail");
+				
+
+			
+		}else if (cmd.equals("/checkBoxDelMem.mem")) {
 			System.out.println("요청도착");
 			int rs2;
 			try {
@@ -466,6 +467,6 @@ public class MemberController extends HttpServlet {
 			}
 
 		}
-
+	
 	}
 }

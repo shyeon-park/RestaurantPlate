@@ -41,9 +41,12 @@
     .btnCLs{
         text-align: right;
     }
-    textarea{
-        text-overflow: initial;
-    }
+    textarea {
+	width: 100%;
+	height: 6.25em;
+	resize: none;
+	text-overflow: initial;
+}
 </style>
 </head>
 <body>
@@ -60,9 +63,12 @@
 			</div>
 
 			<div class="row">
+<<<<<<< HEAD
 				<div class="col">
 					<input type="file" class="custom-file-input" id="fileUpload" multiple>		
 				</div>
+=======
+>>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 				<input type="text" name="rest_name" value="${rest_name}" hidden>
 			</div>
             <div class="btnCLs">

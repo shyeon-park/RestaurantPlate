@@ -145,7 +145,8 @@ public class ReviewController extends HttpServlet {
 				int rs = dao.modify(seq_view,review_content);
 				
 				if(rs != -1) {
-					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re");
+					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re?seq_rest="+seq_rest);
+
 					request.setAttribute("seq_rest",seq_rest);
 					rd.forward(request, response);
 				}

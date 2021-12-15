@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -143,6 +144,12 @@ public class RestaurantController extends HttpServlet {
 		} else if (cmd.equals("/toRestDetailView.re")) { // 사용자에게 맛집상세정보 뿌려주기
 			System.out.println("요청도착");
 
+			Random random = new Random();
+			int rd = random.nextInt(8) + 1;
+			System.out.println(rd);
+			String rdFile = rd + ".png";
+			System.out.println(rdFile);
+
 			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
 			HttpSession session = request.getSession();
 			System.out.println(session.getAttribute("loginSession"));
@@ -163,6 +170,7 @@ public class RestaurantController extends HttpServlet {
 					if (dto != null) {
 						restMap.put("restDto", dto);
 						restMap.put("rmDto", rmDto);
+						restMap.put("rdFile", rdFile);
 						System.out.println(restMap);
 						request.setAttribute("restMap", restMap);
 						request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request,
@@ -185,6 +193,7 @@ public class RestaurantController extends HttpServlet {
 
 					if (dto != null) {
 						restMap.put("restDto", dto);
+						restMap.put("rdFile", rdFile);
 						request.setAttribute("restMap", restMap);
 						request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request,
 								response);
@@ -349,16 +358,19 @@ public class RestaurantController extends HttpServlet {
 			String searchWord = request.getParameter("searchWord");
 
 			if (searchWord.equals("")) {
+				int searchCount = 0;
+				request.setAttribute("searchCount", searchCount);
 				request.setAttribute("searchWord", " ");
 				request.getRequestDispatcher("/RestaurantList/searchRestView.jsp").forward(request, response);
 			} else {
-
 				try {
 					ArrayList<RestaurantJoinFileDTO> joinDto = dao.getSearchResult(searchWord);
+					int searchCount = dao.getSearchCount(searchWord);
 					System.out.println(joinDto);
 
-					if (joinDto != null) {
+					if (joinDto != null && searchCount != -1) {
 						request.setAttribute("dto", joinDto);
+						request.setAttribute("searchCount", searchCount);
 						request.setAttribute("searchWord", searchWord);
 						request.getRequestDispatcher("/RestaurantList/searchRestView.jsp").forward(request, response);
 					}

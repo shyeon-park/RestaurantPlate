@@ -121,7 +121,7 @@ a:link {
 .headDiv>div {
 	padding: 0;
 	position: relative;
-	height: 400px;
+	height: 350px;
 }
 
 .headDiv>div>p {
@@ -144,8 +144,15 @@ a:link {
 
 .restaurantBox {
 	width: 100%;
-	border: 1px solid lightgray;
-	margin-bottom: 30px;
+	/*border: 1px solid lightgray;*/
+	/*margin-bottom: 30px;*/
+	padding-top: 30px;
+	padding-bottom: 30px;
+	border-top: 2px solid lightgrey;
+}
+
+.restaurantBox:last-child {
+	border-bottom: 2px solid lightgrey;
 }
 
 .restaurantBox .row {
@@ -175,7 +182,10 @@ a:link {
 }
 
 .restaurantImgDiv {
-	padding: 8px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 0px;
+	padding-right: 8px;
 	height: 100%;
 }
 
@@ -185,7 +195,10 @@ a:link {
 }
 
 .restaurantTxtDiv {
-	padding: 8px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 8px;
+	padding-right: 0px;
 	height: 100%;
 }
 
