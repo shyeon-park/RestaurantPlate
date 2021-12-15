@@ -21,7 +21,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 
-<title>로그인페이지1</title>
+<title>로그인페이지</title>
 
 <style type="text/css">
 .container {
@@ -41,10 +41,6 @@ a {
 
 #btnHome {
 	cursor: pointer;
-	/* footer */ . footer { margin-top : 100px;
-	width: 100%;
-	/*height: 400px;*/
-	background-color: #333;
 }
 
 /* footer */
@@ -52,6 +48,7 @@ a {
 	width: 100%;
 	/*height: 400px;*/
 	background-color: #333;
+	margin-top: 100px;
 }
 
 .footerData {
@@ -172,6 +169,7 @@ a {
 					</div>
 				</div>
 			</div>
+			
 			<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 			<!-- 카카오 로그인 sdk 등록-->
 			<script type="text/javascript">
