@@ -269,6 +269,13 @@ a:link {
 	text-decoration: none;
 	cursor: pointer;
 }
+
+textarea {
+	width: 100%;
+	height: 6.25em;
+	border: none;
+	resize: none;
+}
 </style>
 </head>
 

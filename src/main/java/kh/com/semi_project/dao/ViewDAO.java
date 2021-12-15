@@ -198,6 +198,7 @@ public ViewDTO selectBySeq_view(int seq_view) throws Exception {
 		
 		ViewDTO dto = new ViewDTO();
 		if(rs.next()) {
+			dto.setRest_name(rs.getString("rest_name"));
 			dto.setUser_id(rs.getString("user_id"));
 			dto.setReview_content(rs.getString("review_content"));
 			dto.setReview_date(rs.getDate("review_date"));

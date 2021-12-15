@@ -16,32 +16,36 @@
 <title>Insert title here</title>
 
 <style>
-    *{
-        box-sizing: border-box;
-    }
-	.container{
-		position: relative;
-        width:800px;
-		height:350px;
-		
-		margin: auto;
-        top: 50px;
+* {
+	box-sizing: border-box;
+}
 
-	}
-    .container>div{
-        margin-bottom: 15px;
-    }
-    .title{
-        color: rgb(255, 136, 0);
-    }
-	#viewText{
-		width : 100%;
-		height: 200px;
-	}
-    .btnCLs{
-        text-align: right;
-    }
-    textarea {
+.container {
+	position: relative;
+	width: 800px;
+	height: 350px;
+	margin: auto;
+	top: 50px;
+}
+
+.container>div {
+	margin-bottom: 15px;
+}
+
+.title {
+	color: rgb(255, 136, 0);
+}
+
+#viewText {
+	width: 100%;
+	height: 200px;
+}
+
+.btnCLs {
+	text-align: right;
+}
+
+textarea {
 	width: 100%;
 	height: 6.25em;
 	resize: none;
@@ -50,34 +54,36 @@
 </style>
 </head>
 <body>
-	<form action="${pageContext.request.contextPath}/viewWriteProc.vi?seq_rest=${seq_rest}"
+	<form action="${pageContext.request.contextPath}/viewModifyProc.vi"
+		;
 		id="viewForm" method="post">
 		<div class="container">
 			<div class="row">
-			<div class="col title">
-				<h2>${rest_name}</h2>
-			</div>
+				<div class="col title">
+					<h2>${dto.getRest_name()}</h2>
+				</div>
 			</div>
 			<div class="row">
-				<textarea type="text" id="viewText" placeholder="솔직한 리뷰를 써주세요." name="review_content"></textarea>
+				<textarea type="text" id="viewText" name="review_content"
+					value="${dto.getReview_content()}">${dto.getReview_content()}</textarea>
 			</div>
 
-			<div class="row">
-				<input type="text" name="rest_name" value="${rest_name}" hidden>
+			<div class="btnCLs">
+				<button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
+				<button type="button" class="btn btn-secondary" id="btnModify">수정</button>
 			</div>
-            <div class="btnCLs">
-                <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>
-                <button type="button" class="btn btn-secondary"id="btnSuccess">등록</button>
-            </div>
+			<input type="text" name="seq_rest" value="${dto.getSeq_rest()}"
+				hidden> <input type="text" name="seq_view"
+				value="${dto.getSeq_view()}" hidden>
 		</div>
 	</form>
 	<script>
 		document.getElementById("btnCancel").addEventListener("click",
 				function() {
-					return;
+					location.href="/toRestDetailView.re?seq_rest=${dto.getSeq_rest()}";
 				});
 
-		document.getElementById("btnSuccess").onclick = function() {
+		document.getElementById("btnModify").onclick = function() {
 					if (document.getElementById("viewText").value == "") {
 						alert("내용을 입력하세요.");
 						return;
