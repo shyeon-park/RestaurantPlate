@@ -746,8 +746,7 @@ th:first-child {
 			$("#telNum3").val("");
 			$("#openTime").val("");
 			$("#closeTime").val("");
-			$("#inlineCheckbox1").val("");
-			$("#inlineCheckbox2").val("");
+			$("input:checkbox[name='parkingPossible']").attr("checked", false);
 			$("#restFile").val("");
 			$("#modalAddRest").modal("show");
 		})
@@ -812,6 +811,7 @@ th:first-child {
 			$("#telNum3").val("");
 			$("#openTime").val("");
 			$("#closeTime").val("");
+			$("input:checkbox[name='parkingPossible']").attr("checked", false);
 			$("#restFile").val("");
 			$("#hiddenSeqBox").val("");
 			$("#modalAddRest").modal("hide");

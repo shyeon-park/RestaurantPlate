@@ -91,6 +91,7 @@ a{
 					<div class="col-12" id="review">리뷰관리</div>
 				</div>
 			</div>
+			
 			<div class="col-9 content">
 				<table class="table table-hover">
 					<thead>
@@ -147,7 +148,7 @@ a{
             //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
         })
         document.getElementById("list").addEventListener("click",function(){
-            //location.href = ""
+            location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         document.getElementById("review").addEventListener("click",function(){
             location.href = "/View/managerRevIew.vi";
@@ -156,7 +157,7 @@ a{
         function getCommentList(currentPage){			
 			$.ajax({
 				type : "get"
-				, url : "${pageContext.request.contextPath}/getMemberList.mem?currentPage="+currentPage
+				, url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
 				, dataType : "json"
 			}).done(function(data){
 				// 기존에 댓글이 있다면 모두 비워주는 작업 
@@ -222,6 +223,9 @@ a{
         	   }
         	
             });
+        
+
+
 
     </script>
 </body>

@@ -427,7 +427,7 @@ public class MemberController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (cmd.equals("/getMemberList.mem")) {
+		} else if (cmd.equals("/toMemberManagement.mem")) {
 			System.out.println("요청도착");
 			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
 			System.out.println("currentPage : " + currentPage);
@@ -439,11 +439,9 @@ public class MemberController extends HttpServlet {
 			if (list != null) {
 				Gson gson = new Gson();
 				String rs = gson.toJson(naviMap);
-				if (list != null) {
-					response.getWriter().write(rs);
-				} else {
-					response.getWriter().write("fail");
-				}
+				response.getWriter().write(rs);
+			} else {
+				response.getWriter().write("fail");
 //				RequestDispatcher rd = request.getRequestDispatcher("/board/board.jsp");
 //				request.setAttribute("list", list);
 //				request.setAttribute("naviMap", naviMap);

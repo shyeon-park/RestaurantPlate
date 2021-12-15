@@ -44,6 +44,7 @@
 html {
 	width: 100%;
 	height: 100%;
+	overflow-x: hidden;
 }
 
 body {
@@ -118,13 +119,13 @@ a:link {
 
 .headDiv {
 	width: 100%;
-	background-color: #f1f7e7;
+	/*background-color: #f1f7e7;*/
 	margin: 0;
 }
 
 .headDiv>div {
 	padding: 0;
-	height: 300px;
+	height: 350px;
 	position: relative;
 }
 
@@ -146,15 +147,22 @@ a:link {
 .restDetailBox {
 	width: 80%;
 	margin: auto;
-	border: 1px solid lightgray;
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
 }
 
 .mapDiv {
-	padding: 12px;
+	padding-left: 0px;
+	padding-right: 12px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 }
 
 .restInfoBox {
-	padding: 12px;
+    padding-right: 0px;
+	padding-left: 12px;
+	padding-top: 30px;
+	padding-bottom: 30px;
 }
 
 .restCls {
@@ -194,11 +202,55 @@ a:link {
 	font-weight: bold;
 }
 
+#btnViewWrite {
+	border-radius: 50%;
+	height: 50px;
+	width: 50px;
+	background-color: white;
+	padding: 0;
+}
+
+#reviewTxt {
+	margin: 0;
+	font-weight: bold;
+}
+
+/* 리뷰 */
+.reviewContainer {
+	width: 80%;
+	margin: auto;
+	margin-top: 30px;
+}
+
+.reviewTitle > span{
+	color: red;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.reviewBox {
+	margin-bottom: 50px;
+}
+
+.reviewBox > .m-1 > div {
+	padding: 0;
+}
+
+.m-1 {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.m-1:hover {
+	cursor: pointer;
+}
+
 /* footer */
 .footer {
 	width: 100%;
 	/*height: 400px;*/
 	background-color: #333;
+	margin-top: 100px;
 }
 
 .footerData {
@@ -263,6 +315,7 @@ a:link {
 #modal-body {
 	height: 300px
 }
+
 
 /*로그아웃*/
 #logoutBtn {
@@ -378,7 +431,7 @@ textarea {
 		<div class="headerContainer">
 			<div class="row headDiv">
 				<div class="col-12">
-					<p>맛집이름</p>
+					<img src="${pageContext.request.contextPath}/img/random/${restMap.get('rdFile')}" style="width: 100%; height: 100%;">
 				</div>
 			</div>
 		</div>
@@ -431,7 +484,7 @@ textarea {
 				<div class="col-7 restInfoBox">
 					<div class="row restCls">
 						<div class="col-10">
-							<p style="font-size: 30px;">${restMap.get('restDto').getRest_name()}</p>
+							<p style="font-size: 30px; font-weight: bold;">${restMap.get('restDto').getRest_name()}</p>
 						</div>
 						<div class="col-2 d-none d-lg-block titleMark" style="padding: 0;">
 							<div
@@ -523,30 +576,51 @@ textarea {
 						<div class="col-2">
 							<p>주차여부</p>
 						</div>
-						<div class="col-10">
+						<div class="col-8">
 							<p>${restMap.get('restDto').getParking_possible()}</p>
 						</div>
+						<c:choose>
+							<c:when test="${empty loginSession}">
+								<div class="col-2" style="text-align: center;">
+									<button type="button" id="btnViewWrite" disabled>
+										<i class="fas fa-pen fa-2x" id="markIcon2"></i>
+									</button>
+									<p id="reviewTxt" style="text-align: center;">리뷰쓰기</p>
+								</div>
+								<script>
+								$(function(){
+									$("#btnViewWrite").css("border", "3px solid gray");
+									$("#reviewTxt").css("color", "gray");
+								})
+						
+								</script>
+							</c:when>
+							<c:otherwise>
+								<div class="col-2" style="text-align: center;">
+									<button type="button" id="btnViewWrite">
+										<i class="fas fa-pen fa-2x" id="markIcon2"></i>
+									</button>
+									<p id="reviewTxt" style="text-align: center;">리뷰쓰기</p>
+								</div>
+								<script>
+									$(function(){
+										$("#btnViewWrite").css("border", "3px solid #333");
+										$("#reviewTxt").css("color", "#333");
+									})
+							</script>
+							</c:otherwise>
+						</c:choose>
 					</div>
+					
 
 				</div>
 			</div>
 
 			<div class="reviewContainer">
-				<c:choose>
-					<c:when test="${empty loginSession}">
-						<div class="row">
-							<input type="button" id="btnViewWrite" disabled value="리뷰쓰기">
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="row">
-							<input type="button" id="btnViewWrite" value="리뷰쓰기">
-						</div>
-					</c:otherwise>
-				</c:choose>
-
+				<div class="reviewTitle">
+					<span>리뷰</span>
+				</div>
 				<div class="reviewBox"></div>
-
 			</div>
 		</div>
 
@@ -592,6 +666,10 @@ textarea {
 		getViewList();
 	});
 	
+	$(document).on("hover", ".m-1", function(){
+		$("#contentRv").css("backgroundColor", "lightgrey");
+	})
+	
 	// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
 	document.getElementById("btnViewWrite").addEventListener("click", function() {
 		location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
@@ -611,7 +689,7 @@ textarea {
 			
 			for(let dto of data){
 				console.log(dto.reivew)
-				let review = "<div class='row m-1'>"
+				let review = "<div class='row m-1' style='border-bottom: 2px solid lightgray; padding-top: 30px; padding-bottom: 30px;'>"
 					 + "<div class='col-12 d-flex justify-content-start cmt-info'>"
 					 +  dto.user_name
 					 + "</div>"
@@ -619,7 +697,7 @@ textarea {
 		             + dto.review_date
 		             + "</div>"
 		             + "<div class='col-10 d-flex justify-content-start reviewDiv-cmt'>"
-		             + "<textarea class='form-control' class='content-cmt' name='view_comment' readonly>"
+		             + "<textarea id='contentRv' class='form-control' class='content-cmt' name='view_comment' readonly style='background-color: white; border: none;'>"
 		             + dto.review_content
 		             + "</textarea>"
 		             + "</div>"
@@ -666,7 +744,11 @@ textarea {
        		 }).done(function(data){
        			 if(data == "success") {
        				 alert("리뷰가 삭제되었습니다.");
+<<<<<<< HEAD
        				getViewList();
+=======
+       				 getViewList();
+>>>>>>> e4c648718d9b354daf23b398a978968dcc5aa64a
        			 } else if(data == "fail") {
        				 alert("리뷰 삭제에 실패하였습니다.");
        			 }

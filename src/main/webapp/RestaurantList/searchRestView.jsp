@@ -178,8 +178,8 @@ a:link {
 } */
 
 .result > .row {
-	padding-bottom: 24px;
-	border-bottom: 1px solid lightgray;
+	padding-bottom: 40px;
+	border-bottom: 2px solid lightgray;
 }
 
 .card {
@@ -324,15 +324,15 @@ a:link {
 		<div class="section">
 			<div class="row">
 				<div class="col-12 resultTxt">
-					<span>'${searchWord}'에 대한 검색결과</span>
+					<span>'${searchWord}'에 대한 검색결과(${searchCount})</span>
 				</div>
 			</div>
 			<c:choose>
 				<c:when test="${! empty dto}">
 					<div class="result">
-						<div class="row" style="padding-left: 16px; padding-right: 16px;">
+						<div class="row" style="padding-left: 0px; padding-right: 0px;">
 							<c:forEach items="${dto}" var="rsDto">
-								<div class="col-6 col-md-3 d-flex justify-content-center">
+								<div class="col-6 col-md-3 d-flex justify-content-center searchRestBox">
         			 				<div class="card restCard" style="width: 18rem;">
   										<img src="/restFiles/${rsDto.getSystem_name()}" class="card-img-top" alt="${rsDto.getRest_name()}" style="width: 100%; height: 250px;">
   										<div class="card-body">

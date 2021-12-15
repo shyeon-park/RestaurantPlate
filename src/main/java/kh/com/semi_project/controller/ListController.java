@@ -21,6 +21,8 @@ import kh.com.semi_project.dao.ListFileDAO;
 import kh.com.semi_project.dto.ListDTO;
 import kh.com.semi_project.dto.ListFileDTO;
 import kh.com.semi_project.dto.ListJoinFileDTO;
+import kh.com.semi_project.dto.MemberDTO;
+import kh.com.semi_project.service.MemberService;
 import kh.com.semi_project.service.Service;
 
 @WebServlet("*.li")
@@ -87,32 +89,43 @@ public class ListController extends HttpServlet {
 			}
 		} else if (cmd.equals("/getListProc.li")) { // 넘어온 페이지에 속해있는 리스트 목록 불러오기
 			System.out.println("요청도착");
+			
+			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+			System.out.println("currentPage : " + currentPage);
+			Service service = new Service();
+			HashMap<String, Object> naviMap = service.getListPageNavi(currentPage);
+			ArrayList<ListDTO> list = service.getRestaurantList((int) naviMap.get("currentPage"));
+			naviMap.put("list", list);
 
-			try {
-				int currentPage = Integer.parseInt(request.getParameter("currentPage"));
-				Service service = new Service();
-				HashMap<String, Object> naviMap = service.getListPageNavi(currentPage);
-				ArrayList<ListDTO> list = service.getRestaurantList((int) naviMap.get("currentPage"));
-				
-			  //ArrayList<ListDTO> list = dao.selectAll();
+			if (list != null) {
 				Gson gson = new Gson();
-//				String listGroup = gson.toJson(list);
-				HashMap<String, Object> listMap = new HashMap<>();
-				listMap.put("list", list);
-				listMap.put("currentPage", currentPage);
-				
-				String groups = gson.toJson(listMap);
-
-				if (list != null) {
-//					response.getWriter().write(listGroup);
-					response.getWriter().write(groups);
-				} else {
-					response.getWriter().write("fail");
-				}
-			} catch (Exception e) {
-				response.sendRedirect("/Error/error.jsp");
-				e.printStackTrace();
+				String rs = gson.toJson(naviMap);
+				response.getWriter().write(rs);
+			} else {
+				response.getWriter().write("fail");
 			}
+//			try {
+//				int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+//				Service service = new Service();
+//				HashMap<String, Object> naviMap = service.getListPageNavi(currentPage);
+//				ArrayList<ListDTO> list = service.getRestaurantList((int) naviMap.get("currentPage"));
+//				
+//				Gson gson = new Gson();
+//				HashMap<String, Object> listMap = new HashMap<>();
+//				listMap.put("list", list);
+//				listMap.put("currentPage", currentPage);
+//				
+//				String groups = gson.toJson(listMap);
+//
+//				if (list != null) {
+//					response.getWriter().write(groups);
+//				} else {
+//					response.getWriter().write("fail");
+//				}
+//			} catch (Exception e) {
+//				response.sendRedirect("/Error/error.jsp");
+//				e.printStackTrace();
+//			}
 		} else if (cmd.equals("/getAllListInfo.li")) { // 리스트 번호로 해당 리스트 정보불러와 json형태로 뿌려주기
 			System.out.println("요청도착");
 
@@ -228,6 +241,7 @@ public class ListController extends HttpServlet {
 					String origin_name = multi.getOriginalFileName("listImg");
 					String system_name = multi.getFilesystemName("listImg");
 					int rsFile = daoFile.modifyFile(new ListFileDTO(0, seq_list, origin_name, system_name));
+					
 
 					if (rs == 1 && rsFile == 1) {
 						response.getWriter().write("success");
