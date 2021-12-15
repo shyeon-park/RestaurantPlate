@@ -63,7 +63,7 @@
 				<div class="col">
 					<input type="file" class="custom-file-input" id="fileUpload" multiple>		
 				</div>
-
+				<input type="text" name="rest_name" value="${rest_name}" hidden>
 			</div>
             <div class="btnCLs">
                 <button type="button" class="btn btn-secondary" id="btnCancel">취소</button>

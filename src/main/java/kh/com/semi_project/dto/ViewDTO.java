@@ -3,22 +3,35 @@ package kh.com.semi_project.dto;
 import java.sql.Date;
 
 public class ViewDTO {
-	
+
 	private int seq_view;
 	private int seq_rest;
+	private String rest_name;
+	private String user_name;
 	private String user_id;
 	private String review_content;
 	private Date review_date;
 	
 	public ViewDTO() {}
 
-	public ViewDTO(int seq_view,int seq_rest, String user_id, String review_content, Date review_date) {
+	public ViewDTO(int seq_view, int seq_rest, String rest_name, String user_name, String user_id,
+			String review_content, Date review_date) {
 		super();
 		this.seq_view = seq_view;
 		this.seq_rest = seq_rest;
+		this.rest_name = rest_name;
+		this.user_name = user_name;
 		this.user_id = user_id;
 		this.review_content = review_content;
 		this.review_date = review_date;
+	}
+
+	public int getSeq_view() {
+		return seq_view;
+	}
+
+	public void setSeq_view(int seq_view) {
+		this.seq_view = seq_view;
 	}
 
 	public int getSeq_rest() {
@@ -29,12 +42,20 @@ public class ViewDTO {
 		this.seq_rest = seq_rest;
 	}
 
-	public int getseq_view() {
-		return seq_view;
+	public String getRest_name() {
+		return rest_name;
 	}
 
-	public void setseq_view(int seq_view) {
-		this.seq_view = seq_view;
+	public void setRest_name(String rest_name) {
+		this.rest_name = rest_name;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 
 	public String getUser_id() {
@@ -60,9 +81,5 @@ public class ViewDTO {
 	public void setReview_date(Date review_date) {
 		this.review_date = review_date;
 	}
-
-
-	
-	
 
 }

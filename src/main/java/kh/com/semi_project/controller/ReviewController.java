@@ -60,7 +60,7 @@ public class ReviewController extends HttpServlet {
 			
 			}catch(Exception e) {
 				e.printStackTrace();
-				response.sendRedirect("/Error/error.er");
+				response.sendRedirect("/Error/error.jsp");
 			}
 		}else if(cmd.equals("/viewWrite.vi")) {
 			System.out.println("요청 도착");
@@ -78,23 +78,26 @@ public class ReviewController extends HttpServlet {
 			System.out.println("요청 도착");
 			try {
 				int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+				String rest_name = request.getParameter("rest_name");
 				System.out.println(seq_rest);
 				
 				HashMap<String, String> loginSession = (HashMap)session.getAttribute("loginSession");
 			
 				String user_id = loginSession.get("id");
+				String user_name = loginSession.get("nickname");
+				System.out.println(user_name);
 				String review_content = request.getParameter("review_content");
 				System.out.println(review_content);
 		
 				
-				int rs = dao.insert(new ViewDTO(0,seq_rest,user_id,review_content,null));
+				int rs = dao.insert(new ViewDTO(0,seq_rest,rest_name,user_name,user_id,review_content,null));
 				
 				if(rs == 1) {
-					response.sendRedirect("/toRestDetailView.re");
+					response.sendRedirect("/toRestDetailView.re?seq_rest="+seq_rest);
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
-				response.sendRedirect("/Error/error.er");
+				response.sendRedirect("/Error/error.jsp");
 			}
 		}else if(cmd.equals("/toDetailViewProc.vi")) {
 			System.out.println("요청 도착");
@@ -105,18 +108,73 @@ public class ReviewController extends HttpServlet {
 			//list를 json으로 변환
 			Gson gson = new Gson();
 			String rs = gson.toJson(list);
-			
-			// 아래 writer와 같지만 단순히 변수만 만들어서 사용한 것
-//			PrintWriter out = response.getWriter();
-//			out.write("success");
+			System.out.println(rs);
 			
 			
 			if(list != null) {
-				//success 문자열을 반환
 				response.getWriter().write(rs);
 			}else {
-				//fail 문자열을 반환
+				response.getWriter().write("fail");
 			}
+		}else if(cmd.equals("/toDetailViewModify.vi")) {
+			System.out.println("요청 도착");
+			int seq_view = Integer.parseInt(request.getParameter("seq_view"));
+			System.out.println(seq_view);
+			try {
+				ViewDTO dto = dao.selectBySeq_view(seq_view);
+				
+				System.out.println(dto);
+				RequestDispatcher rd = request.getRequestDispatcher("/View/viewModify.jsp");
+				request.setAttribute("dto", dto);
+				rd.forward(request, response);
+			}catch(Exception e) {
+				e.printStackTrace();
+				response.sendRedirect("/Error/error.jsp");
+			}
+		}else if(cmd.equals("/viewModifyProc.vi")) {
+			System.out.println("요청 도착");
+			try {
+				int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+				int seq_view = Integer.parseInt(request.getParameter("seq_view"));
+				System.out.println(seq_view + seq_rest);
+			
+				String review_content = request.getParameter("review_content");
+				System.out.println(review_content);
+		
+				
+				int rs = dao.modify(seq_view,review_content);
+				
+				if(rs != -1) {
+					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re");
+					request.setAttribute("seq_rest",seq_rest);
+					rd.forward(request, response);
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				response.sendRedirect("/Error/error.jsp");
+			}
+		}else if(cmd.equals("/toDetailViewDelete.vi")) {
+			int seq_view = Integer.parseInt(request.getParameter("seq_view"));
+			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+			System.out.println(seq_view + " : " + seq_rest);
+			try {
+				// 리뷰 삭제
+				int rs = dao.delete(seq_view);
+				
+				if(rs != -1) {
+					response.getWriter().write("success");
+					System.out.println("파일이 삭제되었습니다.");
+				}else {
+					response.getWriter().write("fail");
+					System.out.println("파일이 존재하지 않습니다.");
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				response.sendRedirect("/Error/error.jsp");
+				
+			}
+			
+			
 		}
 
 	}
