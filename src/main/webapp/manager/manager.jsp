@@ -11,7 +11,6 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<link href="listManagement.css" rel="stylesheet" type="text/css">
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <link rel="stylesheet"
@@ -562,9 +561,14 @@ body {
 	}
 	</script>
 	<script>
+	checkBoxes = document.getElementsByName("num");	 // 체크박스name
+	let checkBoxArr = [] // 체크박스 arr
+	//let startNavi = "";
+	//let endNavi = "";
 	
 	// 로드될 시
 	$(document).ready(function(){
+		getCommentList(1)
 		// 체크박스 하나만 선택 가능
 		$(".form-check-input").click(function() {
 			if ($(this).prop('checked')) {
@@ -574,27 +578,127 @@ body {
 		});
 	})
 	
-	let startNavi = "";
-	let endNavi = "";
 	
 	
 	document.getElementById("member").addEventListener("click",function(){
     	getCommentList(1);
-        //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
     })
     document.getElementById("list").addEventListener("click",function(){
     	getListByCurrentPage(1);
     })
     document.getElementById("review").addEventListener("click",function(){
-        //location.href = ""
+
     })
     
+    /* 회원관리 ajax 영역 */
+       function getCommentList(currentPage){			
+			$.ajax({
+				type : "get"
+				, url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
+				, dataType : "json"
+			}).done(function(data){
+				// 기존에 댓글이 있다면 모두 비워주는 작업 
+				$("thead").empty();
+				$("tbody").empty();
+				$("tfooter").empty();
+				$(".btnCls").empty();
+				$(".naviTd").empty();
+				/* thead 영역 설정*/
+				let thead = "<tr>"
+							+"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
+							+"<th class='w-20'>번호</th>"
+							+"<th class='w-20'>아이디</th>"	
+						  	+"<th class='w-20'>닉네임</th>"
+							+"<th class='w-20'>가입일</th>"
+							+"</tr>";
+							
+						
+				console.log(data)
+				let startNevi = data.startNavi
+				let endNevi = data.endNavi
+				let list = ""
+				for(let dto of data.list){
+					list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
+				}	
+				 let str =""
+				 let str1 = ""
+				 let str2 = ""
+						
+						if(data.needPrev == true){
+							str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + startNavi + ")-1);'>Prev</a></li>";
+						}
+						for(let j = data.startNavi; j <= data.endNavi; j++){
+							str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(" + j + ");'>" + j + "</a></li>";
+						}
+						if(data.needNext == true){
+							str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + endNevi + ")+1);'>Next</a></li>";
+						}
+				
+				let nav = ""
+					nav = "<td colspan=5 class='naviTd>"
+						+"<nav class='col' aria-label='Page navigation example'>"
+						+"<ul class='pagination justify-content-center'>"
+					 	+str+str1+str2
+						+"</ul>"  
+						+"</nav>"  	
+						+"</td>";
+						
+				  $("thead").append(thead)		
+				  $("tbody").append(list);
+	              $("tbody").append(nav)
+	              startNevi = "";
+	              endNevi = "";
+			}).fail(function(e){
+				console.log(e);
+			});
+		}
+	
+	
+    document.addEventListener('click',function(e){
+ 	   //console.log(e.target.className)
+ 	   //console.log(e.target.innerHTML)
+ 	   if(e.target.className == "dd"){
+ 		   let currentPage=""
+ 		   if(e.target.id == "aa" && e.target.innerHTML == "Next") {
+ 			   getCommentList(Number(endNevi)+1)
+        		//currentPage= data.startNavi+1
+            	}
+            	if(e.target.id == "bb" && e.target.innerHTML == "Previous"){
+            		getCommentList(Number(startNevi)-1)
+            		//currentPage= data.startNavi-1
+            	}
+            	if(e.target.id == "cc" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+            		currentPage=e.target.innerHTML
+            		getCommentList(currentPage)
+            	}  
+ 	   }
+     });
+	
+	
+    document.addEventListener('click',function(e){
+ 	   //console.log(e.target.className)
+ 	   //console.log(e.target.innerHTML)
+ 	   if(e.target.className == "page-link"){
+ 		   let currentPage=""
+ 		   if(e.target.className == "page-link" && e.target.innerHTML == "Next") {
+ 			   getCommentList(Number(endNevi)+1)
+        		//currentPage= data.startNavi+1
+            	}
+            	if(e.target.className == "page-link" && e.target.innerHTML == "Previous"){
+            		getCommentList(Number(startNevi)-1)
+            		//currentPage= data.startNavi-1
+            	}
+            	if(e.target.className == "page-link" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+            		currentPage=e.target.innerHTML
+            		getCommentList(currentPage)
+            	}  
+ 	   }
+     });
     
     
 	// 리스트 관리 스크립트 영역
 	// 해당 currentPage에 속하는 리스트 목록을 불러오는 작업
 	function getListByCurrentPage(e) {
-		
 		$.ajax({
 	        url: "${pageContex.request.contextPath}/getListProc.li?currentPage=" + e,
 	        type: "get",
@@ -605,9 +709,11 @@ body {
 	        	$("#table_head").empty();
 	        	$("#table_body").empty();
 	        	$(".btnCls").empty();
+	        	$(".naviTd").empty();
 	        	
-	        	startNavi = data.startNavi;
-				endNavi = data.endNavi;
+	        	let startNavi = data.startNavi;
+				let endNavi = data.endNavi;
+				
 
 				let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
 				$(".headDiv").append(head);
@@ -632,18 +738,19 @@ body {
 				let str2 = "";
 				let str3 = "";
 				
+				
+		
+				
 				if(data.needPrev == true){
 					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
 				}
-				
-				Number(endNavi)+1
 				for(let j = data.startNavi; j <= data.endNavi; j++){
 					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
 				}
-				
 				if(data.needNext == true){
 					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
 				}
+				
 				let nav = "<td colspan='5' class='naviTd'>"
 							+"<nav class='col' aria-label='Page navigation example'>"
 							+"<ul class='pagination justify-content-center'>"
@@ -658,7 +765,11 @@ body {
 							+ "data-bs-target='#staticBackdrop' id='btnAddList'>리스트 추가하기</button></div>";
 	            
 				$(".btnCls").append(btnCls);
-	            
+				
+				
+				startNevi = "";
+	             endNevi = "";
+				
 	            //let hiddenCurrentBox = "<input type='text' id='hiddenCurrentPage' class='d-none' value='" + data.currentPage + "'>";
 	            //$(".hiddenPageBox").append(hiddenCurrentBox);
 	            
