@@ -398,7 +398,6 @@ a:link {
 </head>
 
 <body>
-
  <div id="modalMypage" class="searchModal">
         <div class="search-modal-content">
             <div id=slideContainer>
@@ -454,20 +453,44 @@ a:link {
 				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
 					id="logo">
 			</div>
-			<div class="d-none d-md-block col-md-7 menu"></div>
+			
 			<c:choose>
-				<c:when test="${!empty loginSession}">
-					<div class="col-3 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
-							리스트</a>
-					</div>
-					<div class="col-3 col-md-1 menu">
-						<a href="/view.vi?currentPage=1">전체 리뷰</a>
-					</div>
-					<div class="col-3 col-md-1 menu">
-						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-						   width="50px" height="50px" id="userPage" onclick=showModal()>
-					</div>
+				<c:when test="${!empty loginSession}">		
+					<c:choose>
+					      <c:when test="${loginSession.identification eq '1'}">
+					      <div class="d-none d-md-block col-md-6 menu"></div>
+					      		<div class="col-1 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">관리자페이지</a>
+								</div>
+								<div class="col-1 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+								</div>
+								<div class="col-1 col-md-1 menu">
+									<a href="/view.vi?currentPage=1">전체 리뷰</a>
+								</div>
+								<div class="col-1 col-md-1 menu">
+									<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+									   width="50px" height="50px" id="userPage" onclick=showModal()>
+								</div>
+					      </c:when> 
+					
+					      <c:otherwise> 
+					      
+								<!-- 사용자일때 -->
+							<div class="d-none d-md-block col-md-7 menu"></div>
+							<div class="col-3 col-md-1 menu"><a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+							</div>
+							<div class="col-3 col-md-1 menu">
+							<a href="/view.vi?currentPage=1">전체 리뷰</a>
+							</div>
+								<div class="col-3 col-md-1 menu">
+							<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+							   width="50px" height="50px" id="userPage" onclick=showModal()>
+								</div>
+					      </c:otherwise> 
+					
+					</c:choose> 
+				
 				</c:when>
 
 				<c:otherwise>

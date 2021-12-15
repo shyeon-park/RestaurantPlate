@@ -160,19 +160,12 @@ public class MemberController extends HttpServlet {
 					// 값 추가
 					loginMap.put("id", id);
 					loginMap.put("nickname", nickname);
-
+					loginMap.put("identification", String.valueOf(dto.getIdentification()));
+					session.setAttribute("loginSession", loginMap);
 					System.out.println(loginMap.get("id"));
 					System.out.println(loginMap.get("nickname"));
-
-					// 분기
-					int identification = dto.getIdentification();
-					if (identification == 1) {
-						session.setAttribute("loginSession", loginMap);
-						response.sendRedirect("/member/managerMainpage.jsp");
-					} else {
-						session.setAttribute("loginSession", loginMap);
 						response.sendRedirect("/");
-					}
+			
 
 				} else {
 					RequestDispatcher rd = request.getRequestDispatcher("/member/login.jsp");
@@ -439,15 +432,9 @@ public class MemberController extends HttpServlet {
 			if (list != null) {
 				Gson gson = new Gson();
 				String rs = gson.toJson(naviMap);
-				if (list != null) {
-					response.getWriter().write(rs);
-				} else {
-					response.getWriter().write("fail");
-				}
-//				RequestDispatcher rd = request.getRequestDispatcher("/board/board.jsp");
-//				request.setAttribute("list", list);
-//				request.setAttribute("naviMap", naviMap);
-//				rd.forward(request, response);
+				response.getWriter().write(rs);
+			}else {
+				response.getWriter().write("fail");
 			}
 		} else if (cmd.equals("/checkBoxDelMem.mem")) {
 			System.out.println("요청도착");
@@ -460,17 +447,17 @@ public class MemberController extends HttpServlet {
 					for (String id : checkBox) {
 						int rs = dao.deleteById(id);
 						if(rs != -1) {
-							out.println("<script>alert(\"성공적으로 삭제되었습니다.\"); location.href='/member/managerMainpage.jsp';</script>");
+							out.println("<script>alert(\"성공적으로 삭제되었습니다.\"); location.href='/manager/memberManagement.jsp';</script>");
 							out.flush();
 						}else {
-							out.println("<script>alert(\"삭제에 실패하였습니다 다시 시도해주세요.\"); location.href='/member/managerMainpage.jsp';</script>");
+							out.println("<script>alert(\"삭제에 실패하였습니다 다시 시도해주세요.\"); location.href='/manager/memberManagement.jsp';</script>");
 							out.flush();
 						}
 					}
 					
 				}else {
 					System.out.println("널값입니다.");
-					out.println("<script>alert(\"삭제할 회원을 선택해주세요.\"); location.href='/member/managerMainpage.jsp';</script>");
+					out.println("<script>alert(\"삭제할 회원을 선택해주세요.\"); location.href='/manger/memberManagement.jsp';</script>");
 					out.flush();
 				}
 

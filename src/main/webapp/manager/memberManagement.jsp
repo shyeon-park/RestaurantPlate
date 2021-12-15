@@ -1,15 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>맛집 리스트 관리</title>
-
+<title>회원 관리</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -28,14 +23,10 @@
 	width: 100%;
 }
 
-.nevi .content {
+.content {
 	border: 1px solid black;
 	height: 100%;
 	width: 100%;
-}
-
-.nevi {
-	background-color: #80808050;
 }
 
 .logo {
@@ -44,59 +35,35 @@
 	cursor: pointer;
 }
 
-.menubox {
-	height: 500px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: flex-end;
-	font-weight: bold;
-	font-size: 30px;
-}
-
-.menubox>.col-12:hover {
-	background-color: black;
-	color: white;
-	cursor: pointer;
-}
 
 table {
 	width: 100%;
 }
-a{
- text-decoration: none;
- color: black;
+.page-link{
+	cursor: pointer;
+}
+a {
+	text-decoration: none;
+	color: black;
 }
 </style>
 
 </head>
-
 <body>
-<form action ="${pageContext.request.contextPath}/checkBoxDelMem.mem" method = "post" id="btnSubmit">
-	<div class="container">
-		<div class="row">
-			<div class="col">
-				<H3>관리자 페이지입니다.</H3>
-			</div>
-		</div>
-		
-		<div class="row d-flex">
-			<div class="col-3 nevi">
-				<div class="logo">
-					<div class="col-12"><a href="${pageContext.request.contextPath}/home">맛집플레이트</a></div>
-				</div>
-				<div class="menubox">
-					<div class="col-12" id="member">회원관리</div>
-					<div class="col-12" id="list">맛집리스트</div>
-					<div class="col-12" id="review">리뷰관리</div>
+<form action="${pageContext.request.contextPath}/checkBoxDelMem.mem"
+		method="post" id="btnSubmit">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<H3>회원관리</H3>
 				</div>
 			</div>
-			<div class="col-9 content">
+			<div class="col-12 content">
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="w-20"><input type='checkbox' id='cbx_chkAll' name='numAll' value=''>
-								전체선택</th>
+							<th class="w-20"><input type='checkbox' id='cbx_chkAll'
+								name='numAll' value=''> 전체선택</th>
 							<th class="w-20">번호</th>
 							<th class="w-20">아이디</th>
 							<th class="w-20">닉네임</th>
@@ -104,23 +71,21 @@ a{
 						</tr>
 					</thead>
 					<tbody>
-					
+
 					</tbody>
 				</table>
 				<div class="d-flex justify-content-end">
-				<button type="button" class="btn btn-secondary" id="delMem">회원삭제</button>
+					<button type="button" class="btn btn-secondary me-5 mb-5" id="delMem">회원삭제</button>
 				</div>
-				
+
 			</div>
 		</div>
-	</div>
-  </form>  
+	</form>
 	<script>
 	checkBoxes = document.getElementsByName("num");	 
 	let checkBoxArr = []
 	let startNevi;
 	let endNevi;
-	
 	$("#delMem").click(function(){
 		  for (var i = 0; i < checkBoxes.length; i++) {
                if (checkBoxes[i].checked) {
@@ -131,9 +96,9 @@ a{
 		  if(checkBoxArr == null) return; 
 		  $("#btnSubmit").submit();
 	})
+	
 	$(document).ready(function(){
 		getCommentList(1)
-		
 		//전체선택 전체해제
 		$("#cbx_chkAll").click(function() {
 			if($("#cbx_chkAll").is(":checked")) $("input[name=num]").prop("checked", true);
@@ -141,18 +106,6 @@ a{
 		});
 		
 	})
-	
-        document.getElementById("member").addEventListener("click",function(){
-        	getCommentList(1)
-            //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
-        })
-        document.getElementById("list").addEventListener("click",function(){
-            //location.href = ""
-        })
-        document.getElementById("review").addEventListener("click",function(){
-            //location.href = ""
-        })
-  
         function getCommentList(currentPage){			
 			$.ajax({
 				type : "get"
@@ -168,9 +121,7 @@ a{
 				for(let dto of data.list){
 					//console.log(dto.user_id)
 					list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
-		       		
 				}	
-				 
 				 let str =""
 				 let str1 = ""
 				 let str2 = ""
@@ -181,10 +132,9 @@ a{
 					str1 += "<li class='page-item'><div class='page-link' id= 'bb'>"+j+"</div></li>"
 				}
 				if(data.needNext == true){
-					str2 = "<li class='page-item'><button type ='button' class='page-link'>Next</div></li>"
+					str2 = "<li class='page-item'><div class='page-link'>Next</div></li>"
 				}
 				let nav = ""
-					
 					nav = "<td colspan=5>"
 						+"<nav class='col' aria-label='Page navigation example'>"
 						+"<ul class='pagination justify-content-center'>"
@@ -199,15 +149,13 @@ a{
 				console.log(e);
 			});
 		}
-        
-      
         document.addEventListener('click',function(e){
         	   //console.log(e.target.className)
         	   //console.log(e.target.innerHTML)
         	   if(e.target.className == "page-link"){
         		   let currentPage=""
         		   if(e.target.className == "page-link" && e.target.innerHTML == "Next") {
-        			   getCommentList( Number(endNevi)+1)
+        			   getCommentList(Number(endNevi)+1)
                		//currentPage= data.startNavi+1
 	               	}
 	               	if(e.target.className == "page-link" && e.target.innerHTML == "Previous"){
@@ -217,12 +165,11 @@ a{
 	               	if(e.target.className == "page-link" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
 	               		currentPage=e.target.innerHTML
 	               		getCommentList(currentPage)
-	               		
 	               	}  
         	   }
-        	
             });
-
+    	
     </script>
+
 </body>
 </html>
