@@ -106,9 +106,6 @@ body {
 	margin-bottom: 50px;
 }
 
-
-
-
 /* 리스트 관리 영역 */
 .header {
 	height: 200px;
@@ -204,14 +201,7 @@ body {
 	color: #333;
 }
 
-
-
-
-
 /* 회원관리 영역*/
-
-
-
 
 /* 리뷰관리 영역 */
 </style>
@@ -519,494 +509,575 @@ body {
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
-	// 다음 우편번호 api
-	function sample4_execDaumPostcode() {
-		new daum.Postcode(
-				{
-					oncomplete : function(data) {
+   // 다음 우편번호 api
+   function sample4_execDaumPostcode() {
+      new daum.Postcode(
+            {
+               oncomplete : function(data) {
 
-						var roadAddr = data.roadAddress; // 도로명 주소 변수
-						var extraRoadAddr = ''; // 참고 항목 변수
+                  var roadAddr = data.roadAddress; // 도로명 주소 변수
+                  var extraRoadAddr = ''; // 참고 항목 변수
 
-						if (data.bname !== ''
-								&& /[동|로|가]$/g.test(data.bname)) {
-							extraRoadAddr += data.bname;
-						}
+                  if (data.bname !== ''
+                        && /[동|로|가]$/g.test(data.bname)) {
+                     extraRoadAddr += data.bname;
+                  }
 
-						if (data.buildingName !== ''
-								&& data.apartment === 'Y') {
-							extraRoadAddr += (extraRoadAddr !== '' ? ', '
-									+ data.buildingName : data.buildingName);
-						}
+                  if (data.buildingName !== ''
+                        && data.apartment === 'Y') {
+                     extraRoadAddr += (extraRoadAddr !== '' ? ', '
+                           + data.buildingName : data.buildingName);
+                  }
 
-						if (extraRoadAddr !== '') {
-							extraRoadAddr = ' (' + extraRoadAddr + ')';
-						}
+                  if (extraRoadAddr !== '') {
+                     extraRoadAddr = ' (' + extraRoadAddr + ')';
+                  }
 
-						document.getElementById('postcode').value = data.zonecode;
-						document.getElementById("roadAddress").value = roadAddr;
-						document.getElementById("sido").value = data.sido; // 시도
-						document.getElementById("sigungu").value = data.sigungu; // 시군구
-						document.getElementById("bname").value = data.bname; // 동
+                  document.getElementById('postcode').value = data.zonecode;
+                  document.getElementById("roadAddress").value = roadAddr;
+                  document.getElementById("sido").value = data.sido; // 시도
+                  document.getElementById("sigungu").value = data.sigungu; // 시군구
+                  document.getElementById("bname").value = data.bname; // 동
 
-						if (roadAddr !== '') {
-							document.getElementById("extraAddress").value = extraRoadAddr;
-						} else {
-							document.getElementById("extraAddress").value = '';
-						}
+                  if (roadAddr !== '') {
+                     document.getElementById("extraAddress").value = extraRoadAddr;
+                  } else {
+                     document.getElementById("extraAddress").value = '';
+                  }
 
-						var guideTextBox = document.getElementById("guide");
-					}
-				}).open();
-	}
-	</script>
+                  var guideTextBox = document.getElementById("guide");
+               }
+            }).open();
+   }
+   </script>
 	<script>
-	checkBoxes = document.getElementsByName("num");	 // 체크박스name
-	let checkBoxArr = [] // 체크박스 arr
-	//let startNavi = "";
-	//let endNavi = "";
-	
-	// 로드될 시
-	$(document).ready(function(){
-		getCommentList(1)
-		// 체크박스 하나만 선택 가능
-		$(".form-check-input").click(function() {
-			if ($(this).prop('checked')) {
-				$(".form-check-input").prop('checked', false);
-				$(this).prop('checked', true);
-			}
-		});
-	})
-	
-	
-	
-	document.getElementById("member").addEventListener("click",function(){
-    	getCommentList(1);
+   // 로드될 시
+   $(document).ready(function(){
+	   getCommentList(1)
+      // 체크박스 하나만 선택 가능
+      $(".form-check-input").click(function() {
+         if ($(this).prop('checked')) {
+            $(".form-check-input").prop('checked', false);
+            $(this).prop('checked', true);
+         }
+      });
+   })
+   
+   let startNavi = "";
+   let endNavi = "";
+   
+   
+   document.getElementById("member").addEventListener("click",function(){
+       getCommentList(1);
+        //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
     })
     document.getElementById("list").addEventListener("click",function(){
-    	getListByCurrentPage(1);
+       getListByCurrentPage(1);
     })
     document.getElementById("review").addEventListener("click",function(){
-
+       getViewList(1);
     })
     
-    /* 회원관리 ajax 영역 */
-       function getCommentList(currentPage){			
-			$.ajax({
-				type : "get"
-				, url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
-				, dataType : "json"
-			}).done(function(data){
-				// 기존에 댓글이 있다면 모두 비워주는 작업 
-				$("thead").empty();
-				$("tbody").empty();
-				$("tfooter").empty();
-				$(".btnCls").empty();
-				$(".naviTd").empty();
-				/* thead 영역 설정*/
-				let thead = "<tr>"
-							+"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
-							+"<th class='w-20'>번호</th>"
-							+"<th class='w-20'>아이디</th>"	
-						  	+"<th class='w-20'>닉네임</th>"
-							+"<th class='w-20'>가입일</th>"
-							+"</tr>";
-							
-						
-				console.log(data)
-				let startNevi = data.startNavi
-				let endNevi = data.endNavi
-				let list = ""
-				for(let dto of data.list){
-					list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
-				}	
-				 let str =""
-				 let str1 = ""
-				 let str2 = ""
-						
-						if(data.needPrev == true){
-							str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + startNavi + ")-1);'>Prev</a></li>";
-						}
-						for(let j = data.startNavi; j <= data.endNavi; j++){
-							str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(" + j + ");'>" + j + "</a></li>";
-						}
-						if(data.needNext == true){
-							str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getCommentList(Number(" + endNevi + ")+1);'>Next</a></li>";
-						}
-				
-				let nav = ""
-					nav = "<td colspan=5 class='naviTd>"
-						+"<nav class='col' aria-label='Page navigation example'>"
-						+"<ul class='pagination justify-content-center'>"
-					 	+str+str1+str2
-						+"</ul>"  
-						+"</nav>"  	
-						+"</td>";
-						
-				  $("thead").append(thead)		
-				  $("tbody").append(list);
-	              $("tbody").append(nav)
-	              startNevi = "";
-	              endNevi = "";
-			}).fail(function(e){
-				console.log(e);
-			});
-		}
-	
-	
-    document.addEventListener('click',function(e){
- 	   //console.log(e.target.className)
- 	   //console.log(e.target.innerHTML)
- 	   if(e.target.className == "dd"){
- 		   let currentPage=""
- 		   if(e.target.id == "aa" && e.target.innerHTML == "Next") {
- 			   getCommentList(Number(endNevi)+1)
-        		//currentPage= data.startNavi+1
-            	}
-            	if(e.target.id == "bb" && e.target.innerHTML == "Previous"){
-            		getCommentList(Number(startNevi)-1)
-            		//currentPage= data.startNavi-1
-            	}
-            	if(e.target.id == "cc" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-            		currentPage=e.target.innerHTML
-            		getCommentList(currentPage)
-            	}  
- 	   }
-     });
-	
-	
-    document.addEventListener('click',function(e){
- 	   //console.log(e.target.className)
- 	   //console.log(e.target.innerHTML)
- 	   if(e.target.className == "page-link"){
- 		   let currentPage=""
- 		   if(e.target.className == "page-link" && e.target.innerHTML == "Next") {
- 			   getCommentList(Number(endNevi)+1)
-        		//currentPage= data.startNavi+1
-            	}
-            	if(e.target.className == "page-link" && e.target.innerHTML == "Previous"){
-            		getCommentList(Number(startNevi)-1)
-            		//currentPage= data.startNavi-1
-            	}
-            	if(e.target.className == "page-link" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-            		currentPage=e.target.innerHTML
-            		getCommentList(currentPage)
-            	}  
- 	   }
-     });
+    /*회원관리*/
     
+    function getCommentList(currentPage){         
+         $.ajax({
+            type : "get"
+            , url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
+            , dataType : "json"
+         }).done(function(data){
+            // 기존에 댓글이 있다면 모두 비워주는 작업 
+            $("thead").empty();
+            $("tbody").empty();
+            $("tfooter").empty();
+            $(".btnCls").empty();
+            $(".naviTd").empty();
+            /* thead 영역 설정*/
+            let thead = "<tr>"
+                     +"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
+                     +"<th class='w-20'>번호</th>"
+                     +"<th class='w-20'>아이디</th>"   
+                       +"<th class='w-20'>닉네임</th>"
+                     +"<th class='w-20'>가입일</th>"
+                     +"</tr>";
+                     
+                  
+            console.log(data)
+            startNevi = data.startNavi
+            endNevi = data.endNavi
+            let list = ""
+            for(let dto of data.list){
+               list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
+            }   
+             let str =""
+             let str1 = ""
+             let str2 = ""
+            if(data.needPrev == true){
+               str = "<li class='page-item'><div class='page-link 3'>Previous</div></li>"
+            }
+            for(let j = data.startNavi; j<=data.endNavi; j++){
+               str1 += "<li class='page-item'><div class='page-link 3'>"+j+"</div></li>"
+            }
+            if(data.needNext == true){
+               str2 = "<li class='page-item'><div class='page-link 3'>Next</div></li>"
+            }
+            let nav = ""
+               nav = "<td colspan=5 class='naviTd'>"
+                  +"<nav class='col' aria-label='Page navigation example'>"
+                  +"<ul class='pagination justify-content-center'>"
+                   +str+str1+str2
+                  +"</ul>"  
+                  +"</nav>"     
+                  +"</td>";
+                  
+              $("thead").append(thead)      
+              $("tbody").append(list);
+                 $("tbody").append(nav)
+        
+         }).fail(function(e){
+            console.log(e);
+         });
+      }
+
+   document.addEventListener('click',function(e){
+       //console.log(e.target.className)
+       //console.log(e.target.innerHTML)
+       if(e.target.className == "page-link 3"){
+          let currentPage=""
+          if(e.target.className == "page-link 3" && e.target.innerHTML == "Next") {
+             getCommentList(Number(endNevi)+1)
+              //currentPage= data.startNavi+1
+               }
+               if(e.target.className == "page-link 3" && e.target.innerHTML == "Previous"){
+                  getCommentList(Number(startNevi)-1)
+                  //currentPage= data.startNavi-1
+               }
+               if(e.target.className == "page-link 3" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+                  currentPage=e.target.innerHTML
+                  getCommentList(currentPage)
+               }  
+       }
+     });
+   
+   
+   //==================/회원관리 페이지 끝 ===================================================
+	   
+   // 리스트 관리 스크립트 영역
+       document.addEventListener('click',function(e){
+         console.log(e.target.className);
+            //console.log(e.target.className)
+            //console.log(e.target.innerHTML)
+         if(e.target.className == "page-link listPage"){
+           let currentPage="";
+           if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
+ 
+               getListByCurrentPage(Number(endNavi)+1);  
+             
+                     }
+                     if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
+                        
+                           getListByCurrentPage(Number(startNavi)-1);  
+                        //currentPage= data.startNavi-1
+                     }
+                     if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+                        console.log(e.target.innerHTML);
+                        currentPage=e.target.innerHTML;
+                        
+                           getListByCurrentPage(currentPage);  
+                     }  
+        }
+     });
+   
+   // 해당 currentPage에 속하는 리스트 목록을 불러오는 작업
+   function getListByCurrentPage(e) {
+      $.ajax({
+           url: "${pageContex.request.contextPath}/getListProc.li?currentPage=" + e,
+           type: "get",
+           dataType: "json"
+           }).done(function (data) {
+              console.log(data);
+              $(".headDiv").empty();
+              $("thead").empty();
+              $("tbody").empty();
+              $(".btnCls").empty();
+              
+              startNavi = data.startNavi;
+            endNavi = data.endNavi;
+
+            let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
+            $(".headDiv").append(head);
+              
+              let thead = "<tr><th class='col-1 num'>번호</th><th colspan='4'>리스트 제목</th></tr>";
+              $("thead").append(thead);
+
+               for (let listDto of data.list) {
+                   let totalList = "<tr><td class='seq_list'>" +"<p>"+ listDto.seq_list+"</p>"
+                       + "</td><td class='list_title'>"
+                       + "<a href='${pageContext.request.contextPath}/toRestManagerView.re?seq_list=" + listDto.seq_list + "'>" + listDto.list_title + "</a></td>"
+                       + "<td class='col-1 dynamicBtnCls'>"
+                       + "<button type='button' class='btn btn-warning' id='btnModifyList' value='" + listDto.seq_list + "'>수정</button></td>"
+                       + "<td class='col-1 dynamicBtnCls'>"
+                       + "<button type='button' class='btn btn-danger' id='btnDeleteList' value='" + listDto.seq_list + "'>삭제</button></td>"
+                       + "<td class='col-2 dynamicBtnCls'>"
+                       + "<button type='button' class='btn btn-dark' id='btnAddRestaurnat' value='" + listDto.seq_list + "'>맛집등록</button></td></tr>";
+                        $("#table_body").append(totalList);
+               }
+               
+               let str1 ="";
+            let str2 = "";
+            let str3 = "";
+            
+            if(data.needPrev == true){
+               str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
+            }
+            
+            Number(endNavi)+1
+            for(let j = data.startNavi; j <= data.endNavi; j++){
+               str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
+            }
+            
+            if(data.needNext == true){
+               str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
+            }
+            let nav = "<td colspan='5' class='naviTd'>"
+                     +"<nav class='col' aria-label='Page navigation example'>"
+                     +"<ul class='pagination justify-content-center'>"
+                      + str1 + str2 + str3
+                     +"</ul>"  
+                     +"</nav>"     
+                     +"</td>";  
+            $("tbody").append(nav);
+            
+            let btnCls = "<div class='col-12 d-flex justify-content-end'>" 
+                     + "<button type='button' class='btn btn-dark' data-bs-toggle='modal'" 
+                     + "data-bs-target='#staticBackdrop' id='btnAddList'>리스트 추가하기</button></div>";
+               
+            $(".btnCls").append(btnCls);
+               
+               //let hiddenCurrentBox = "<input type='text' id='hiddenCurrentPage' class='d-none' value='" + data.currentPage + "'>";
+               //$(".hiddenPageBox").append(hiddenCurrentBox);
+               
+                }).fail(function (e) {
+                  console.log(e);
+              })
+       
+       }
+   
+   // 리스트 추가하기 버튼 클릭 시
+   $(document).on("click", "#btnAddList", function() {
+      $("#title").val("");
+      $("#listImg").val("");
+      $("#modalReg").modal("show");
+   })
+
+   // 등록버튼 클릭 시
+   $("#btnReg").on("click", function() {
+      let addListForm = $("#addListForm")[0];
+      let formData = new FormData(addListForm);
+
+      if ($("#title").val() == "") {
+         alert("리스트 제목을 입력하세요.");
+         return;
+      } else if ($("#listImg").val() == "") {
+         alert("리스트 사진파일을 등록하세요.");
+         return;
+      }
+
+      $.ajax({
+         url : "${pageContext.request.contextPath}/addListProc.li",
+         type : "post",
+         data : formData,
+         contentType : false,
+         processData : false
+      }).done(function(rs) {
+         if (rs == "success") {
+            alert("리스트가 등록되었습니다.");
+            getListByCurrentPage(1);
+         } else if (rs == "fail") {
+            alert("리스트 등록에 실패했습니다.");
+         }
+      }).fail(function(e) {
+         consol.log(e);
+      })
+      $("#title").val("");
+      $("#listImg").val("");
+      $("#modalReg").modal("hide");
+   })
+
+   // 수정버튼 클릭시
+   $(document).on("click", "#btnModifyList", function(e) {
+      console.log($(e.target).val());
+      
+      $.ajax({
+         url : "${pageContext.request.contextPath}/getAllListInfo.li?seq_list=" + $(e.target).val(),
+         type : "get",
+         dataType : "json"
+      }).done(function(rs) {
+         $(".modifyListTitle").children().remove("input");
+                                 
+         console.log(rs.list_title);
+         let inputs = "<input type='text' id='titleInput' class='form-control' name='title' value='" + rs.list_title + "'>"
+                  + "<input type='text' id='hiddenSeq_list' name='seq_list' value='" + rs.seq_list + "'>";
+         $(".modifyListTitle").append(inputs);
+      }).fail(function(e) {
+         console.log(e);
+      })
+      $("#modalModify").modal("show");
+   })
+
+   // 수정완료버튼 클릭시
+   $("#btnModifyComplete").on("click", function() {
+      console.log($("#hiddenSeq_list").val());
+      let modifyListForm = $("#modifyListForm")[0];
+      let formData = new FormData(modifyListForm);
+      console.log(modifyListForm);
+
+      if ($("#titleInput").val() == "") {
+         alert("리스트 제목을 입력하세요.");
+         return;
+      }
+
+      $.ajax({
+         url : "${pageContext.request.contextPath}/modifyListProc.li",
+         type : "post",
+         data : formData,
+         contentType : false,
+         processData : false
+      }).done(function(rs) {
+         if (rs == "success") {
+            alert("리스트가 수정되었습니다.");
+            getListByCurrentPage(1);
+         } else if (rs == "fail") {
+            alert("리스트 수정에 실패했습니다.");
+         }
+      }).fail(function(e) {
+         consol.log(e);
+      })
+      $("#titleInput").val("");
+      $("#listImgModify").val("");
+      $("#modalModify").modal("hide");
+   })
+
+   // 삭제 버튼 클릭시
+   $(document).on("click", "#btnDeleteList", function(e) {
+      console.log($(e.target).val());
+      if (confirm("정말로 삭제하시겠습니까?")) {
+         $.ajax({
+            url : "${pageContext.request.contextPath}/deleteListProc.li?seq_list=" + $(e.target).val(),
+            type : "get"
+         }).done(function(data) {
+            if (data == "success") {
+               alert("리스트가 삭제되었습니다.");
+               getListByCurrentPage(1);
+            } else if (data == "fail") {
+               alert("리스트 삭제에 실패하였습니다.");
+            }
+         }).fail(function(e) {
+            console.log(e);
+         })
+      }
+   })
+
+   // 맛집등록 버튼 클릭 시
+   $(document).on("click", "#btnAddRestaurnat", function(e) {
+      $("#hiddenSeqBox").val($(e.target).val());
+      console.log($("#hiddenSeqBox").val());
+      $("#restName").val("");
+      $("#restIntro").val("");
+      $("#postcode").val("");
+      $("#roadAddress").val("");
+      $("#detailAddress").val("");
+      $("#extraAddress").val("");
+      $("#telNum1").val("");
+      $("#telNum2").val("");
+      $("#telNum3").val("");
+      $("#openTime").val("");
+      $("#closeTime").val("");
+      $("input:checkbox[name='parkingPossible']").attr("checked", false);
+      $("#restFile").val("");
+      $("#modalAddRest").modal("show");
+   })
+
+   // 등록하기 버튼 클릭시 (맛집)
+   $("#btnAdd-rest").on( "click", function(e) {
+      // regex
+      let regexTel = /^[0-9]{10,12}$/g;
+
+      if ($("#restName").val() == "") {
+         alert("음식점명을 입력하세요.");
+         return;
+      } else if ($("#restIntro").val() == "") {
+         alert("음식점 소개를 입력하세요.");
+         return;
+      } else if ($("#postcode").val() == "" || $("#roadAddress").val() == "") {
+         alert("음식점 주소를 입력하세요.");
+         return;
+      } else if ($("#telNum1").val() == "" || $("#telNum2").val() == ""
+               || $("#telNum3").val() == "" || !regexTel.test(($("#telNum1").val() + $("#telNum2").val() + $("#telNum3").val()))) {
+         alert("음식점 번호를 확인하세요.");
+         return;
+      } else if ($("#openTime").val() == "" || $("#closeTime").val() == "") {
+         alert("영업시간을 입력하세요.");
+         return;
+      } else if ($("#restFile").val() == "") {
+         alert("파일을 첨부하세요.");
+         return;
+      }
+
+      $("#tel").val($("#telNum1").val() + "-" + $("#telNum2").val() + "-" + $("#telNum3").val());
+      $("#address").val($("#roadAddress").val() + " " + $("#extraAddress").val() + " " + $("#detailAddress").val());
+      $("#time").val($("#openTime").val() + " ~ " + $("#closeTime").val());
+
+      let addRestForm = $("#addRestForm")[0];
+      let formData = new FormData(addRestForm);
+
+      $.ajax({
+         url : "${pageContext.request.contextPath}/addRestProc.re",
+         type : "post",
+         data : formData,
+         contentType : false,
+         processData : false
+      }).done(function(rs) {
+         if (rs == "success") {
+            alert("맛집이 등록되었습니다.");
+            getListByCurrentPage($("#hiddenCurrentPage").val());
+         } else if (rs == "fail") {
+            alert("맛집 등록에 실패했습니다.");
+         }
+      }).fail(function(e) {
+         consol.log(e);
+      })
+      $("#restName").val("");
+      $("#restIntro").val("");
+      $("#postcode").val("");
+      $("#roadAddress").val("");
+      $("#detailAddress").val("");
+      $("#extraAddress").val("");
+      $("#telNum1").val("");
+      $("#telNum2").val("");
+      $("#telNum3").val("");
+      $("#openTime").val("");
+      $("#closeTime").val("");
+      $("input:checkbox[name='parkingPossible']").attr("checked", false);
+      $("#restFile").val("");
+      $("#hiddenSeqBox").val("");
+      $("#modalAddRest").modal("hide");
+   })
+  
+   
+   
+   /*===================================리뷰 관련 리스트 출력=================================================*/
+   function getViewList(currentPage){
+      $.ajax({
+         type : "get"
+         , url : "${pageContext.request.contextPath}/managerReviewProc.vi?currentPage=" +currentPage
+         , dataType : "json"
+      
+      }).done(function(data){
+         console.log(data);
+         $("thead").empty();
+         $("tbody").empty();
+         startNevi = data.startNavi
+         endNevi = data.endNavi
+         
+         let reviewTitle = "<tr>"
+         + "<th class='col-md-2'>음식점 이름</th>"
+         + "<th class='col-md-3'>글쓴이</th>"
+         + "<th class='col-md-2'>작성일</th>"
+         + "<th class='col-md-3'>리뷰 내용</th>"
+         + "<th class='col-md-2'>삭제</th>"
+         + "</tr>";
+         
+         $("thead").append(reviewTitle);
+         
+         for(let dto of data.list){
+            let review = "<tr>"
+            + "<td>"+ dto.rest_name + "</td>" 
+            + "<td>" + dto.user_name + "</td>"
+            +  "<td>" + dto.review_date + "</td>" 
+            + "<td>" + dto.review_content +"</td>"
+            + "<td><button type='button' class='btn btn-deleteCmt' id='btnDelete' value='" + dto.seq_view + "'>삭제</button></td>"
+            + "</tr>";
+            $("tbody").append(review);
+         }
+         let str =""
+             let str1 = ""
+             let str2 = ""
+            if(data.needPrev == true){
+               str = "<li class='page-item'><div class='page-link 2'>Previous</div></li>"
+            }
+            for(let j = data.startNavi; j<data.endNavi; j++){
+               str1 += "<li class='page-item'><div class='page-link 2'>"+j+"</div></li>"
+            }
+            if(data.needNext == true){
+               str2 = "<li class='page-item'><div class='page-link 2'>Next</div></li>"
+            }
+            let nav = ""
+               
+               nav = "<td colspan=5>"
+                  +"<nav class='col' aria-label='Page navigation example'>"
+                  +"<ul class='pagination justify-content-center'>"
+                   +str+str1+str2
+                  +"</ul>"  
+                  +"</nav>"     
+                  +"</td>"      
+                 $("tbody").append(nav)
+
+      
+      }).fail(function(e){
+         console.log(e);
+      });
+      
+      }
     
-	// 리스트 관리 스크립트 영역
-	// 해당 currentPage에 속하는 리스트 목록을 불러오는 작업
-	function getListByCurrentPage(e) {
-		$.ajax({
-	        url: "${pageContex.request.contextPath}/getListProc.li?currentPage=" + e,
-	        type: "get",
-	        dataType: "json"
-	        }).done(function (data) {
-	        	console.log(data);
-	        	$(".headDiv").empty();
-	        	$("#table_head").empty();
-	        	$("#table_body").empty();
-	        	$(".btnCls").empty();
-	        	$(".naviTd").empty();
-	        	
-	        	let startNavi = data.startNavi;
-				let endNavi = data.endNavi;
-				
+    document.addEventListener('click',function(e){
+        if(e.target.id == 'btnDelete'){
+           let seq_view = e.target.value;
+           if(confirm("정말로 삭제하시겠습니까?")) {
+              $.ajax({
+                 url: "/managerViewDelete.vi?seq_view="+ seq_view,
+                 type: "get"
+              }).done(function(data){
+                 if(data == "success") {
+                    alert("리뷰가 삭제되었습니다.");
+                   getViewList(1);
+                 } else if(data == "fail") {
+                    alert("리뷰 삭제에 실패하였습니다.");
+                 }
+              }).fail(function(e){
+                 console.log(e);
+              })
+           }
+         
+         }
+        });
+      
 
-				let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
-				$(".headDiv").append(head);
-	        	
-	        	let thead = "<tr><th class='col-1 num'>번호</th><th colspan='4'>리스트 제목</th></tr>";
-	        	$("#table_head").append(thead);
+    
+    document.addEventListener('click',function(e){
+           //console.log(e.target.className)
+           //console.log(e.target.innerHTML)
+           if(e.target.className == "page-link 2"){
+              if(e.target.className == "page-link 2" && e.target.innerHTML == "Next") {
+               getViewList( Number(endNevi)+1)
+                  //currentPage= data.startNavi+1
+                   }
+                   if(e.target.className == "page-link 2" && e.target.innerHTML == "Previous"){
+                      getViewList(Number(startNevi)-1)
+                      //currentPage= data.startNavi-1
+                   }
+                   if(e.target.className == "page-link 2" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+                      currentPage=e.target.innerHTML
+                      getViewList(currentPage)
+                      
+                   }  
+           }
+        
+         });
+    
 
-	            for (let listDto of data.list) {
-	                let totalList = "<tr><td class='seq_list'>" +"<p>"+ listDto.seq_list+"</p>"
-	                    + "</td><td class='list_title'>"
-	                    + "<a href='${pageContext.request.contextPath}/toRestManagerView.re?seq_list=" + listDto.seq_list + "'>" + listDto.list_title + "</a></td>"
-	                    + "<td class='col-1 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-warning' id='btnModifyList' value='" + listDto.seq_list + "'>수정</button></td>"
-	                    + "<td class='col-1 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-danger' id='btnDeleteList' value='" + listDto.seq_list + "'>삭제</button></td>"
-	                    + "<td class='col-2 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-dark' id='btnAddRestaurnat' value='" + listDto.seq_list + "'>맛집등록</button></td></tr>";
-	               		$("#table_body").append(totalList);
-	            }
-	            
-	            let str1 ="";
-				let str2 = "";
-				let str3 = "";
-				
-				
-		
-				
-				if(data.needPrev == true){
-					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
-				}
-				for(let j = data.startNavi; j <= data.endNavi; j++){
-					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
-				}
-				if(data.needNext == true){
-					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
-				}
-				
-				let nav = "<td colspan='5' class='naviTd'>"
-							+"<nav class='col' aria-label='Page navigation example'>"
-							+"<ul class='pagination justify-content-center'>"
-						 	+ str1 + str2 + str3
-							+"</ul>"  
-							+"</nav>"  	
-							+"</td>";  
-				$("#table_body").append(nav);
-				
-				let btnCls = "<div class='col-12 d-flex justify-content-end'>" 
-							+ "<button type='button' class='btn btn-dark' data-bs-toggle='modal'" 
-							+ "data-bs-target='#staticBackdrop' id='btnAddList'>리스트 추가하기</button></div>";
-	            
-				$(".btnCls").append(btnCls);
-				
-				
-				startNevi = "";
-	             endNevi = "";
-				
-	            //let hiddenCurrentBox = "<input type='text' id='hiddenCurrentPage' class='d-none' value='" + data.currentPage + "'>";
-	            //$(".hiddenPageBox").append(hiddenCurrentBox);
-	            
-	       	   }).fail(function (e) {
-	          	  console.log(e);
-	           })
-	    
-	    }
-	
-	// 리스트 추가하기 버튼 클릭 시
-	$(document).on("click", "#btnAddList", function() {
-		$("#title").val("");
-		$("#listImg").val("");
-		$("#modalReg").modal("show");
-	})
-
-	// 등록버튼 클릭 시
-	$("#btnReg").on("click", function() {
-		let addListForm = $("#addListForm")[0];
-		let formData = new FormData(addListForm);
-
-		if ($("#title").val() == "") {
-			alert("리스트 제목을 입력하세요.");
-			return;
-		} else if ($("#listImg").val() == "") {
-			alert("리스트 사진파일을 등록하세요.");
-			return;
-		}
-
-		$.ajax({
-			url : "${pageContext.request.contextPath}/addListProc.li",
-			type : "post",
-			data : formData,
-			contentType : false,
-			processData : false
-		}).done(function(rs) {
-			if (rs == "success") {
-				alert("리스트가 등록되었습니다.");
-				getListByCurrentPage(1);
-			} else if (rs == "fail") {
-				alert("리스트 등록에 실패했습니다.");
-			}
-		}).fail(function(e) {
-			consol.log(e);
-		})
-		$("#title").val("");
-		$("#listImg").val("");
-		$("#modalReg").modal("hide");
-	})
-
-	// 수정버튼 클릭시
-	$(document).on("click", "#btnModifyList", function(e) {
-		console.log($(e.target).val());
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/getAllListInfo.li?seq_list=" + $(e.target).val(),
-			type : "get",
-			dataType : "json"
-		}).done(function(rs) {
-			$(".modifyListTitle").children().remove("input");
-											
-			console.log(rs.list_title);
-			let inputs = "<input type='text' id='titleInput' class='form-control' name='title' value='" + rs.list_title + "'>"
-						+ "<input type='text' id='hiddenSeq_list' name='seq_list' value='" + rs.seq_list + "'>";
-			$(".modifyListTitle").append(inputs);
-		}).fail(function(e) {
-			console.log(e);
-		})
-		$("#modalModify").modal("show");
-	})
-
-	// 수정완료버튼 클릭시
-	$("#btnModifyComplete").on("click", function() {
-		console.log($("#hiddenSeq_list").val());
-		let modifyListForm = $("#modifyListForm")[0];
-		let formData = new FormData(modifyListForm);
-		console.log(modifyListForm);
-
-		if ($("#titleInput").val() == "") {
-			alert("리스트 제목을 입력하세요.");
-			return;
-		}
-
-		$.ajax({
-			url : "${pageContext.request.contextPath}/modifyListProc.li",
-			type : "post",
-			data : formData,
-			contentType : false,
-			processData : false
-		}).done(function(rs) {
-			if (rs == "success") {
-				alert("리스트가 수정되었습니다.");
-				getListByCurrentPage(1);
-			} else if (rs == "fail") {
-				alert("리스트 수정에 실패했습니다.");
-			}
-		}).fail(function(e) {
-			consol.log(e);
-		})
-		$("#titleInput").val("");
-		$("#listImgModify").val("");
-		$("#modalModify").modal("hide");
-	})
-
-	// 삭제 버튼 클릭시
-	$(document).on("click", "#btnDeleteList", function(e) {
-		console.log($(e.target).val());
-		if (confirm("정말로 삭제하시겠습니까?")) {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/deleteListProc.li?seq_list=" + $(e.target).val(),
-				type : "get"
-			}).done(function(data) {
-				if (data == "success") {
-					alert("리스트가 삭제되었습니다.");
-					getListByCurrentPage(1);
-				} else if (data == "fail") {
-					alert("리스트 삭제에 실패하였습니다.");
-				}
-			}).fail(function(e) {
-				console.log(e);
-			})
-		}
-	})
-
-	// 맛집등록 버튼 클릭 시
-	$(document).on("click", "#btnAddRestaurnat", function(e) {
-		$("#hiddenSeqBox").val($(e.target).val());
-		console.log($("#hiddenSeqBox").val());
-		$("#restName").val("");
-		$("#restIntro").val("");
-		$("#postcode").val("");
-		$("#roadAddress").val("");
-		$("#detailAddress").val("");
-		$("#extraAddress").val("");
-		$("#telNum1").val("");
-		$("#telNum2").val("");
-		$("#telNum3").val("");
-		$("#openTime").val("");
-		$("#closeTime").val("");
-		$("input:checkbox[name='parkingPossible']").attr("checked", false);
-		$("#restFile").val("");
-		$("#modalAddRest").modal("show");
-	})
-
-	// 등록하기 버튼 클릭시 (맛집)
-	$("#btnAdd-rest").on( "click", function(e) {
-		// regex
-		let regexTel = /^[0-9]{10,12}$/g;
-
-		if ($("#restName").val() == "") {
-			alert("음식점명을 입력하세요.");
-			return;
-		} else if ($("#restIntro").val() == "") {
-			alert("음식점 소개를 입력하세요.");
-			return;
-		} else if ($("#postcode").val() == "" || $("#roadAddress").val() == "") {
-			alert("음식점 주소를 입력하세요.");
-			return;
-		} else if ($("#telNum1").val() == "" || $("#telNum2").val() == ""
-					|| $("#telNum3").val() == "" || !regexTel.test(($("#telNum1").val() + $("#telNum2").val() + $("#telNum3").val()))) {
-			alert("음식점 번호를 확인하세요.");
-			return;
-		} else if ($("#openTime").val() == "" || $("#closeTime").val() == "") {
-			alert("영업시간을 입력하세요.");
-			return;
-		} else if ($("#restFile").val() == "") {
-			alert("파일을 첨부하세요.");
-			return;
-		}
-
-		$("#tel").val($("#telNum1").val() + "-" + $("#telNum2").val() + "-" + $("#telNum3").val());
-		$("#address").val($("#roadAddress").val() + " " + $("#extraAddress").val() + " " + $("#detailAddress").val());
-		$("#time").val($("#openTime").val() + " ~ " + $("#closeTime").val());
-
-		let addRestForm = $("#addRestForm")[0];
-		let formData = new FormData(addRestForm);
-
-		$.ajax({
-			url : "${pageContext.request.contextPath}/addRestProc.re",
-			type : "post",
-			data : formData,
-			contentType : false,
-			processData : false
-		}).done(function(rs) {
-			if (rs == "success") {
-				alert("맛집이 등록되었습니다.");
-				getListByCurrentPage($("#hiddenCurrentPage").val());
-			} else if (rs == "fail") {
-				alert("맛집 등록에 실패했습니다.");
-			}
-		}).fail(function(e) {
-			consol.log(e);
-		})
-		$("#restName").val("");
-		$("#restIntro").val("");
-		$("#postcode").val("");
-		$("#roadAddress").val("");
-		$("#detailAddress").val("");
-		$("#extraAddress").val("");
-		$("#telNum1").val("");
-		$("#telNum2").val("");
-		$("#telNum3").val("");
-		$("#openTime").val("");
-		$("#closeTime").val("");
-		$("input:checkbox[name='parkingPossible']").attr("checked", false);
-		$("#restFile").val("");
-		$("#hiddenSeqBox").val("");
-		$("#modalAddRest").modal("hide");
-	})
-	
-	
-	
-	
-		document.addEventListener('click',function(e){
-			console.log(e.target.className);
- 	   		//console.log(e.target.className)
- 	   		//console.log(e.target.innerHTML)
-			if(e.target.className == "page-link listPage"){
-     		   let currentPage="";
-     		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
-     			  getListByCurrentPage(Number(endNavi)+1);
-            		//currentPage= data.startNavi+1
-	               	}
-	               	if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
-	               		getListByCurrentPage(Number(startNavi)-1);
-	               		//currentPage= data.startNavi-1
-	               	}
-	               	if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-	               		console.log(e.target.innerHTML);
-	               		currentPage=e.target.innerHTML;
-	               		getListByCurrentPage(currentPage);
-	               		
-	               	}  
-     	   }
-     	});
-	
-	</script>
+   
+   </script>
 
 </body>
 </html>
