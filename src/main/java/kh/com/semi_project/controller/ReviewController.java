@@ -146,6 +146,7 @@ public class ReviewController extends HttpServlet {
 				
 				if(rs != -1) {
 					RequestDispatcher rd = request.getRequestDispatcher("/toRestDetailView.re?seq_rest="+seq_rest);
+
 					request.setAttribute("seq_rest",seq_rest);
 					rd.forward(request, response);
 				}

@@ -58,7 +58,8 @@ a {
 					<H3>회원관리</H3>
 				</div>
 			</div>
-			
+			<div class="col-12 content">
+
 			<div class="col-9 content">
 
 				<table class="table table-hover">
@@ -108,10 +109,10 @@ a {
 		});
 		
 	})
-	/*
+
+/*	
         document.getElementById("member").addEventListener("click",function(){
         	getCommentList(1)
-            //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
         })
         document.getElementById("list").addEventListener("click",function(){
             location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
@@ -119,7 +120,9 @@ a {
         document.getElementById("review").addEventListener("click",function(){
             //location.href = ""
         })
-  		*/
+  
+*/
+        function getCommentList(currentPage){			
 			$.ajax({
 				type : "get"
 				, url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
@@ -141,7 +144,7 @@ a {
 				if(data.needPrev == true){
 					str = "<li class='page-item'><div class='page-link' id= 'aa'>Previous</div></li>"
 				}
-				for(let j = data.startNavi; j<data.endNavi; j++){
+				for(let j = data.startNavi; j<=data.endNavi; j++){
 					str1 += "<li class='page-item'><div class='page-link' id= 'bb'>"+j+"</div></li>"
 				}
 				if(data.needNext == true){
