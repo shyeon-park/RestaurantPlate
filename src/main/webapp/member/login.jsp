@@ -18,7 +18,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 
-<title>로그인페이지</title>
+<title>로그인페이지1</title>
 
 <style type="text/css">
 .container {
@@ -33,6 +33,10 @@ a {
 	text-decoration: none;
 	color: black;
 }
+<<<<<<< HEAD
+#btnHome{
+cursor: pointer;
+=======
 
 /* footer */
 .footer {
@@ -65,6 +69,7 @@ a {
 .footer a {
 	color: white;
 	font-family: 'Noto Sans KR'
+>>>>>>> ec688fb14985101ab02615a782c2a680498a63b1
 }
 </style>
 </head>
@@ -89,7 +94,7 @@ a {
 							<h3 class="mt-3">로그인</h3>
 						</div>
 						<div class="col-12 d-flex justify-content-center mt-3">
-							<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
+							<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="" id="btnHome">
 						</div>
 					</div>
 					<div class="row">
@@ -241,6 +246,10 @@ a {
 	            }
 	        });
 	    }
+	    
+	    $("#btnHome").click(function(e){
+	    	location.href="${pageContext.request.contextPath}/home"; 
+	    })
 	    </script>
 		</c:otherwise>
 	</c:choose>
@@ -635,7 +644,8 @@ a {
             }
             return false;
         }
-	        
+	    
+	     
 	        /* =======================모달영역 끝 =========================== */
 	    </script>
 

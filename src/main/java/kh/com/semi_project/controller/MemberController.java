@@ -2,6 +2,7 @@ package kh.com.semi_project.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 
 import kh.com.semi_project.dao.MemberDAO;
 import kh.com.semi_project.dto.MemberDTO;
+import kh.com.semi_project.service.MemberService;
 import utils.AuthNumberCreate;
 import utils.EncryptionUtils;
 
@@ -148,6 +150,7 @@ public class MemberController extends HttpServlet {
 
 			pw = EncryptionUtils.getSHA512(pw);
 			System.out.println("id : " + id + "pw : " + pw);
+
 			try {
 				boolean rs = dao.isLoginOk(id, pw);
 				if (rs) {
@@ -161,8 +164,16 @@ public class MemberController extends HttpServlet {
 					System.out.println(loginMap.get("id"));
 					System.out.println(loginMap.get("nickname"));
 
-					session.setAttribute("loginSession", loginMap);
-					response.sendRedirect("/");
+					// 분기
+					int identification = dto.getIdentification();
+					if (identification == 1) {
+						session.setAttribute("loginSession", loginMap);
+						response.sendRedirect("/member/managerMainpage.jsp");
+					} else {
+						session.setAttribute("loginSession", loginMap);
+						response.sendRedirect("/");
+					}
+
 				} else {
 					RequestDispatcher rd = request.getRequestDispatcher("/member/login.jsp");
 					request.setAttribute("rs", "fail");
@@ -215,16 +226,17 @@ public class MemberController extends HttpServlet {
 			// 현재 로그인된 사용자의 id 값을 얻어 옴
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
 			String id = loginMap.get("id");
-		
+
 			// 카카오 회원가입인지 아닌지 구분 카카오 id는 10자리의 숫자키로 이루어져있다.
 			boolean regex = Pattern.matches("^[0-9]*$", id);
 			// 카카오 아이디이면 이용불가 페이지로 이동
-			if (regex) response.sendRedirect("/member/notAvailable.jsp");
-		    //카카오 로그인이 아니면 패스워드 이동 페이지 이동
-			else response.sendRedirect("/member/pwInput.jsp");
-			
+			if (regex)
+				response.sendRedirect("/member/notAvailable.jsp");
+			// 카카오 로그인이 아니면 패스워드 이동 페이지 이동
+			else
+				response.sendRedirect("/member/pwInput.jsp");
 
-		}else if(cmd.equals("/changePw.mem")){
+		} else if (cmd.equals("/changePw.mem")) {
 			// 현재 로그인된 사용자의 id 값을 얻어 옴
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
 			String id = loginMap.get("id");
@@ -234,33 +246,30 @@ public class MemberController extends HttpServlet {
 			changePw = EncryptionUtils.getSHA512(changePw);
 			PrintWriter out = response.getWriter();
 			try {
-				if(dao.isLoginOk(id, pw)) {//로그인 성공 시
+				if (dao.isLoginOk(id, pw)) {// 로그인 성공 시
 					int rs = dao.changePw(id, changePw);
-					if(rs != -1) {
+					if (rs != -1) {
 						session.removeAttribute("loginSession");
-						out.println("<script>alert(\"비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요\"); location.href='/home';</script>");
+						out.println(
+								"<script>alert(\"비밀번호 변경에 성공하였습니다. 다시 로그인 해주세요\"); location.href='/home';</script>");
 						out.flush();
-						}else {
-						out.println("<script>alert(\"비밀번호 변경에 실패하였습니다.\"); location.href='/member/pwInput.jsp';</script>");	
+					} else {
+						out.println(
+								"<script>alert(\"비밀번호 변경에 실패하였습니다.\"); location.href='/member/pwInput.jsp';</script>");
 						out.flush();
-						}
-						
-				}else {
+					}
+
+				} else {
 					out.println("<script>alert(\"PW를 확인해주세요. \"); location.href='/member/pwInput.jsp';</script>");
 					out.flush();
 				}
-				
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
-			
-				
-			
-			
-		}else if (cmd.equals("/mypage.mem")) {
+
+		} else if (cmd.equals("/mypage.mem")) {
 
 			// 현재 로그인된 사용자의 id 값을 얻어 옴
 			HashMap<String, String> loginMap = (HashMap) session.getAttribute("loginSession");
@@ -319,8 +328,7 @@ public class MemberController extends HttpServlet {
 				int rs = dao.modifyMypage(dto);
 				PrintWriter out = response.getWriter();
 				if (rs != -1) {
-					out.println(
-							"<script>alert(\"마이페이지 수정 완료 완료되었습니다.\"); location.href='/mypage.mem';</script>");
+					out.println("<script>alert(\"마이페이지 수정 완료 완료되었습니다.\"); location.href='/mypage.mem';</script>");
 					out.flush();
 				} else {
 					out.println(
@@ -346,8 +354,7 @@ public class MemberController extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				if (rs != -1) {
 					session.removeAttribute("loginSession");
-					out.println(
-							"<script>alert(\"회원삭제가 완료되었습니다.\"); location.href='/home';</script>");
+					out.println("<script>alert(\"회원삭제가 완료되었습니다.\"); location.href='/home';</script>");
 					out.flush();
 				} else {
 					out.println(
@@ -380,7 +387,6 @@ public class MemberController extends HttpServlet {
 					}
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// 비밀번호 찾기할때 필요한 ID를 불러온다
@@ -421,8 +427,58 @@ public class MemberController extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (cmd.equals("/getMemberList.mem")) {
+			System.out.println("요청도착");
+			int currentPage = Integer.parseInt(request.getParameter("currentPage"));
+			System.out.println("currentPage : " + currentPage);
+			MemberService mService = new MemberService();
+			HashMap<String, Object> naviMap = mService.getPageNavi(currentPage);
+			ArrayList<MemberDTO> list = mService.getMemberList((int) naviMap.get("currentPage"));
+			naviMap.put("list", list);
+
+			if (list != null) {
+				Gson gson = new Gson();
+				String rs = gson.toJson(naviMap);
+				if (list != null) {
+					response.getWriter().write(rs);
+				} else {
+					response.getWriter().write("fail");
+				}
+//				RequestDispatcher rd = request.getRequestDispatcher("/board/board.jsp");
+//				request.setAttribute("list", list);
+//				request.setAttribute("naviMap", naviMap);
+//				rd.forward(request, response);
+			}
+		} else if (cmd.equals("/checkBoxDelMem.mem")) {
+			System.out.println("요청도착");
+			int rs2;
+			try {
+				rs2 = dao.nullcheck(request.getParameterValues("num"));
+				PrintWriter out = response.getWriter();
+				if (rs2 != -1) {
+					String[] checkBox = request.getParameterValues("num");
+					for (String id : checkBox) {
+						int rs = dao.deleteById(id);
+						if(rs != -1) {
+							out.println("<script>alert(\"성공적으로 삭제되었습니다.\"); location.href='/member/managerMainpage.jsp';</script>");
+							out.flush();
+						}else {
+							out.println("<script>alert(\"삭제에 실패하였습니다 다시 시도해주세요.\"); location.href='/member/managerMainpage.jsp';</script>");
+							out.flush();
+						}
+					}
+					
+				}else {
+					System.out.println("널값입니다.");
+					out.println("<script>alert(\"삭제할 회원을 선택해주세요.\"); location.href='/member/managerMainpage.jsp';</script>");
+					out.flush();
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
 		}
 
 	}
-
 }

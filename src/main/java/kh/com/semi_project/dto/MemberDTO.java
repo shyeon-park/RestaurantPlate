@@ -15,6 +15,8 @@ public class MemberDTO {
 	private String detail_addr;	
 	private String extra_addr;	
 	private int identification;
+	private int rowNum;
+	
 	
 	public MemberDTO() {}
 	public MemberDTO(String user_id, String user_password, String user_nickname, Date signup_date, String user_email,
@@ -100,7 +102,12 @@ public class MemberDTO {
 		this.identification = identification;
 	}	
 	
-	
+	public int getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
 }
 
 
