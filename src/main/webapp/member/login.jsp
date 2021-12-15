@@ -29,6 +29,9 @@ a {
 	text-decoration: none;
 	color: black;
 }
+#btnHome{
+cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -52,7 +55,7 @@ a {
 							<h3 class="mt-3">로그인</h3>
 						</div>
 						<div class="col-12 d-flex justify-content-center mt-3">
-							<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
+							<img src="${pageContext.request.contextPath}/img/logo.jpg" alt="" id="btnHome">
 						</div>
 					</div>
 					<div class="row">
@@ -173,6 +176,10 @@ a {
 	            }
 	        });
 	    }
+	    
+	    $("#btnHome").click(function(e){
+	    	location.href="${pageContext.request.contextPath}/home"; 
+	    })
 	    </script>
 		</c:otherwise>
 	</c:choose>
@@ -567,7 +574,8 @@ a {
             }
             return false;
         }
-	        
+	    
+	     
 	        /* =======================모달영역 끝 =========================== */
 	    </script>
 
