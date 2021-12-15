@@ -76,7 +76,7 @@ public class Service {
 		try {
 			ArrayList<ViewDTO> list = dao.getViewList(startRange, endRange);
 			for(ViewDTO dto : list) {
-				System.out.println(dto.getSeq_rest() + " : " + dto.getseq_view() + " : " +
+				System.out.println(dto.getSeq_rest() + " : " + dto.getSeq_view() + " : " +
 						dto.getUser_id() + " : " + dto.getReview_content() + " : " + dto.getReview_date());
 			}
 			return list;
