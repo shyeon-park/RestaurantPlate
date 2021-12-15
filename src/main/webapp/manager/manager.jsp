@@ -562,7 +562,6 @@ body {
 	}
 	</script>
 	<script>
-	
 	// 로드될 시
 	$(document).ready(function(){
 		// 체크박스 하나만 선택 가능
@@ -586,15 +585,73 @@ body {
     	getListByCurrentPage(1);
     })
     document.getElementById("review").addEventListener("click",function(){
-        //location.href = ""
+    	getViewList(1);
     })
     
     
+    function getCommentList(currentPage){         
+         $.ajax({
+            type : "get"
+            , url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
+            , dataType : "json"
+         }).done(function(data){
+            // 기존에 댓글이 있다면 모두 비워주는 작업 
+            $("thead").empty();
+            $("tbody").empty();
+            $("tfooter").empty();
+            $(".btnCls").empty();
+            $(".naviTd").empty();
+            /* thead 영역 설정*/
+            let thead = "<tr>"
+                     +"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
+                     +"<th class='w-20'>번호</th>"
+                     +"<th class='w-20'>아이디</th>"   
+                       +"<th class='w-20'>닉네임</th>"
+                     +"<th class='w-20'>가입일</th>"
+                     +"</tr>";
+                     
+                  
+            console.log(data)
+            startNevi = data.startNavi
+            endNevi = data.endNavi
+            let list = ""
+            for(let dto of data.list){
+               list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
+            }   
+             let str =""
+             let str1 = ""
+             let str2 = ""
+            if(data.needPrev == true){
+               str = "<li class='page-item'><div class='page-link 3'>Previous</div></li>"
+            }
+            for(let j = data.startNavi; j<=data.endNavi; j++){
+               str1 += "<li class='page-item'><div class='page-link 3'>"+j+"</div></li>"
+            }
+            if(data.needNext == true){
+               str2 = "<li class='page-item'><div class='page-link 3'>Next</div></li>"
+            }
+            let nav = ""
+               nav = "<td colspan=5 class='naviTd>"
+                  +"<nav class='col' aria-label='Page navigation example'>"
+                  +"<ul class='pagination justify-content-center'>"
+                   +str+str1+str2
+                  +"</ul>"  
+                  +"</nav>"     
+                  +"</td>";
+                  
+              $("thead").append(thead)      
+              $("tbody").append(list);
+                 $("tbody").append(nav)
+        
+         }).fail(function(e){
+            console.log(e);
+         });
+      }
+
     
 	// 리스트 관리 스크립트 영역
 	// 해당 currentPage에 속하는 리스트 목록을 불러오는 작업
 	function getListByCurrentPage(e) {
-		
 		$.ajax({
 	        url: "${pageContex.request.contextPath}/getListProc.li?currentPage=" + e,
 	        type: "get",
@@ -602,8 +659,8 @@ body {
 	        }).done(function (data) {
 	        	console.log(data);
 	        	$(".headDiv").empty();
-	        	$("#table_head").empty();
-	        	$("#table_body").empty();
+	        	$("thead").empty();
+	        	$("tbody").empty();
 	        	$(".btnCls").empty();
 	        	
 	        	startNavi = data.startNavi;
@@ -613,7 +670,7 @@ body {
 				$(".headDiv").append(head);
 	        	
 	        	let thead = "<tr><th class='col-1 num'>번호</th><th colspan='4'>리스트 제목</th></tr>";
-	        	$("#table_head").append(thead);
+	        	$("thead").append(thead);
 
 	            for (let listDto of data.list) {
 	                let totalList = "<tr><td class='seq_list'>" +"<p>"+ listDto.seq_list+"</p>"
@@ -651,7 +708,7 @@ body {
 							+"</ul>"  
 							+"</nav>"  	
 							+"</td>";  
-				$("#table_body").append(nav);
+				$("tbody").append(nav);
 				
 				let btnCls = "<div class='col-12 d-flex justify-content-end'>" 
 							+ "<button type='button' class='btn btn-dark' data-bs-toggle='modal'" 
@@ -869,31 +926,159 @@ body {
 		$("#modalAddRest").modal("hide");
 	})
 	
-	
-	
-	
-		document.addEventListener('click',function(e){
+	function getViewList(currentPage){
+		$.ajax({
+			type : "get"
+			, url : "${pageContext.request.contextPath}/managerReviewProc.vi?currentPage=" +currentPage
+			, dataType : "json"
+		
+		}).done(function(data){
+			console.log(data);
+			$("thead").empty();
+			$("tbody").empty();
+			startNevi = data.startNavi
+			endNevi = data.endNavi
+			
+			let reviewTitle = "<tr>"
+			+ "<th class='col-md-2'>음식점 이름</th>"
+			+ "<th class='col-md-3'>글쓴이</th>"
+			+ "<th class='col-md-2'>작성일</th>"
+			+ "<th class='col-md-3'>리뷰 내용</th>"
+			+ "<th class='col-md-2'>삭제</th>"
+			+ "</tr>";
+			
+			$("thead").append(reviewTitle);
+			
+			for(let dto of data.list){
+				let review = "<tr>"
+				+ "<td>"+ dto.rest_name + "</td>" 
+				+ "<td>" + dto.user_name + "</td>"
+				+  "<td>" + dto.review_date + "</td>" 
+				+ "<td>" + dto.review_content +"</td>"
+				+ "<td><button type='button' class='btn btn-deleteCmt' id='btnDelete' value='" + dto.seq_view + "'>삭제</button></td>"
+				+ "</tr>";
+				$("tbody").append(review);
+			}
+			let str =""
+				 let str1 = ""
+				 let str2 = ""
+				if(data.needPrev == true){
+					str = "<li class='page-item'><div class='page-link 2' id= 'aa'>Previous</div></li>"
+				}
+				for(let j = data.startNavi; j<data.endNavi; j++){
+					str1 += "<li class='page-item'><div class='page-link 2' id= 'bb'>"+j+"</div></li>"
+				}
+				if(data.needNext == true){
+					str2 = "<li class='page-item'><button type ='button' class='page-link 2'>Next</div></li>"
+				}
+				let nav = ""
+					
+					nav = "<td colspan=5>"
+						+"<nav class='col' aria-label='Page navigation example'>"
+						+"<ul class='pagination justify-content-center'>"
+					 	+str+str1+str2
+						+"</ul>"  
+						+"</nav>"  	
+						+"</td>"  	 
+	              $("tbody").append(nav)
+
+		
+		}).fail(function(e){
+			console.log(e);
+		});
+		
+		}
+	 
+	 document.addEventListener('click',function(e){
+        if(e.target.id == 'btnDelete'){
+      	  let seq_view = e.target.value;
+      	  if(confirm("정말로 삭제하시겠습니까?")) {
+       		 $.ajax({
+       			 url: "/managerViewDelete.vi?seq_view="+ seq_view,
+       			 type: "get"
+       		 }).done(function(data){
+       			 if(data == "success") {
+       				 alert("리뷰가 삭제되었습니다.");
+       				getViewList(1);
+       			 } else if(data == "fail") {
+       				 alert("리뷰 삭제에 실패하였습니다.");
+       			 }
+       		 }).fail(function(e){
+       			 console.log(e);
+       		 })
+       	 }
+			
+         }
+        });
+		
+	 document.addEventListener('click',function(e){
 			console.log(e.target.className);
- 	   		//console.log(e.target.className)
- 	   		//console.log(e.target.innerHTML)
+	   		//console.log(e.target.className)
+	   		//console.log(e.target.innerHTML)
 			if(e.target.className == "page-link listPage"){
-     		   let currentPage="";
-     		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
-     			  getListByCurrentPage(Number(endNavi)+1);
-            		//currentPage= data.startNavi+1
+  		   let currentPage="";
+  		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
+ 
+  				 getListByCurrentPage(Number(endNavi)+1);  
+  			  
+         		//currentPage= data.startNavi+1
 	               	}
 	               	if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
-	               		getListByCurrentPage(Number(startNavi)-1);
+	               		
+	               			getListByCurrentPage(Number(startNavi)-1);  
 	               		//currentPage= data.startNavi-1
 	               	}
 	               	if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
 	               		console.log(e.target.innerHTML);
 	               		currentPage=e.target.innerHTML;
-	               		getListByCurrentPage(currentPage);
+	               		
+	               			getListByCurrentPage(currentPage);  
+	        		
 	               		
 	               	}  
-     	   }
-     	});
+  	   }
+  	});
+	 
+	 document.addEventListener('click',function(e){
+	  	   //console.log(e.target.className)
+	  	   //console.log(e.target.innerHTML)
+	  	   if(e.target.className == "page-link 2"){
+	  		   if(e.target.className == "page-link 2" && e.target.innerHTML == "Next") {
+	  			 getViewList( Number(endNevi)+1)
+	         		//currentPage= data.startNavi+1
+	             	}
+	             	if(e.target.className == "page-link 2" && e.target.innerHTML == "Previous"){
+	             		getViewList(Number(startNevi)-1)
+	             		//currentPage= data.startNavi-1
+	             	}
+	             	if(e.target.className == "page-link 2" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+	             		currentPage=e.target.innerHTML
+	             		getViewList(currentPage)
+	             		
+	             	}  
+	  	   }
+	  	
+	      });
+	 
+	 document.addEventListener('click',function(e){
+	       //console.log(e.target.className)
+	       //console.log(e.target.innerHTML)
+	       if(e.target.className == "page-link 3"){
+	          let currentPage=""
+	          if(e.target.className == "page-link 3" && e.target.innerHTML == "Next") {
+	             getCommentList(Number(endNevi)+1)
+	              //currentPage= data.startNavi+1
+	               }
+	               if(e.target.className == "page-link 3" && e.target.innerHTML == "Previous"){
+	                  getCommentList(Number(startNevi)-1)
+	                  //currentPage= data.startNavi-1
+	               }
+	               if(e.target.className == "page-link 3" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+	                  currentPage=e.target.innerHTML
+	                  getCommentList(currentPage)
+	               }  
+	       }
+	     });
 	
 	</script>
 

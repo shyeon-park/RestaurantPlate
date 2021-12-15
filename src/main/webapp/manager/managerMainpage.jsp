@@ -151,7 +151,7 @@ a{
             location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         document.getElementById("review").addEventListener("click",function(){
-            location.href = "/View/managerRevIew.vi";
+            location.href = "${pageContext.request.contextPath}/View/managerVIew.jsp";
         })
   
         function getCommentList(currentPage){			
@@ -228,5 +228,6 @@ a{
 
 
     </script>
+    
 </body>
 </html>
