@@ -39,15 +39,23 @@ a {
 	color: black;
 }
 
+
 #btnHome {
 	cursor: pointer;
 }	
 
-/* footer */ 
-.footer { margin-top : 100px;
-width: 100%;
-/*height: 400px;*/
-background-color: #333;
+
+#btnHome {
+	cursor: pointer;
+}
+
+/* footer */
+.footer {
+	width: 100%;
+	/*height: 400px;*/
+	background-color: #333;
+	margin-top: 100px;
+}
 
 .footerData {
 	width: 40%;
@@ -134,6 +142,40 @@ background-color: #333;
 				</div>
 			</form>
 
+			<div class="footer">
+				<div class="footerData">
+					<div class="row" style="margin-bottom: 80px;">
+						<div class="col-12 d-flex justify-content-center">
+							<i class="fab fa-instagram-square fa-5x"></i> 
+							<i class="fab fa-facebook fa-5x"></i> 
+							<i class="fab fa-twitter-square fa-5x"></i> 
+							<i class="fab fa-line fa-5x"></i>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 d-flex justify-content-center">
+							<span style="font-size: 20px;"><a href="/">InFo</a> · <a
+								href="/">Support</a> · <a href="/">Marketing</a></span>
+						</div>
+						<div class="col-12 d-flex justify-content-center">
+							<span style="font-size: 20px;"><a href="/">Terms of
+									Use</a> · <a href="/">Privacy Policy</a></span>
+						</div>
+						<div class="col-12 d-flex justify-content-center">
+							<span>서울특별시 강남구 ooo로 ooo, ooo타워</span>
+						</div>
+						<div class="col-12 d-flex justify-content-center">
+							<span>고객센터: 02-000-0000</span>
+						</div>
+						<div class="col-12 d-flex justify-content-center">
+							<span style="color: grey;">© 2021 kh 3, Restaurant
+								exploration team. All rights reserved.</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
 			<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 			<!-- 카카오 로그인 sdk 등록-->
 			<script type="text/javascript">
@@ -227,45 +269,6 @@ background-color: #333;
 		</c:otherwise>
 	</c:choose>
 	
-	<div class="footer">
-				<div class="footerData">
-					<div class="row" style="margin-bottom: 80px;">
-						<div class="col-12 d-flex justify-content-center">
-							<i class="fab fa-instagram-square fa-5x"></i> <i
-								class="fab fa-facebook fa-5x"></i> <i
-								class="fab fa-twitter-square fa-5x"></i> <i
-								class="fab fa-line fa-5x"></i>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12 d-flex justify-content-center">
-							<span style="font-size: 20px;"><a href="/">InFo</a> · <a
-								href="/">Support</a> · <a href="/">Marketing</a></span>
-						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<span style="font-size: 20px;"><a href="/">Terms of
-									Use</a> · <a href="/">Privacy Policy</a></span>
-						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<span>서울특별시 강남구 ooo로 ooo, ooo타워</span>
-						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<span>고객센터: 02-000-0000</span>
-						</div>
-						<div class="col-12 d-flex justify-content-center">
-							<span style="color: grey;">© 2021 kh 3, Restaurant
-								exploration team. All rights reserved.</span>
-						</div>
-
-					</div>
-				</div>
-			</div>
-
-
-
-
-
-
 	<!-- =============================비밀번호 찾기 모달 영역 ============================= -->
 	<div class="modal fade" id="pwModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -46,11 +46,13 @@ public class ViewDAO {
 				 
 				 int seq_rest = rs.getInt("seq_rest");
 				 int seq_review = rs.getInt("seq_view");
+				 String rest_name = rs.getString("rest_name");
+				 String user_name = rs.getString("user_name");
 				 String user_id = rs.getString("user_id");
 				 String review_content = rs.getString("review_content");
 				 Date reivew_date = rs.getDate("review_date");
 				 
-				 list.add(new ViewDTO(seq_rest, seq_review, user_id, review_content, reivew_date)); 
+				 list.add(new ViewDTO(seq_rest, seq_review,rest_name, user_name,user_id, review_content, reivew_date)); 
 			 }
 			 
 			 return list;
@@ -58,14 +60,16 @@ public class ViewDAO {
 	}
 	
 	public int insert(ViewDTO dto) throws Exception {
-		String sql = "insert into tbl_view values(seq_view.nextval,?,?,?,sysdate)";
+		String sql = "insert into tbl_view values(seq_view.nextval,?,?,?,?,?,sysdate)";
 		
 		try(Connection con = this.getConnection();
 			PreparedStatement pstmt = con.prepareStatement(sql);){
 			
 			pstmt.setInt(1, dto.getSeq_rest());
-			pstmt.setString(2, dto.getUser_id());
-			pstmt.setString(3, dto.getReview_content());
+			pstmt.setString(2, dto.getRest_name());
+			pstmt.setString(3, dto.getUser_name());
+			pstmt.setString(4, dto.getUser_id());
+			pstmt.setString(5, dto.getReview_content());
 			
 			int rs = pstmt.executeUpdate();
 			
@@ -92,11 +96,13 @@ public class ViewDAO {
 			 
 			while(rs.next()) {
 				 int seq_review = rs.getInt("seq_view");
+				 String rest_name = rs.getString("rest_name");
+				 String user_name = rs.getString("user_name");
 				 String user_id = rs.getString("user_id");
 				 String review_content = rs.getString("review_content");
 				 Date reivew_date = rs.getDate("review_date");
 				 
-				 list.add(new ViewDTO(seq_rest, seq_review, user_id, review_content, reivew_date));
+				 list.add(new ViewDTO(seq_rest, seq_review,rest_name, user_name, user_id, review_content, reivew_date));
 			}
 			for(ViewDTO dto : list) {
 				System.out.println(dto);
@@ -135,11 +141,13 @@ public class ViewDAO {
 			while(rs.next()) {
 				int seq_rest = rs.getInt("seq_rest");
 				int seq_view = rs.getInt("seq_view");
+				String rest_name = rs.getString("rest_name");
+				String user_name = rs.getString("user_name");
 				String user_id = rs.getString("user_id");
 				String review_content = rs.getString("review_content");
 				Date review_date = rs.getDate("review_date");
 				
-				list.add(new ViewDTO(seq_rest, seq_view, user_id, review_content, review_date));
+				list.add(new ViewDTO(seq_view,seq_rest,rest_name, user_name, user_id, review_content, review_date));
 			}
 			return list;			
 		}
@@ -160,11 +168,15 @@ public ArrayList<ViewDTO> getViewCheckList(int seq_rest){
 			
 			while(rs.next()) {
 				int seq_view = rs.getInt("seq_view");
+				String rest_name = rs.getString("rest_name");
+				String user_name = rs.getString("user_name");
 				String user_id = rs.getString("user_id");
 				String review_content = rs.getString("review_content");
 				Date review_date = rs.getDate("review_date");
 				
-				list.add(new ViewDTO(seq_rest, seq_view, user_id, review_content, review_date));
+				System.out.println(seq_view);
+				
+				list.add(new ViewDTO(seq_view,seq_rest,rest_name, user_name, user_id, review_content, review_date));
 				
 			}
 			return list;
@@ -174,5 +186,63 @@ public ArrayList<ViewDTO> getViewCheckList(int seq_rest){
 		return null;
 		
 	}
+public ViewDTO selectBySeq_view(int seq_view) throws Exception {
+	String sql = "select * from tbl_view where seq_view=?";
+	
+	try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);){
+		
+		pstmt.setInt(1, seq_view);
+		
+		ResultSet rs = pstmt.executeQuery();
+		
+		ViewDTO dto = new ViewDTO();
+		if(rs.next()) {
+			dto.setUser_id(rs.getString("user_id"));
+			dto.setReview_content(rs.getString("review_content"));
+			dto.setReview_date(rs.getDate("review_date"));
+			dto.setSeq_rest(rs.getInt("seq_rest"));
+			dto.setSeq_view(seq_view);
+		}
+		return dto;
+	}
+}
+
+
+public int modify(int seq_view, String review_content) throws Exception {
+	String sql = "update tbl_view set review_content=?, review_date=sysdate where seq_view=?";
+	
+	try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);) {
+		
+		pstmt.setString(1,review_content);
+		pstmt.setInt(2, seq_view);
+		
+		int rs = pstmt.executeUpdate();
+		
+		if(rs != -1) {
+			return rs;
+		}
+	}
+	return -1;
+}
+
+public int delete(int seq_view) throws Exception {
+	
+	String sql = "delete from tbl_view where seq_view = ?";
+	
+	try(Connection con = this.getConnection();
+		PreparedStatement pstmt = con.prepareStatement(sql);) {
+		
+		pstmt.setInt(1, seq_view);
+		
+		int rs = pstmt.executeUpdate();
+		
+		if(rs != -1) {
+			return rs;
+		}
+	}
+	return -1;
+}
 
 }
