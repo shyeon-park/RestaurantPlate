@@ -404,58 +404,29 @@ textarea {
 					var geocoder = new kakao.maps.services.Geocoder();
 
 					// 주소로 좌표를 검색합니다
-					<c:choose>
-						<c:when test="${!empty loginSession}">
-							geocoder.addressSearch("${restMap.get('restDto').getRest_address()}", function(result, status) {
+					geocoder.addressSearch("${restMap.get('restDto').getRest_address()}", function(result, status) {
 
-    						// 정상적으로 검색이 완료됐으면 
-     						if (status === kakao.maps.services.Status.OK) {
+    				// 정상적으로 검색이 완료됐으면 
+     				if (status === kakao.maps.services.Status.OK) {
 
-        						var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+        				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-       							// 결과값으로 받은 위치를 마커로 표시합니다
-        						var marker = new kakao.maps.Marker({
-            						map: map,
-            						position: coords
-       			 				});
+       					// 결과값으로 받은 위치를 마커로 표시합니다
+        				var marker = new kakao.maps.Marker({
+            				map: map,
+            				position: coords
+       			 		});
 
-        						// 인포윈도우로 장소에 대한 설명을 표시합니다
-        						var infowindow = new kakao.maps.InfoWindow({
-            						content: '<div style="width:150px;text-align:center;padding:6px 0;">' + "${restMap.get('restDto').getRest_name()}" + '</div>'
-        						});
-        						infowindow.open(map, marker);
+        				// 인포윈도우로 장소에 대한 설명을 표시합니다
+        				var infowindow = new kakao.maps.InfoWindow({
+            				content: '<div style="width:150px;text-align:center;padding:6px 0;">' + "${restMap.get('restDto').getRest_name()}" + '</div>'
+        				});
+        				infowindow.open(map, marker);
 
-        						// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        						map.setCenter(coords);
-    						} 
-						});
-						</c:when>
-						<c:otherwise>
-							geocoder.addressSearch("${restDto.getRest_address()}", function(result, status) {
-
-	    					// 정상적으로 검색이 완료됐으면 
-	     					if (status === kakao.maps.services.Status.OK) {
-
-	        					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-	       						// 결과값으로 받은 위치를 마커로 표시합니다
-	        					var marker = new kakao.maps.Marker({
-	            					map: map,
-	            					position: coords
-	       			 			});
-
-	        					// 인포윈도우로 장소에 대한 설명을 표시합니다
-	        					var infowindow = new kakao.maps.InfoWindow({
-	            					content: '<div style="width:150px;text-align:center;padding:6px 0;">' + "${restDto.getRest_name()}" + '</div>'
-	        					});
-	        					infowindow.open(map, marker);
-
-	        					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-	        					map.setCenter(coords);
-	    					} 
-						});
-						</c:otherwise>
-					</c:choose>
+     					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        					map.setCenter(coords);
+    					} 
+					});
 				</script>
 				<div class="col-7 restInfoBox">
 					<div class="row restCls">
@@ -741,6 +712,27 @@ textarea {
         }) 
 		
 	</script>
+	<script>
+         $("#logoutBtn").click(function () {
+        	 setTimeout(function() {
+			location.href = "${pageContext.request.contextPath}/logoutProc.mem";
+        	 }, 100);
+		})
+         
+        	
+        	
+         Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.
+         console.log(Kakao.isInitialized()); // sdk초기화여부판단
+   		   function kakaoLogout() { // 카카오 로그아웃 함수
+	        if (!Kakao.Auth.getAccessToken()) {
+	        	console.log('로그인되어있지않습니다.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          console.log('로그아웃완료')
+	        })
+	      }
+      </script>
 </body>
 
 </html>

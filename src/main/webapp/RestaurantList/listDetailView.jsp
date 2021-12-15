@@ -457,6 +457,27 @@ a:link {
         	location.href = "/";
         })
 	</script>
+	<script>
+         $("#logoutBtn").click(function () {
+        	 setTimeout(function() {
+			location.href = "${pageContext.request.contextPath}/logoutProc.mem";
+        	 }, 100);
+		})
+         
+        	
+        	
+         Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.
+         console.log(Kakao.isInitialized()); // sdk초기화여부판단
+   		   function kakaoLogout() { // 카카오 로그아웃 함수
+	        if (!Kakao.Auth.getAccessToken()) {
+	        	console.log('로그인되어있지않습니다.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          console.log('로그아웃완료')
+	        })
+	      }
+      </script>
 
 </body>
 

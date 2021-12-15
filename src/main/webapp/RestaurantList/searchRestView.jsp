@@ -361,27 +361,14 @@ a:link {
 					</div>
 				</c:otherwise>
 			</c:choose>
-			<c:choose>
-				<c:when test="${!empty loginSession}">
-					<script>
-						$(".restCard").on("click", function(){
-							console.log($(this));
-							let seq_rest = $(this).find("input").val();
-							console.log(seq_rest);
-							location.href = "${pageContext.request.contextPath}/toRestDetailLoginView.re?seq_rest=" + seq_rest;
-						})
-					</script>
-				</c:when>
-				<c:otherwise>
-					<script>
-						$(".restCard").on("click", function(){
-							let seq_rest = $(this).find("input").val();
-							console.log(seq_rest);
-							location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + seq_rest;
-						})
-					</script>
-				</c:otherwise>
-			</c:choose>	
+			<script>
+				$(".restCard").on("click", function(){
+					console.log($(this));
+					let seq_rest = $(this).find("input").val();
+					console.log(seq_rest);
+					location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + seq_rest;
+				})
+			</script>
 		</div>
 		
 		
@@ -425,5 +412,26 @@ a:link {
    		})
    		
 	</script>
+	<script>
+         $("#logoutBtn").click(function () {
+        	 setTimeout(function() {
+			location.href = "${pageContext.request.contextPath}/logoutProc.mem";
+        	 }, 100);
+		})
+         
+        	
+        	
+         Kakao.init('f5b85acc6a4af9096ab0fcf1ad929c7c'); //발급받은 키 중 javascript키를 사용해준다.
+         console.log(Kakao.isInitialized()); // sdk초기화여부판단
+   		   function kakaoLogout() { // 카카오 로그아웃 함수
+	        if (!Kakao.Auth.getAccessToken()) {
+	        	console.log('로그인되어있지않습니다.')
+	          return
+	        }
+	        Kakao.Auth.logout(function() {
+	          console.log('로그아웃완료')
+	        })
+	      }
+      </script>
 </body>
 </html>
