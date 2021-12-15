@@ -123,55 +123,76 @@ public class RestaurantController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-		} else if (cmd.equals("/toRestDetailView.re")) { // 로그인 안한 사용자에게 맛집상세정보 뿌려주기
-			System.out.println("요청도착");
-
-			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
-			System.out.println(seq_rest);
-
-			try {
-				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
-
-				if (dto != null) {
-					request.setAttribute("restDto", dto);
-					request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request, response);
-				}
-			} catch (Exception e) {
-				response.sendRedirect("/Error/error.jsp");
-				e.printStackTrace();
-			}
-		} else if (cmd.equals("/toRestDetailLoginView.re")) { // 로그인한 사용자에게 맛집상세정보 뿌려주기
+//		} else if (cmd.equals("/toRestDetailView.re")) { // 로그인 안한 사용자에게 맛집상세정보 뿌려주기
+//			System.out.println("요청도착");
+//
+//			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
+//			System.out.println(seq_rest);
+//
+//			try {
+//				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+//
+//				if (dto != null) {
+//					request.setAttribute("restDto", dto);
+//					request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request, response);
+//				}
+//			} catch (Exception e) {
+//				response.sendRedirect("/Error/error.jsp");
+//				e.printStackTrace();
+//			}
+		} else if (cmd.equals("/toRestDetailView.re")) { // 사용자에게 맛집상세정보 뿌려주기
 			System.out.println("요청도착");
 
 			int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
 			HttpSession session = request.getSession();
-			HashMap<String, String> map = (HashMap) session.getAttribute("loginSession");
-			String user_id = map.get("id");
-			System.out.println(seq_rest);
-			System.out.println(user_id);
+			System.out.println(session.getAttribute("loginSession"));
+			HashMap<String, Object> restMap = new HashMap<>();
 
-			try {
-				RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
-				RestMarkDAO rmDao = new RestMarkDAO();
-				RestMarkDTO rmDto = rmDao.checkRestMark(seq_rest, user_id);
+			// 로그인한 사용자일 시
+			if (session.getAttribute("loginSession") != null) {
+				HashMap<String, String> map = (HashMap) session.getAttribute("loginSession");
+				String user_id = map.get("id");
+				System.out.println(seq_rest);
+				System.out.println(user_id);
 
-				if (dto != null) {
-					HashMap<String, Object> restMap = new HashMap<>();
-					restMap.put("restDto", dto);
-					restMap.put("rmDto", rmDto);
-					System.out.println(restMap);
-					request.setAttribute("restMap", restMap);
-					request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request, response);
-				}
+				try {
+					RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+					RestMarkDAO rmDao = new RestMarkDAO();
+					RestMarkDTO rmDto = rmDao.checkRestMark(seq_rest, user_id);
+
+					if (dto != null) {
+						restMap.put("restDto", dto);
+						restMap.put("rmDto", rmDto);
+						System.out.println(restMap);
+						request.setAttribute("restMap", restMap);
+						request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request,
+								response);
+					}
+
 //				} else if (dto != null && rmDto == null) {
 //					request.setAttribute("restDto", dto);
 //					request.setAttribute("rmDto", null);
 //					request.getRequestDispatcher("/restaurantList/restaurantDetailView.jsp").forward(request, response);
 //				}
 
-			} catch (Exception e) {
-				response.sendRedirect("/Error/error.jsp");
-				e.printStackTrace();
+				} catch (Exception e) {
+					response.sendRedirect("/Error/error.jsp");
+					e.printStackTrace();
+				}
+			} else { // 로그인한 사용자가 아닐 시
+				try {
+					RestaurantDTO dto = dao.selectBySeq_rest(seq_rest);
+
+					if (dto != null) {
+						restMap.put("restDto", dto);
+						request.setAttribute("restMap", restMap);
+						request.getRequestDispatcher("/RestaurantList/restaurantDetailView.jsp").forward(request,
+								response);
+					}
+				} catch (Exception e) {
+					response.sendRedirect("/Error/error.jsp");
+					e.printStackTrace();
+				}
 			}
 
 		} else if (cmd.equals("/toRestManagerView.re")) { // 관리자 페이지에 맛집목록 뿌려주기
@@ -211,7 +232,7 @@ public class RestaurantController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-		} else if(cmd.equals("/modifyRestProc.re")) {  // 맛집 수정
+		} else if (cmd.equals("/modifyRestProc.re")) { // 맛집 수정
 			System.out.println("요청도착");
 
 			String filePath = request.getServletContext().getRealPath("restFiles");
@@ -260,8 +281,8 @@ public class RestaurantController extends HttpServlet {
 					}
 
 					// 맛집 정보 수정
-					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu, bname,
-							postcode, address, tel, time, parkingPossible, mark_count));
+					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu,
+							bname, postcode, address, tel, time, parkingPossible, mark_count));
 
 					// 리스트 파일 정보 수정
 					String origin_name = multi.getOriginalFileName("restFile");
@@ -276,8 +297,8 @@ public class RestaurantController extends HttpServlet {
 
 				} else { // 새로 업로드한 파일이 없다면
 					// 리스트 정보만 수정
-					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu, bname,
-							postcode, address, tel, time, parkingPossible, mark_count));
+					int rs = dao.modifyBySeq(new RestaurantDTO(seq_rest, seq_list, restName, restIntro, sido, sigungu,
+							bname, postcode, address, tel, time, parkingPossible, mark_count));
 
 					if (rs == 1) {
 						response.getWriter().write("success");
@@ -289,7 +310,7 @@ public class RestaurantController extends HttpServlet {
 				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
-		} else if(cmd.equals("/deleteRestProc.re")) {	// 맛집 삭제
+		} else if (cmd.equals("/deleteRestProc.re")) { // 맛집 삭제
 			System.out.println("요청도착");
 
 			try {
@@ -322,10 +343,32 @@ public class RestaurantController extends HttpServlet {
 				response.sendRedirect("/Error/error.jsp");
 				e.printStackTrace();
 			}
-			
+
+		} else if (cmd.equals("/toSearchRest.re")) { // 검색 시 일치하는 맛집 목록을 뿌려주는 작업
+			System.out.println("요청도착");
+			String searchWord = request.getParameter("searchWord");
+
+			if (searchWord.equals("")) {
+				request.setAttribute("searchWord", " ");
+				request.getRequestDispatcher("/RestaurantList/searchRestView.jsp").forward(request, response);
+			} else {
+
+				try {
+					ArrayList<RestaurantJoinFileDTO> joinDto = dao.getSearchResult(searchWord);
+					System.out.println(joinDto);
+
+					if (joinDto != null) {
+						request.setAttribute("dto", joinDto);
+						request.setAttribute("searchWord", searchWord);
+						request.getRequestDispatcher("/RestaurantList/searchRestView.jsp").forward(request, response);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
 		}
-			
-		
+
 	}
 
 }
