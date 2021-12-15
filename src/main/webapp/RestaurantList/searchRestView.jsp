@@ -361,27 +361,14 @@ a:link {
 					</div>
 				</c:otherwise>
 			</c:choose>
-			<c:choose>
-				<c:when test="${!empty loginSession}">
-					<script>
-						$(".restCard").on("click", function(){
-							console.log($(this));
-							let seq_rest = $(this).find("input").val();
-							console.log(seq_rest);
-							location.href = "${pageContext.request.contextPath}/toRestDetailLoginView.re?seq_rest=" + seq_rest;
-						})
-					</script>
-				</c:when>
-				<c:otherwise>
-					<script>
-						$(".restCard").on("click", function(){
-							let seq_rest = $(this).find("input").val();
-							console.log(seq_rest);
-							location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + seq_rest;
-						})
-					</script>
-				</c:otherwise>
-			</c:choose>	
+			<script>
+				$(".restCard").on("click", function(){
+					console.log($(this));
+					let seq_rest = $(this).find("input").val();
+					console.log(seq_rest);
+					location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + seq_rest;
+				})
+			</script>
 		</div>
 		
 		
