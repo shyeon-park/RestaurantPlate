@@ -83,7 +83,7 @@ a{
 		<div class="row d-flex">
 			<div class="col-3 nevi">
 				<div class="logo">
-					<div class="col-12"><a href="${pageContext.request.contextPath}/checkBoxDelMem">맛집플레이트</a></div>
+					<div class="col-12"><a href="${pageContext.request.contextPath}/home">맛집플레이트</a></div>
 				</div>
 				<div class="menubox">
 					<div class="col-12" id="member">회원관리</div>
