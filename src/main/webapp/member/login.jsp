@@ -33,11 +33,10 @@ a {
 	text-decoration: none;
 	color: black;
 }
-<<<<<<< HEAD
+
 #btnHome{
 cursor: pointer;
-=======
-
+}
 /* footer */
 .footer {
 	margin-top: 100px;
