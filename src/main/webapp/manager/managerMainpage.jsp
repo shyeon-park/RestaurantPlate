@@ -50,8 +50,8 @@ a {
 
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/checkBoxDelMem.mem"
-		method="post" id="btnSubmit">
+<form action='${pageContext.request.contextPath}/checkBoxDelMem.mem'
+		method='post' id='btnSubmit'>
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -88,13 +88,9 @@ a {
 	let checkBoxArr = []
 	let startNevi;
 	let endNevi;
+	
 	$("#delMem").click(function(){
-		  for (var i = 0; i < checkBoxes.length; i++) {
-               if (checkBoxes[i].checked) {
-            	   //console.log(checkBoxes[i].value)
-            	    checkBoxArr.push(checkBoxes[i].value)
-               }
-           }
+		console.log($('input:checkbox[id="checkbox_name"]:checked').length)
 		  if(checkBoxArr == null) return; 
 		  $("#btnSubmit").submit();
 	})
@@ -117,7 +113,7 @@ a {
             location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         document.getElementById("review").addEventListener("click",function(){
-            //location.href = ""
+            location.href = "${pageContext.request.contextPath}/View/managerVIew.jsp";
         })
   		*/
 			$.ajax({

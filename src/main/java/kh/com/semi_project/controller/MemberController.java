@@ -441,25 +441,22 @@ public class MemberController extends HttpServlet {
 			System.out.println("요청도착");
 			int rs2;
 			try {
-				rs2 = dao.nullcheck(request.getParameterValues("num"));
+				rs2 = dao.nullcheck(request.getParameterValues("chk_arr"));
 				PrintWriter out = response.getWriter();
-				if (rs2 != -1) {
-					String[] checkBox = request.getParameterValues("num");
+				if (rs2 == -1) {
+					String[] checkBox = request.getParameterValues("chk_arr");
 					for (String id : checkBox) {
 						int rs = dao.deleteById(id);
 						if(rs != -1) {
-							out.println("<script>alert(\"성공적으로 삭제되었습니다.\"); location.href='/manager/memberManagement.jsp';</script>");
-							out.flush();
+							response.getWriter().write("성공");
 						}else {
-							out.println("<script>alert(\"삭제에 실패하였습니다 다시 시도해주세요.\"); location.href='/manager/memberManagement.jsp';</script>");
-							out.flush();
+							response.getWriter().write("실패");
 						}
 					}
 					
 				}else {
 					System.out.println("널값입니다.");
-					out.println("<script>alert(\"삭제할 회원을 선택해주세요.\"); location.href='/manger/memberManagement.jsp';</script>");
-					out.flush();
+					response.getWriter().write("선택");
 				}
 
 			} catch (Exception e1) {
