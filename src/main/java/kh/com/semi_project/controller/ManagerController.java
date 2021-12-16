@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("*.fl")
-public class FileController extends HttpServlet {
+
+@WebServlet("*.mg")
+public class ManagerController extends HttpServlet {
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		actionDo(request, response);
 	}
@@ -20,12 +22,16 @@ public class FileController extends HttpServlet {
 	private void actionDo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		
+
 		String url = request.getRequestURI();
 		String ctxPath = request.getContextPath();
 		String cmd = url.substring(ctxPath.length());
 		
-		
+		if(cmd.equals("toManagerPage.mg")) {
+			response.sendRedirect("/manager/managerIndex.jsp");
+		}
+	
+	
 	}
 
 }

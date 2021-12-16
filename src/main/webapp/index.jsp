@@ -14,8 +14,7 @@
 	integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
 	crossorigin="anonymous" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -510,7 +509,7 @@ a:link {
 						<c:when test="${loginSession.identification eq '1'}">
 							<div class="d-none d-md-block col-md-6 menu"></div>
 							<div class="col-1 col-md-1 menu">
-								<a href="${pageContext.request.contextPath}/manager/managerIndex.jsp">관리자페이지</a>
+								<a href="${pageContext.request.contextPath}/toManagerPage.mg">관리자페이지</a>
 							</div>
 							<div class="col-1 col-md-1 menu">
 								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
