@@ -13,7 +13,7 @@
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>리뷰 수정</title>
 
 <style>
 * {

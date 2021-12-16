@@ -211,7 +211,7 @@ private BasicDataSource bds;
 	}
 	
 	public ArrayList<MemberDTO> getMemberList(int startRange, int endRange){
-		String sql ="select * from(select row_number() over(order by signup_date) 순위, a.* from tbl_member a)where 순위 between ? and ?";
+		String sql ="select * from(select row_number() over(order by signup_date) 순위, a.* from tbl_member a)where 순위 between ? and ? AND identification=0";
 		
 		try(Connection con = this.getConnection();
 			PreparedStatement pstmt = con.prepareStatement(sql);){

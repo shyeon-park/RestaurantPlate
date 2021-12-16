@@ -500,13 +500,111 @@ color: white;
 								<div class="row">
 									<label style="margin-bottom: 4px;">영업시간</label>
 									<div class="col-3">
-										<input type="text" id="openTime"
-											class="form-control timepicker" style="text-align: center;">
+										<select class="form-select times" aria-label="Default select example" id="openTime" style="text-align: center;">
+ 											<option value="noValue" selected>오픈시간</option>
+  											<option value="00:00">00:00</option>
+  											<option value="00:30">00:30</option>
+ 											<option value="01:00">01:00</option>
+ 											<option value="01:30">01:30</option>
+ 											<option value="02:00">02:00</option>
+ 											<option value="02:30">02:30</option>
+ 											<option value="03:00">03:00</option>
+ 											<option value="03:30">03:30</option>
+ 											<option value="04:00">04:00</option>
+ 											<option value="04:30">04:30</option>
+ 											<option value="05:00">05:00</option>
+ 											<option value="05:30">05:30</option>
+ 											<option value="06:00">06:00</option>
+ 											<option value="06:30">06:30</option>
+ 											<option value="07:00">07:00</option>
+ 											<option value="07:30">07:30</option>
+ 											<option value="08:00">08:00</option>
+ 											<option value="08:30">08:30</option>
+ 											<option value="09:00">09:00</option>
+ 											<option value="09:30">09:30</option>
+ 											<option value="10:00">10:00</option>
+ 											<option value="10:30">10:30</option>
+ 											<option value="11:00">11:00</option>
+ 											<option value="11:30">11:30</option>
+ 											<option value="12:00">12:00</option>
+ 											<option value="12:30">12:30</option>
+ 											<option value="13:00">13:00</option>
+ 											<option value="13:30">13:30</option>
+ 											<option value="14:00">14:00</option>
+ 											<option value="14:30">14:30</option>
+ 											<option value="15:00">15:00</option>
+ 											<option value="15:30">15:30</option>
+ 											<option value="16:00">16:00</option>
+ 											<option value="16:30">16:30</option>
+ 											<option value="17:00">17:00</option>
+ 											<option value="17:30">17:30</option>
+ 											<option value="18:00">18:00</option>
+ 											<option value="18:30">18:30</option>
+ 											<option value="19:00">19:00</option>
+ 											<option value="19:30">19:30</option>
+ 											<option value="20:00">20:00</option>
+ 											<option value="20:30">20:30</option>
+ 											<option value="21:00">21:00</option>
+ 											<option value="21:30">21:30</option>
+ 											<option value="22:00">22:00</option>
+ 											<option value="22:30">22:30</option>
+ 											<option value="23:00">23:00</option>
+ 											<option value="23:30">23:30</option>
+										</select>
 									</div>
 									~
 									<div class="col-3">
-										<input type="text" id="closeTime"
-											class="form-control timepicker" style="text-align: center;">
+										<select class="form-select times" aria-label="Default select example" id="closeTime" style="text-align: center;">
+ 											<option value="noValue" selected>마감시간</option>
+  											<option value="00:00">00:00</option>
+  											<option value="00:30">00:30</option>
+ 											<option value="01:00">01:00</option>
+ 											<option value="01:30">01:30</option>
+ 											<option value="02:00">02:00</option>
+ 											<option value="02:30">02:30</option>
+ 											<option value="03:00">03:00</option>
+ 											<option value="03:30">03:30</option>
+ 											<option value="04:00">04:00</option>
+ 											<option value="04:30">04:30</option>
+ 											<option value="05:00">05:00</option>
+ 											<option value="05:30">05:30</option>
+ 											<option value="06:00">06:00</option>
+ 											<option value="06:30">06:30</option>
+ 											<option value="07:00">07:00</option>
+ 											<option value="07:30">07:30</option>
+ 											<option value="08:00">08:00</option>
+ 											<option value="08:30">08:30</option>
+ 											<option value="09:00">09:00</option>
+ 											<option value="09:30">09:30</option>
+ 											<option value="10:00">10:00</option>
+ 											<option value="10:30">10:30</option>
+ 											<option value="11:00">11:00</option>
+ 											<option value="11:30">11:30</option>
+ 											<option value="12:00">12:00</option>
+ 											<option value="12:30">12:30</option>
+ 											<option value="13:00">13:00</option>
+ 											<option value="13:30">13:30</option>
+ 											<option value="14:00">14:00</option>
+ 											<option value="14:30">14:30</option>
+ 											<option value="15:00">15:00</option>
+ 											<option value="15:30">15:30</option>
+ 											<option value="16:00">16:00</option>
+ 											<option value="16:30">16:30</option>
+ 											<option value="17:00">17:00</option>
+ 											<option value="17:30">17:30</option>
+ 											<option value="18:00">18:00</option>
+ 											<option value="18:30">18:30</option>
+ 											<option value="19:00">19:00</option>
+ 											<option value="19:30">19:30</option>
+ 											<option value="20:00">20:00</option>
+ 											<option value="20:30">20:30</option>
+ 											<option value="21:00">21:00</option>
+ 											<option value="21:30">21:30</option>
+ 											<option value="22:00">22:00</option>
+ 											<option value="22:30">22:30</option>
+ 											<option value="23:00">23:00</option>
+ 											<option value="23:30">23:30</option>
+										</select>
 									</div>
 									<div class="col-3 d-none">
 										<input type="text" id="time" name="time">
@@ -622,7 +720,7 @@ color: white;
 										</div>
 									</div>
 									<div class="col d-none">
-										<input type="text" class="form-control" id="address"
+										<input type="text" class="form-control" id="addressMd"
 											name="address">
 									</div>
 								</div>
@@ -675,13 +773,111 @@ color: white;
 								<div class="row">
 									<label style="margin-bottom: 4px;">영업시간</label>
 									<div class="col-3">
-										<input type="text" id="openTimeMd"
-											class="form-control timepicker" style="text-align: center;">
+										<select class="form-select" aria-label="Default select example" id="openTimeMd" style="text-align: center;">
+ 											<option value="noValue" selected>오픈시간</option>
+  											<option value="00:00">00:00</option>
+  											<option value="00:30">00:30</option>
+ 											<option value="01:00">01:00</option>
+ 											<option value="01:30">01:30</option>
+ 											<option value="02:00">02:00</option>
+ 											<option value="02:30">02:30</option>
+ 											<option value="03:00">03:00</option>
+ 											<option value="03:30">03:30</option>
+ 											<option value="04:00">04:00</option>
+ 											<option value="04:30">04:30</option>
+ 											<option value="05:00">05:00</option>
+ 											<option value="05:30">05:30</option>
+ 											<option value="06:00">06:00</option>
+ 											<option value="06:30">06:30</option>
+ 											<option value="07:00">07:00</option>
+ 											<option value="07:30">07:30</option>
+ 											<option value="08:00">08:00</option>
+ 											<option value="08:30">08:30</option>
+ 											<option value="09:00">09:00</option>
+ 											<option value="09:30">09:30</option>
+ 											<option value="10:00">10:00</option>
+ 											<option value="10:30">10:30</option>
+ 											<option value="11:00">11:00</option>
+ 											<option value="11:30">11:30</option>
+ 											<option value="12:00">12:00</option>
+ 											<option value="12:30">12:30</option>
+ 											<option value="13:00">13:00</option>
+ 											<option value="13:30">13:30</option>
+ 											<option value="14:00">14:00</option>
+ 											<option value="14:30">14:30</option>
+ 											<option value="15:00">15:00</option>
+ 											<option value="15:30">15:30</option>
+ 											<option value="16:00">16:00</option>
+ 											<option value="16:30">16:30</option>
+ 											<option value="17:00">17:00</option>
+ 											<option value="17:30">17:30</option>
+ 											<option value="18:00">18:00</option>
+ 											<option value="18:30">18:30</option>
+ 											<option value="19:00">19:00</option>
+ 											<option value="19:30">19:30</option>
+ 											<option value="20:00">20:00</option>
+ 											<option value="20:30">20:30</option>
+ 											<option value="21:00">21:00</option>
+ 											<option value="21:30">21:30</option>
+ 											<option value="22:00">22:00</option>
+ 											<option value="22:30">22:30</option>
+ 											<option value="23:00">23:00</option>
+ 											<option value="23:30">23:30</option>
+										</select>
 									</div>
 									~
 									<div class="col-3">
-										<input type="text" id="closeTimeMd"
-											class="form-control timepicker" style="text-align: center;">
+										<select class="form-select" aria-label="Default select example" id="closeTimeMd" style="text-align: center;">
+ 											<option value="noValue" selected>마감시간</option>
+  											<option value="00:00">00:00</option>
+  											<option value="00:30">00:30</option>
+ 											<option value="01:00">01:00</option>
+ 											<option value="01:30">01:30</option>
+ 											<option value="02:00">02:00</option>
+ 											<option value="02:30">02:30</option>
+ 											<option value="03:00">03:00</option>
+ 											<option value="03:30">03:30</option>
+ 											<option value="04:00">04:00</option>
+ 											<option value="04:30">04:30</option>
+ 											<option value="05:00">05:00</option>
+ 											<option value="05:30">05:30</option>
+ 											<option value="06:00">06:00</option>
+ 											<option value="06:30">06:30</option>
+ 											<option value="07:00">07:00</option>
+ 											<option value="07:30">07:30</option>
+ 											<option value="08:00">08:00</option>
+ 											<option value="08:30">08:30</option>
+ 											<option value="09:00">09:00</option>
+ 											<option value="09:30">09:30</option>
+ 											<option value="10:00">10:00</option>
+ 											<option value="10:30">10:30</option>
+ 											<option value="11:00">11:00</option>
+ 											<option value="11:30">11:30</option>
+ 											<option value="12:00">12:00</option>
+ 											<option value="12:30">12:30</option>
+ 											<option value="13:00">13:00</option>
+ 											<option value="13:30">13:30</option>
+ 											<option value="14:00">14:00</option>
+ 											<option value="14:30">14:30</option>
+ 											<option value="15:00">15:00</option>
+ 											<option value="15:30">15:30</option>
+ 											<option value="16:00">16:00</option>
+ 											<option value="16:30">16:30</option>
+ 											<option value="17:00">17:00</option>
+ 											<option value="17:30">17:30</option>
+ 											<option value="18:00">18:00</option>
+ 											<option value="18:30">18:30</option>
+ 											<option value="19:00">19:00</option>
+ 											<option value="19:30">19:30</option>
+ 											<option value="20:00">20:00</option>
+ 											<option value="20:30">20:30</option>
+ 											<option value="21:00">21:00</option>
+ 											<option value="21:30">21:30</option>
+ 											<option value="22:00">22:00</option>
+ 											<option value="22:30">22:30</option>
+ 											<option value="23:00">23:00</option>
+ 											<option value="23:30">23:30</option>
+										</select>
 									</div>
 									<div class="col-3 d-none">
 										<input type="text" id="timeMd" name="time">
@@ -1269,15 +1465,16 @@ color: white;
 		$("#telNum1").val("");
 		$("#telNum2").val("");
 		$("#telNum3").val("");
-		$("#openTime").val("");
-		$("#closeTime").val("");
-		$("input:checkbox[name='parkingPossible']").attr("checked", false);
+		$("#openTime option:eq(0)").prop("selected", true);
+		$("#closeTime option:eq(0)").prop("selected", true); 
+		$("input:checkbox[name='parkingPossible']").prop("checked", false);
 		$("#restFile").val("");
 		$("#modalAddRest").modal("show");
 	})
 
 	// 등록하기 버튼 클릭시 (맛집)
 	$("#btnAdd-rest").on( "click", function(e) {
+		console.log($("#openTime option:selected").val());
 		// regex
 		let regexTel = /^[0-9]{10,12}$/g;
 
@@ -1294,8 +1491,8 @@ color: white;
 					|| $("#telNum3").val() == "" || !regexTel.test(($("#telNum1").val() + $("#telNum2").val() + $("#telNum3").val()))) {
 			alert("음식점 번호를 확인하세요.");
 			return;
-		} else if ($("#openTime").val() == "" || $("#closeTime").val() == "") {
-			alert("영업시간을 입력하세요.");
+		} else if ($("#openTime option:selected").val() == "noValue" || $("#closeTime option:selected").val() == "noValue") {
+			alert("영업시간을 제대로 입력하세요.");
 			return;
 		} else if ($("#restFile").val() == "") {
 			alert("파일을 첨부하세요.");
@@ -1316,10 +1513,11 @@ color: white;
 			contentType : false,
 			processData : false
 		}).done(function(rs) {
-			if (rs == "success") {
+			console.log(rs);
+			if (rs != null) {
 				alert("맛집이 등록되었습니다.");
-				getListByCurrentPage($("#hiddenCurrentPage").val());
-			} else if (rs == "fail") {
+				getRestList(rs);
+			} else {
 				alert("맛집 등록에 실패했습니다.");
 			}
 		}).fail(function(e) {
@@ -1334,8 +1532,8 @@ color: white;
 		$("#telNum1").val("");
 		$("#telNum2").val("");
 		$("#telNum3").val("");
-		$("#openTime").val("");
-		$("#closeTime").val("");
+		$("#openTime option:eq(0)").prop("selected", true);
+		$("#closeTime option:eq(0)").prop("selected", true); 
 		$("input:checkbox[name='parkingPossible']").prop("checked", false);
 		$("#restFile").val("");
 		$("#hiddenSeqBox").val("");
@@ -1493,6 +1691,22 @@ color: white;
 	// 수정버튼 클릭시
 	    $(document).on("click", ".btnRestModify", function(e) {
 	   	 	console.log($(e.target).val());
+	   		$("#restNameMd").val("");
+			$("#restIntroMd").val("");
+			$("#postcodeMd").val("");
+			$("#roadAddressMd").val("");
+			$("#detailAddressMd").val("");
+			$("#extraAddressMd").val("");
+			$("#telNum1Md").val("");
+			$("#telNum2Md").val("");
+			$("#telNum3Md").val("");
+			$("#openTime option:eq(0)").prop("selected", true);
+			$("#closeTime option:eq(0)").prop("selected", true); 
+			$("input:checkbox[name='parkingPossible']").prop("checked", false);
+			$("#restFileMd").val("");
+			$("#hiddenSeqBoxMd").val("");
+			$("#hiddenMarkCountMd").val("");
+			$("#hiddenSeqListMd").val("");
 	   	 
 	   	 	$.ajax({
 	   			 url: "${pageContext.request.contextPath}/getAllListInfo.re?seq_rest=" + $(e.target).val(),
@@ -1516,8 +1730,13 @@ color: white;
 	   		 
 	   		 let time = data.rest_time;
 	   		 time = time.split(" ~ ");
-	   		 $("#openTimeMd").val(time[0]);
-	   		 $("#closeTimeMd").val(time[1]);
+	   		 console.log(time);
+	   		 $("#openTimeMd").val(time[0]).prop("selected",true);
+	   		 $("#closeTimeMd").val(time[1]).prop("selected",true);
+	   		
+	   		 $("input:checkbox[name='parkingPossible'][value='" + data.parking_possible +  "']").prop("checked", true);
+
+	   		 $("#hiddenSeqBoxMd").val(data.seq_rest);
 	   		 $("#hiddenMarkCountMd").val(data.mark_count);
 	   		 $("#hiddenSeqListMd").val(data.seq_list);
 	   		 
@@ -1546,8 +1765,8 @@ color: white;
 	        			|| $("#telNum3Md").val() == "" || !regexTel.test(($("#telNum1Md").val() + $("#telNum2Md").val() + $("#telNum3Md").val()))) {
 	        		alert("음식점 번호를 확인하세요.");
 	        		return;
-	        	} else if($("#openTimeMd").val() == "" || $("#closeTimeMd").val() == ""){
-	        		alert("영업시간을 입력하세요.");
+	        	} else if($("#openTimeMd option:selected").val() == "noValue" || $("#closeTimeMd option:selected").val() == "noValue"){
+	        		alert("영업시간을 확인하세요.");
 	        		return;
 	        	} else if($("#restFileMd").val() == "") {
 	        		alert("파일을 첨부하세요.");
@@ -1586,8 +1805,9 @@ color: white;
 	                $("#telNum1Md").val("");
 	                $("#telNum2Md").val("");
 	                $("#telNum3Md").val("");
-	                $("#openTimeMd").val("");
-	                $("#closeTimeMd").val("");
+	    			$("#openTime option:eq(0)").prop("selected", true);
+	    			$("#closeTime option:eq(0)").prop("selected", true); 
+	    			$("input:checkbox[name='parkingPossible']").prop("checked", false);
 	                $("#restFileMd").val("");
 	                $("#hiddenSeqBoxMd").val("");
 	                $("#hiddenMarkCountMd").val("");

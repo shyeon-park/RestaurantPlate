@@ -255,7 +255,7 @@ a:link {
 				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
 					id="logo">
 			</div>
-			<div class="col-10 col-md-7 menu">
+			<div class="col-10 col-md-6 menu">
 				<form action="${pageContext.request.contextPath}/toSearchRest.re" method="post" id="searchForm">
 					<div class="header-search">
 						<input type="text" id="searchBox" placeholder="맛집명 또는 주소 검색" name="searchWord" value="">
@@ -263,36 +263,58 @@ a:link {
 					</div>
 				</form>
 			</div>
+			
 			<c:choose>
 				<c:when test="${!empty loginSession}">
-					<div class="d-none d-md-block col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
-					</div>
-					<div class="d-none d-md-block col-md-1 menu">
-						<a href="/view.vi?currentPage=1">전체 리뷰</a>
-					</div>
-					<div class="col-2 col-md-1 menu">
-						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-							width="50px" height="50px" id="userPage" onclick=showModal()>
-					</div>
-				</c:when>
+				
+					<c:choose>
+						<c:when test="${loginSession.identification eq '1'}">
+							<div class="col-1 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/manager/managerIndex.jsp">관리자페이지</a>
+							</div>
+							<div class="d-none d-md-block col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+							</div>
+							<div class="d-none d-md-block col-md-1 menu">
+								<a href="/view.vi?currentPage=1">전체 리뷰</a>
+							</div>
+							<div class="col-1 col-md-1 menu">
+								<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+									width="50px" height="50px" id="userPage" onclick=showModal()>
+							
+							</div>
+						</c:when>
 
+						<c:otherwise>
+							<div class="d-none d-md-block col-md-1 menu"></div>
+							<!-- 사용자일때 -->
+							<div class="d-none d-md-block col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+							</div>
+							<div class="d-none d-md-block col-md-1 menu">
+								<a href="/view.vi?currentPage=1">전체 리뷰</a>
+							</div>
+							<div class="col-1 menu">
+								<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+									width="50px" height="50px" id="userPage" onclick=showModal()>
+							</div>
+						</c:otherwise>
+					</c:choose>
+					
+				</c:when>
 				<c:otherwise>
+					<div class="d-none d-md-block col-md-1 menu"></div>
 					<c:if test="${rs eq 'fail'}">
 						<script type="text/javascript">
-							alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
+						alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
 						</script>
 					</c:if>
-
 					<div class="col-2 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
 					</div>
-
-					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
-						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
-					</div> -->
 					<div class="d-none d-md-block col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집 리스트</a>
+						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
+							리스트</a>
 					</div>
 					<div class="d-none d-md-block col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>

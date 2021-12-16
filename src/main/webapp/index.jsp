@@ -510,7 +510,7 @@ a:link {
 						<c:when test="${loginSession.identification eq '1'}">
 							<div class="d-none d-md-block col-md-6 menu"></div>
 							<div class="col-1 col-md-1 menu">
-								<a href="${pageContext.request.contextPath}/manager/manager.jsp">관리자페이지</a>
+								<a href="${pageContext.request.contextPath}/manager/managerIndex.jsp">관리자페이지</a>
 							</div>
 							<div class="col-1 col-md-1 menu">
 								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
@@ -521,6 +521,7 @@ a:link {
 							<div class="col-1 col-md-1 menu">
 								<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
 									width="50px" height="50px" id="userPage" onclick=showModal()>
+							
 							</div>
 						</c:when>
 
@@ -606,6 +607,7 @@ a:link {
 				<div class="col-12 tit">
 					<h2>플레이트 스토리</h2>
 				</div>
+				
 			</div>
 			<div class="row section1_row">
 				<div class="col col-12 col-md-6 imgBox">
@@ -685,7 +687,6 @@ a:link {
 			</div>
 		</div>
 
-		<button type="button" class="btn btn-dark" id="managerBtn">관리자</button>
 	</div>
 	<script>
          $(document).ready(function(){
@@ -745,6 +746,7 @@ a:link {
                 }
             })
         })
+        
         // 로고 클릭 시
         $("#logo").on("click", function(){
         	location.href = "/";
@@ -780,11 +782,6 @@ a:link {
 	        })
 	      }
         
-        //
-        $("#managerBtn").on("click", function(){
-        	location.href = "${pageContext.request.contextPath}/manager/manager.jsp"
-        	//location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
-        })
         
     </script>
 

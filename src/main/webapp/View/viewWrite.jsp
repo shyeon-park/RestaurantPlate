@@ -13,7 +13,7 @@
 	integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 	crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>리뷰 작성</title>
 
 <style>
     *{
@@ -63,12 +63,9 @@
 			</div>
 
 			<div class="row">
-<<<<<<< HEAD
 				<div class="col">
 					<input type="file" class="custom-file-input" id="fileUpload" multiple>		
 				</div>
-=======
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 				<input type="text" name="rest_name" value="${rest_name}" hidden>
 			</div>
             <div class="btnCLs">
@@ -77,10 +74,11 @@
             </div>
 		</div>
 	</form>
+	<input type="text" class="d-none" id="hiddenSeq_rest" value="${seq_rest}">
 	<script>
 		document.getElementById("btnCancel").addEventListener("click",
 				function() {
-					return;
+					location.href = "${pageContext.request.contextPath}/toRestDetailView.re?seq_rest=" + $("#hiddenSeq_rest").val();
 				});
 
 		document.getElementById("btnSuccess").onclick = function() {

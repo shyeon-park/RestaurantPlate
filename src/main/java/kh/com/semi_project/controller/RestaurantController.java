@@ -97,7 +97,9 @@ public class RestaurantController extends HttpServlet {
 				int rsFile = daoRFile.insertFile(new RestaurantFileDTO(0, seq_rest, origin_name, system_name));
 
 				if (rs != -1 && rsFile != -1) {
-					response.getWriter().write("success");
+					Gson gson = new Gson();
+					String data = gson.toJson(seq_list);
+					response.getWriter().write(data);
 				} else {
 					response.getWriter().write("fail");
 				}

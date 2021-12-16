@@ -387,41 +387,61 @@ textarea {
 				<img src="${pageContext.request.contextPath}/img/plateLogo.png"
 					id="logo">
 			</div>
-			<div class="col-2 col-md-7 menu"></div>
+			
 			<c:choose>
 				<c:when test="${!empty loginSession}">
-					<div class="col-2 col-md-1 menu">
-						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
-							리스트</a>
-					</div>
-					<div class="col-2 col-md-1 menu">
-						<a href="/view.vi?currentPage=1">전체 리뷰</a>
-					</div>
-					<div class="col-2 col-md-1 menu">
-						<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
-							width="50px" height="50px" id="userPage" onclick=showModal()>
-					</div>
-				</c:when>
+				
+					<c:choose>
+						<c:when test="${loginSession.identification eq '1'}">
+							<div class="d-none d-md-block col-md-6 menu"></div>
+							<div class="col-1 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/manager/managerIndex.jsp">관리자페이지</a>
+							</div>
+							<div class="col-1 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+							</div>
+							<div class="col-1 col-md-1 menu">
+								<a href="/view.vi?currentPage=1">전체 리뷰</a>
+							</div>
+							<div class="col-1 col-md-1 menu">
+								<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+									width="50px" height="50px" id="userPage" onclick=showModal()>
+							
+							</div>
+						</c:when>
 
+						<c:otherwise>
+							<!-- 사용자일때 -->
+							<div class="d-none d-md-block col-md-7 menu"></div>
+							<div class="col-3 col-md-1 menu">
+								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
+							</div>
+							<div class="col-3 col-md-1 menu">
+								<a href="/view.vi?currentPage=1">전체 리뷰</a>
+							</div>
+							<div class="col-3 col-md-1 menu">
+								<img src="https://cdn-icons-png.flaticon.com/512/149/149995.png"
+									width="50px" height="50px" id="userPage" onclick=showModal()>
+							</div>
+						</c:otherwise>
+					</c:choose>
+					
+				</c:when>
 				<c:otherwise>
+				<div class="d-none d-md-block col-md-7 menu"></div>
 					<c:if test="${rs eq 'fail'}">
 						<script type="text/javascript">
 						alert("아이디 혹은 비밀번호를 잘못 입력 하였습니다.")
 						</script>
 					</c:if>
-
-					<div class="col-2 col-md-1 menu">
+					<div class="col-3 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/login.mem">로그인</a>
 					</div>
-
-					<!-- <div class="col-2 col-md-1 menu d-flex justify-content-start">
-						<a href="${pageContext.request.contextPath}/signup.mem">회원가입</a>
-					</div> -->
-					<div class="col-2 col-md-1 menu">
+					<div class="col-3 col-md-1 menu">
 						<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집
 							리스트</a>
 					</div>
-					<div class="col-2 col-md-1 menu">
+					<div class="col-3 col-md-1 menu">
 						<a href="/view.vi?currentPage=1">전체 리뷰</a>
 					</div>
 				</c:otherwise>
@@ -492,7 +512,22 @@ textarea {
 								<span>추천수 : </span> <span id="totalMark">${restMap.get('restDto').getMark_count()}</span>
 							</div>
 							<c:choose>
-								<c:when test="${!empty loginSession}">
+								<c:when test="${empty loginSession || loginSession.identification eq '1'}">
+									<button type="button" id="btnRestMark" disabled>
+										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
+									</button>
+									<script>
+										$(function(){
+											$("#btnRestMark").css("border", "3px solid gray");
+				    						$("#markIcon").css("color", "gray");
+				    						$("#markTxt").css("color", "gray");
+										})
+									</script>
+									<p id="markTxt">추천해요!</p>
+									<input class="d-none" name="seq_rest"
+										value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
+								</c:when>
+								<c:otherwise>
 									<button type="button" id="btnRestMark">
 										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
 									</button>
@@ -519,21 +554,6 @@ textarea {
 											</script>
 										</c:otherwise>
 									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<button type="button" id="btnRestMark" disabled>
-										<i class="far fa-thumbs-up fa-2x" id="markIcon"></i>
-									</button>
-									<script>
-										$(function(){
-											$("#btnRestMark").css("border", "3px solid gray");
-				    						$("#markIcon").css("color", "gray");
-				    						$("#markTxt").css("color", "gray");
-										})
-									</script>
-									<p id="markTxt">추천해요!</p>
-									<input class="d-none" name="seq_rest"
-										value="${restMap.get('restDto').getSeq_rest()}" id="seq_rest">
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -580,7 +600,7 @@ textarea {
 							<p>${restMap.get('restDto').getParking_possible()}</p>
 						</div>
 						<c:choose>
-							<c:when test="${empty loginSession}">
+							<c:when test="${empty loginSession || loginSession.identification eq '1'}">
 								<div class="col-2" style="text-align: center;">
 									<button type="button" id="btnViewWrite" disabled>
 										<i class="fas fa-pen fa-2x" id="markIcon2"></i>
@@ -617,25 +637,9 @@ textarea {
 			</div>
 
 			<div class="reviewContainer">
-<<<<<<< HEAD
-				<c:choose>
-					<c:when test="${empty loginSession}">
-						<div class="row">
-							<input type="button" id="btnViewWrite" disabled value="리뷰쓰기">
-						</div>
-					</c:when>
-					<c:otherwise>
-						<div class="row">
-							<input type="button" id="btnViewWrite" value="리뷰쓰기">
-						</div>
-					</c:otherwise>
-				</c:choose>
-
-=======
 				<div class="reviewTitle">
 					<span>리뷰</span>
 				</div>
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 				<div class="reviewBox"></div>
 			</div>
 		</div>
@@ -682,13 +686,10 @@ textarea {
 		getViewList();
 	});
 	
-<<<<<<< HEAD
-=======
 	$(document).on("hover", ".m-1", function(){
 		$("#contentRv").css("backgroundColor", "lightgrey");
 	})
 	
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 	// 리뷰쓰기 버튼 클릭 시  맛집 번호와 이름 같이 viewWrite.vi로 보내줌.
 	document.getElementById("btnViewWrite").addEventListener("click", function() {
 		location.href = "${pageContext.request.contextPath}/viewWrite.vi?seq_rest=${restMap.get('restDto').getSeq_rest()}&rest_name=${restMap.get('restDto').getRest_name()}";
@@ -708,11 +709,9 @@ textarea {
 			
 			for(let dto of data){
 				console.log(dto.reivew)
-<<<<<<< HEAD
-				let review = "<div class='row m-1'>"
-=======
+				
 				let review = "<div class='row m-1' style='border-bottom: 2px solid lightgray; padding-top: 30px; padding-bottom: 30px;'>"
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
+
 					 + "<div class='col-12 d-flex justify-content-start cmt-info'>"
 					 +  dto.user_name
 					 + "</div>"
@@ -720,11 +719,7 @@ textarea {
 		             + dto.review_date
 		             + "</div>"
 		             + "<div class='col-10 d-flex justify-content-start reviewDiv-cmt'>"
-<<<<<<< HEAD
-		             + "<textarea class='form-control' class='content-cmt' name='view_comment' readonly>"
-=======
 		             + "<textarea id='contentRv' class='form-control' class='content-cmt' name='view_comment' readonly style='background-color: white; border: none;'>"
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
 		             + dto.review_content
 		             + "</textarea>"
 		             + "</div>"
@@ -771,17 +766,7 @@ textarea {
        		 }).done(function(data){
        			 if(data == "success") {
        				 alert("리뷰가 삭제되었습니다.");
-<<<<<<< HEAD
-<<<<<<< HEAD
-       				getViewList();
-=======
        				 getViewList();
->>>>>>> e4c648718d9b354daf23b398a978968dcc5aa64a
-=======
-=======
-       				 getViewList();
->>>>>>> ffa8ff4ee0891b3d5e6623ac233a2f5748d5b575
->>>>>>> 6883f0474f20ae695b93bebb41cd57ea55880769
        			 } else if(data == "fail") {
        				 alert("리뷰 삭제에 실패하였습니다.");
        			 }
