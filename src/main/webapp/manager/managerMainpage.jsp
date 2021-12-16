@@ -50,8 +50,8 @@ a {
 
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/checkBoxDelMem.mem"
-		method="post" id="btnSubmit">
+<form action='${pageContext.request.contextPath}/checkBoxDelMem.mem'
+		method='post' id='btnSubmit'>
 		<div class="container">
 			<div class="row">
 				<div class="col">
@@ -88,13 +88,9 @@ a {
 	let checkBoxArr = []
 	let startNevi;
 	let endNevi;
+	
 	$("#delMem").click(function(){
-		  for (var i = 0; i < checkBoxes.length; i++) {
-               if (checkBoxes[i].checked) {
-            	   //console.log(checkBoxes[i].value)
-            	    checkBoxArr.push(checkBoxes[i].value)
-               }
-           }
+		console.log($('input:checkbox[id="checkbox_name"]:checked').length)
 		  if(checkBoxArr == null) return; 
 		  $("#btnSubmit").submit();
 	})
@@ -183,10 +179,6 @@ a {
             });
 
     </script>
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 6883f0474f20ae695b93bebb41cd57ea55880769
 </body>
 </html>

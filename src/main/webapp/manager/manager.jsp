@@ -244,6 +244,12 @@ body {
 	margin-right: 30px;
 }
 
+/* 맛집플레이트 누르면 홈으로 css*/
+#managerHomeBtn{
+text-decoration: none;
+color: white;
+}
+
 /* 회원관리 영역*/
 
 /* 리뷰관리 영역 */
@@ -254,7 +260,7 @@ body {
 		<div class="navi">
 			<div class="logo">
 				<div class="col-12">
-					<a href="${pageContext.request.contextPath}/checkBoxDelMem">맛집플레이트</a>
+					<a href="${pageContext.request.contextPath}/" id="managerHomeBtn">맛집플레이트</a>
 				</div>
 			</div>
 			<div class="menubox">
@@ -591,7 +597,7 @@ body {
 									</div>
 									<div class="col-6">
 										<input type="button" class="btn btn-dark addressBtn"
-											onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+											onclick="sample4_execDaumPostcodeMd()" value="우편번호 찾기"><br>
 									</div>
 								</div>
 								<div class="row">
@@ -782,7 +788,7 @@ body {
 	}
 	
 	// 맛집 수정 전용
-	function sample4_execDaumPostcode() {
+	function sample4_execDaumPostcodeMd() {
 		new daum.Postcode(
 				{
 					oncomplete : function(data) {
@@ -824,6 +830,7 @@ body {
 	</script>
 	
 	<script>
+	checkBoxes = document.getElementsByName("num");	 
 	// 로드될 시
 	$(document).ready(function(){
 		
@@ -896,10 +903,80 @@ body {
     
     
     
+      //버튼 누를 시 회원 삭제
+      $(document).on("click","#delMem",function(e){
+    	  var chk_arr = []
+			console.log( $('input:checkbox[name="num"]:checked').length)
+			 $('input:checkbox[name="num"]:checked').each(function() {
+			         let chk = this.value
+			         chk_arr.push(chk);
+			 });
+      	console.log(chk_arr)
+			$.ajax({
+  				url : "${pageContext.request.contextPath}/checkBoxDelMem.mem",
+  				type : "post",
+  				traditional : true,
+  				data : {"chk_arr" : chk_arr}
+  			}).done(function(rs) {
+  				console.log(rs)
+  					
+  				if(rs=="빈칸"){
+  					alert("삭제할 회원을 선택해주세요");
+  				}else if(rs == "실패"){
+  					alert("삭제가 실패하였습니다. 다시 시도해주세요!");
+  				}else{
+  					getCommentList(1);
+  				}
+  				
+  			}).fail(function(e) {
+  				consol.log(e);
+  			})
+      })
+      
+      /*
+		 document.addEventListener('click',function(e){
+          if(e.target.id == 'delMem'){
+        	var chk_arr = []
+			console.log( $('input:checkbox[name="num"]:checked').length)
+			 $('input:checkbox[name="num"]:checked').each(function() {
+			         let chk = this.value
+			         chk_arr.push(chk);
+			 });
+        	console.log(chk_arr)
+			$.ajax({
+    				url : "${pageContext.request.contextPath}/checkBoxDelMem.mem",
+    				type : "post",
+    				traditional : true,
+    				data : {"chk_arr" : chk_arr}
+    			}).done(function(rs) {
+    				console.log(rs)
+    					
+    				if(rs=="선택"){
+    					alert("삭제할 회원을 선택해주세요");
+    				}else if(rs == "실패"){
+    					alert("삭제가 실패하였습니다. 다시 시도해주세요!");
+    				}else{
+    					getCommentList(1);
+    					alert("회원정보 삭제가 완료 되었습니다.");
+    				}
+    				
+    			}).fail(function(e) {
+    				consol.log(e);
+    			})
+          }          
+		 })
+   	*/      
+   
+    //회원관리 체크박스 전체선택 전체취소
+ 	document.addEventListener('click',function(e){
+          if(e.target.id == 'cbx_chkAll'){
+        	  console.log("aa")
+          if ($("#cbx_chkAll").prop("checked"))  $("input[name=num]").prop("checked", true)
+          else  $("input[name=num]").prop("checked", false)
+          }});
     
-    
-    /*회원관리*/
-    function getCommentList(currentPage){         
+	 /*회원관리*/
+     function getCommentList(currentPage){         
          $.ajax({
             type : "get"
             , url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
@@ -917,13 +994,16 @@ body {
 			$(".headDiv").append(head);
 			
             /* thead 영역 설정*/
-            let thead = "<tr>"
-                     +"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
-                     +"<th class='w-20'>번호</th>"
-                     +"<th class='w-20'>아이디</th>"   
-                       +"<th class='w-20'>닉네임</th>"
-                     +"<th class='w-20'>가입일</th>"
-                     +"</tr>";
+           
+	       
+	            let thead = "<tr>"
+	                     +"<th class='w-20'><input type='checkbox' id='cbx_chkAll' name='numAll' value=''> 전체선택</th>"
+	                     +"<th class='w-20'>순서</th>"
+	                     +"<th class='w-20'>아이디</th>"   
+	                       +"<th class='w-20'>닉네임</th>"
+	                     +"<th class='w-20'>가입일</th>"
+	                     +"</tr>"
+	                    
                      
                   
             console.log(data)
@@ -936,6 +1016,7 @@ body {
             for(let dto of data.list){
                list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
             }   
+
              let str =""
              let str1 = ""
              let str2 = ""
@@ -958,12 +1039,18 @@ body {
                    +str+str1+str2
                   +"</ul>"  
                   +"</nav>"     
-                  +"</td>";
+                  +"</td>"
                   
+           let btn =  "<div class='d-flex justify-content-end'>"
+                      +"<button type='button' class = 'btn btn-dark' id='delMem'>삭제하기</button>"
+                      +"</div>"
+                      
               $("thead").append(thead)      
               $("tbody").append(list);
               $("tbody").append(nav)
-        
+
+              $(".btnCls").append(btn)
+
          }).fail(function(e){
             console.log(e);
          });
@@ -1017,16 +1104,17 @@ body {
 				let str3 = "";
 				
 				if(data.needPrev == true){
-					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
-				}
-				
-				for(let j = data.startNavi; j < data.endNavi + 1; j++){
-					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
-				}
-				
-				if(data.needNext == true){
-					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
-				}
+		               str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNevi + ")-1);'>Prev</a></li>";
+		            }
+		            
+		            for(let j = data.startNavi; j < data.endNavi + 1; j++){
+		               str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
+		            }
+		            
+		            if(data.needNext == true){
+		               str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNevi + ")+1);'>Next</a></li>";
+		            }
+		            
 				let nav = "<td colspan='5' class='naviTd'>"
 							+"<nav class='col' aria-label='Page navigation example'>"
 							+"<ul class='pagination justify-content-center'>"
@@ -1164,7 +1252,9 @@ body {
 				console.log(e);
 			})
 		}
-	})
+	})      
+	
+	
 
 	// 맛집등록 버튼 클릭 시
 	$(document).on("click", ".btnAddRestaurnat", function(e) {
@@ -1526,7 +1616,7 @@ body {
 	        	 }
 	         })
 	         
-	         
+ 
 	         
 	         
 	         

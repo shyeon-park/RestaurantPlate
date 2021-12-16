@@ -1,4 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
+<<<<<<< HEAD
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+=======
+>>>>>>> b11ffed61ba7e5da38ee5d16f89bfc8e9cd1c2f1
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -184,4 +196,9 @@ a {
 	</script>
 
 </body>
+<<<<<<< HEAD
+</html>
+</body>
+=======
+>>>>>>> b11ffed61ba7e5da38ee5d16f89bfc8e9cd1c2f1
 </html>

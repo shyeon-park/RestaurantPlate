@@ -510,7 +510,7 @@ a:link {
 						<c:when test="${loginSession.identification eq '1'}">
 							<div class="d-none d-md-block col-md-6 menu"></div>
 							<div class="col-1 col-md-1 menu">
-								<a href="${pageContext.request.contextPath}/toTotalListView.li">관리자페이지</a>
+								<a href="${pageContext.request.contextPath}/manager/manager.jsp">관리자페이지</a>
 							</div>
 							<div class="col-1 col-md-1 menu">
 								<a href="${pageContext.request.contextPath}/toTotalListView.li">맛집리스트</a>
@@ -782,7 +782,7 @@ a:link {
         
         //
         $("#managerBtn").on("click", function(){
-        	location.href = "${pageContext.request.contextPath}/manager/managerMainpage.jsp?currentPage=1";
+        	location.href = "${pageContext.request.contextPath}/manager/manager.jsp"
         	//location.href = "${pageContext.request.contextPath}/toListManagement.li?currentPage=1";
         })
         
