@@ -48,13 +48,18 @@ body {
 	height: 100%;
 }
 
+.wrapper {
+	width: 100%;
+	height: 100%;
+}
+
 /* 네비 */
 .navi {
 	float: left;
 	width: 20%;
-	height: 1000px;
 	background-color: #333;
-	padding-top: 200px;
+	padding-top: 100px;
+	height: 1200px;
 }
 
 .logo {
@@ -68,11 +73,11 @@ body {
 }
 
 .menubox {
-	height: 500px;
-	display: flex;
-	flex-direction: column;
+	/*height: 500px;*/
+	/*display: flex;*/
+	/*flex-direction: column;
 	justify-content: space-around;
-	align-items: flex-end;
+	align-items: flex-end;*/
 	font-weight: bold;
 	font-size: 30px;
 }
@@ -80,6 +85,8 @@ body {
 .menubox>div {
 	color: white;
 	text-align: center;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
 .menubox>.col-12:hover {
@@ -92,12 +99,11 @@ body {
 .mainManeger {
 	float: left;
 	width: 80%;
-	height: 1000px;
+	height: 1200px;
 }
 
 .managerView {
 	width: 80%;
-	height: 100%;
 	margin: auto;
 }
 
@@ -207,40 +213,42 @@ body {
 </style>
 </head>
 <body>
-
-	<div class="navi">
-		<div class="logo">
-			<div class="col-12">
-				<a href="${pageContext.request.contextPath}/checkBoxDelMem">맛집플레이트</a>
+	<div class="wrapper">
+		<div class="navi">
+			<div class="logo">
+				<div class="col-12">
+					<a href="${pageContext.request.contextPath}/checkBoxDelMem">맛집플레이트</a>
+				</div>
+			</div>
+			<div class="menubox">
+				<div class="col-12" id="member">회원관리</div>
+				<div class="col-12" id="list">맛집리스트</div>
+				<div class="col-12" id="review">리뷰관리</div>
 			</div>
 		</div>
-		<div class="menubox">
-			<div class="col-12" id="member">회원관리</div>
-			<div class="col-12" id="list">맛집리스트</div>
-			<div class="col-12" id="review">리뷰관리</div>
+
+
+		<div class="mainManeger">
+			<div class="managerView">
+				<div class="txtCls">
+					<h2>관리자 페이지</h2>
+				</div>
+
+				<div class="headDiv"></div>
+
+				<table class="table table-bordered list-table">
+					<thead id="table_head">
+
+
+					</thead>
+					<tbody id="table_body">
+
+
+					</tbody>
+				</table>
+				<div class="row btnCls"></div>
+		
 		</div>
-	</div>
-
-
-	<div class="mainManeger">
-		<div class="managerView">
-			<div class="txtCls">
-				<h2>관리자 페이지</h2>
-			</div>
-
-			<div class="headDiv"></div>
-
-			<table class="table table-bordered list-table">
-				<thead id="table_head">
-
-
-				</thead>
-				<tbody id="table_body">
-
-
-				</tbody>
-			</table>
-			<div class="row btnCls"></div>
 
 
 
@@ -553,6 +561,13 @@ body {
 	<script>
 	// 로드될 시
 	$(document).ready(function(){
+		
+		getCommentList(1);
+		$("#member").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+		
 		// 체크박스 하나만 선택 가능
 		$(".form-check-input").click(function() {
 			if ($(this).prop('checked')) {
@@ -562,19 +577,55 @@ body {
 		});
 	})
 	
-	let startNavi = "";
-	let endNavi = "";
+	let startNevi = "";
+	let endNevi = "";
 	
 	
 	document.getElementById("member").addEventListener("click",function(){
     	getCommentList(1);
+    	$("#member").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+    	$("#list").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#review").css({
+			"backgroundColor": "",
+			"color": ""
+		});
         //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
     })
     document.getElementById("list").addEventListener("click",function(){
     	getListByCurrentPage(1);
+    	$("#member").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#list").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+    	$("#review").css({
+			"backgroundColor": "",
+			"color": ""
+		});
     })
     document.getElementById("review").addEventListener("click",function(){
     	getViewList(1);
+    	$("#member").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#list").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#review").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
     })
     
     
@@ -617,12 +668,16 @@ body {
              let str =""
              let str1 = ""
              let str2 = ""
+             
             if(data.needPrev == true){
                str = "<li class='page-item'><div class='page-link 3'>Previous</div></li>"
             }
-            for(let j = data.startNavi; j<=data.endNavi; j++){
+             
+            Number(endNevi)+1
+            for(let j = data.startNavi; j < data.endNavi; j++){
                str1 += "<li class='page-item'><div class='page-link 3'>"+j+"</div></li>"
             }
+            
             if(data.needNext == true){
                str2 = "<li class='page-item'><div class='page-link 3'>Next</div></li>"
             }
@@ -660,8 +715,8 @@ body {
 	        	$("#table_body").empty();
 	        	$(".btnCls").empty();
 
-	        	startNavi = data.startNavi;
-				endNavi = data.endNavi;
+	        	startNevi = data.startNavi;
+				endNevi = data.endNavi;
 
 				let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
 				$(".headDiv").append(head);
@@ -690,7 +745,7 @@ body {
 					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
 				}
 				
-				Number(endNavi)+1
+				Number(endNevi)+1
 				for(let j = data.startNavi; j <= data.endNavi; j++){
 					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
 				}
@@ -938,6 +993,7 @@ body {
 			$(".headDiv").empty();
 			$("thead").empty();
 			$("tbody").empty();
+			$(".btnCls").empty();
 			
 			startNevi = data.startNavi
 			endNevi = data.endNavi
@@ -968,12 +1024,16 @@ body {
 			let str =""
 				 let str1 = ""
 				 let str2 = ""
+				 
 				if(data.needPrev == true){
 					str = "<li class='page-item'><div class='page-link 2' id= 'aa'>Previous</div></li>"
 				}
+			
+				Number(endNevi)+1
 				for(let j = data.startNavi; j<data.endNavi; j++){
 					str1 += "<li class='page-item'><div class='page-link 2' id= 'bb'>"+j+"</div></li>"
 				}
+				
 				if(data.needNext == true){
 					str2 = "<li class='page-item'><button type ='button' class='page-link 2'>Next</div></li>"
 				}
@@ -1026,13 +1086,13 @@ body {
 		   let currentPage="";
 		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
 
-				 getListByCurrentPage(Number(endNavi)+1);  
+				 getListByCurrentPage(Number(endNevi)+1);  
 			  
      		//currentPage= data.startNavi+1
                	}
                	if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
                		
-               			getListByCurrentPage(Number(startNavi)-1);  
+               			getListByCurrentPage(Number(startNevi)-1);  
                		//currentPage= data.startNavi-1
                	}
                	if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
