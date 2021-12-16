@@ -27,11 +27,10 @@ public class ManagerController extends HttpServlet {
 		String ctxPath = request.getContextPath();
 		String cmd = url.substring(ctxPath.length());
 		
-		if(cmd.equals("toManagerPage.mg")) {
-			response.sendRedirect("/manager/managerIndex.jsp");
+		System.out.println("url :  " + cmd);
+		if(cmd.equals("/toManagerPage.mg")) {
+			response.sendRedirect("/plate/indexMng.jsp");
 		}
-	
-	
 	}
 
 }
