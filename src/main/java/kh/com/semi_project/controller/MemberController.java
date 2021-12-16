@@ -164,8 +164,7 @@ public class MemberController extends HttpServlet {
 					session.setAttribute("loginSession", loginMap);
 					System.out.println(loginMap.get("id"));
 					System.out.println(loginMap.get("nickname"));
-						response.sendRedirect("/");
-			
+					response.sendRedirect("/");
 
 				} else {
 					RequestDispatcher rd = request.getRequestDispatcher("/member/login.jsp");
@@ -433,37 +432,28 @@ public class MemberController extends HttpServlet {
 				Gson gson = new Gson();
 				String rs = gson.toJson(naviMap);
 				response.getWriter().write(rs);
-			}else response.getWriter().write("fail");
-				
+			} else
+				response.getWriter().write("fail");
 
-			
-		}else if (cmd.equals("/checkBoxDelMem.mem")) {
-			System.out.println("요청도착");
-			int rs2;
+		} else if (cmd.equals("/checkBoxDelMem.mem")) {
+			System.out.println("요청도착1");
+			PrintWriter out = response.getWriter();
 			try {
-				rs2 = dao.nullcheck(request.getParameterValues("chk_arr"));
-				PrintWriter out = response.getWriter();
-				if (rs2 == -1) {
-					String[] checkBox = request.getParameterValues("chk_arr");
-					for (String id : checkBox) {
-						int rs = dao.deleteById(id);
-						if(rs != -1) {
-							response.getWriter().write("성공");
-						}else {
-							response.getWriter().write("실패");
-						}
-					}
-					
-				}else {
-					System.out.println("널값입니다.");
-					response.getWriter().write("선택");
-				}
+				String[] checkBox = request.getParameterValues("chk_arr");
+				if (checkBox != null) {
 
-			} catch (Exception e1) {
-				e1.printStackTrace();
+					int rs = dao.delete(checkBox);
+					System.out.println("B");
+					System.out.println(rs);
+
+				}else {
+					response.getWriter().write("빈칸");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 		}
-	
+
 	}
 }

@@ -28,6 +28,7 @@ import kh.com.semi_project.dto.RestMarkDTO;
 import kh.com.semi_project.dto.RestaurantDTO;
 import kh.com.semi_project.dto.RestaurantFileDTO;
 import kh.com.semi_project.dto.RestaurantJoinFileDTO;
+import kh.com.semi_project.service.Service;
 
 @WebServlet("*.re")
 public class RestaurantController extends HttpServlet {
@@ -213,9 +214,18 @@ public class RestaurantController extends HttpServlet {
 				ArrayList<RestaurantJoinFileDTO> restList = dao.selectRestAndFileBySeq(seq_list);
 
 				if (ldto != null && restList != null) {
-					request.setAttribute("ldto", ldto);
-					request.setAttribute("restList", restList);
-					request.getRequestDispatcher("/manager/restaurantManagement.jsp").forward(request, response);
+					HashMap<String, Object> map = new HashMap<>();
+					map.put("ldto", ldto);
+					map.put("restList", restList);
+					
+					Gson gson = new Gson();
+					String rs = gson.toJson(map);
+					
+					if(rs != null) {
+						response.getWriter().write(rs);
+					} else {
+						response.getWriter().write("fail");
+					}
 				}
 			} catch (Exception e) {
 				response.sendRedirect("/Error/error.jsp");
@@ -273,6 +283,8 @@ public class RestaurantController extends HttpServlet {
 				String parkingPossible = multi.getParameter("parkingPossible");
 				int mark_count = Integer.parseInt(multi.getParameter("mark_count"));
 				File uploadFile = multi.getFile("restFile");
+				
+				Gson gson = new Gson();
 
 				// 새로 업로드한 파일이 있다면
 				if (uploadFile != null) {
@@ -299,7 +311,8 @@ public class RestaurantController extends HttpServlet {
 					int rsFile = daoFile.modifyFile(new RestaurantFileDTO(0, seq_rest, origin_name, system_name));
 
 					if (rs == 1 && rsFile == 1) {
-						response.getWriter().write("success");
+						String data = gson.toJson(seq_list);
+						response.getWriter().write(data);
 					} else {
 						response.getWriter().write("fail");
 					}
@@ -310,7 +323,8 @@ public class RestaurantController extends HttpServlet {
 							bname, postcode, address, tel, time, parkingPossible, mark_count));
 
 					if (rs == 1) {
-						response.getWriter().write("success");
+						String data = gson.toJson(seq_list);
+						response.getWriter().write(data);
 					} else {
 						response.getWriter().write("fail");
 					}
@@ -326,6 +340,7 @@ public class RestaurantController extends HttpServlet {
 
 				int seq_rest = Integer.parseInt(request.getParameter("seq_rest"));
 				RestaurantFileDAO daoFile = new RestaurantFileDAO();
+				int seq_list = dao.selectBySeq_rest(seq_rest).getSeq_list();
 
 				// 맛집 삭제
 				int rs = dao.deleteBySeq(seq_rest);
@@ -342,7 +357,10 @@ public class RestaurantController extends HttpServlet {
 
 				if (deleteFile.exists() && rs == 1 && rsFile == 1) {
 					deleteFile.delete();
-					response.getWriter().write("success");
+					Gson gson = new Gson();
+					String data = gson.toJson(seq_list);
+					System.out.println(seq_list);
+					response.getWriter().write(data);
 					System.out.println("파일이 삭제되었습니다.");
 				} else {
 					response.getWriter().write("fail");

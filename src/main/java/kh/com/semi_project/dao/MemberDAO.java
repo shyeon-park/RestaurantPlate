@@ -48,6 +48,25 @@ private BasicDataSource bds;
 		return -1;		
 	}
 	
+	public int delete(String[] ids) throws Exception{
+		String sql = "delete from tbl_member where user_id = ?";
+		
+		try(Connection con = this.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(sql);){
+			
+			con.setAutoCommit(false);
+			for(String id : ids) {
+				System.out.println("id : " + id);
+				pstmt.setString(1, id);
+				pstmt.addBatch();
+			}
+			int[] rs = pstmt.executeBatch();
+			con.commit();
+			con.setAutoCommit(true);
+			return rs.length;
+		}	
+	}
+	
 	//마이페이지 수정
 	public int modifyMypage(MemberDTO dto) throws Exception{
 		String sql = "update tbl_member set user_nickname = ?,  user_email = ?, user_phone =?, post_code=?, road_addr =?, detail_addr =?,extra_addr =? where  user_id = ?  ";

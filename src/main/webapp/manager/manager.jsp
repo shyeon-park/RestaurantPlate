@@ -45,22 +45,33 @@ html {
 
 body {
 	width: 100%;
+	height: 100vw;
+}
+
+.wrapper {
+	width: 100%;
 	height: 100%;
+}
+
+.managerTable {
+	margin-bottom: 0;
 }
 
 /* 네비 */
 .navi {
 	float: left;
 	width: 20%;
-	height: 1000px;
 	background-color: #333;
-	padding-top: 200px;
+	padding-top: 100px;
+	/*height: 1200px;*/
+	height: 100%;
 }
 
 .logo {
 	font-size: 40px;
 	font-weight: bold;
 	cursor: pointer;
+	margin-bottom: 50px;
 }
 
 .logo>div {
@@ -68,11 +79,11 @@ body {
 }
 
 .menubox {
-	height: 500px;
-	display: flex;
-	flex-direction: column;
+	/*height: 500px;*/
+	/*display: flex;*/
+	/*flex-direction: column;
 	justify-content: space-around;
-	align-items: flex-end;
+	align-items: flex-end;*/
 	font-weight: bold;
 	font-size: 30px;
 }
@@ -80,6 +91,8 @@ body {
 .menubox>div {
 	color: white;
 	text-align: center;
+	padding-top: 50px;
+	padding-bottom: 50px;
 }
 
 .menubox>.col-12:hover {
@@ -92,18 +105,19 @@ body {
 .mainManeger {
 	float: left;
 	width: 80%;
-	height: 1000px;
+	/*height: 1200px;*/
+	height: 100%;
+	padding-bottom: 50px;
 }
 
 .managerView {
 	width: 80%;
-	height: 100%;
 	margin: auto;
 }
 
 .txtCls {
-	/*margin-top: 100px;*/
-	margin-bottom: 50px;
+	margin-top: 80px;
+	margin-bottom: 80px;
 }
 
 /* 리스트 관리 영역 */
@@ -121,12 +135,6 @@ body {
 	top: 50%;
 	transform: translate(0, -50%);
 	text-align: center;
-}
-
-.header>div>p {
-	font-size: 30px;
-	font-weight: bold;
-	color: white;
 }
 
 .seq_list {
@@ -201,45 +209,77 @@ body {
 	color: #333;
 }
 
-#logo_home {
-	text-decoration: none;
+/* 맛집관리 영역 */
+.header>div>p:first-child {
+	font-size: 30px;
+	font-weight: bold;
 	color: white;
 }
 
-.page-link {
-	cursor: pointer
+.tit {
+	font-size: 18px;
+	color: lightgray;
 }
+
+/* 맛집등록 모달 */
+        
+.modifyRestContainer {
+	width: 90%;
+	margin: auto;
+}
+
+.modifyRestContainer h3 {
+	font-family: "twaysky";
+}
+
+.modifyRestContainer >.row {
+	margin-top: 30px;
+}
+
+.addressBtn {
+	width: 100%;
+}
+
+.pkLabel {
+	margin-right: 30px;
+}
+
+/* 맛집플레이트 누르면 홈으로 css*/
+#managerHomeBtn{
+text-decoration: none;
+color: white;
+}
+
 /* 회원관리 영역*/
 
 /* 리뷰관리 영역 */
 </style>
 </head>
 <body>
-
-	<div class="navi">
-		<div class="logo">
-			<div class="col-12">
-				<a href="${pageContext.request.contextPath}/home" id="logo_home">맛집플레이트</a>
+	<div class="wrapper">
+		<div class="navi">
+			<div class="logo">
+				<div class="col-12">
+					<a href="${pageContext.request.contextPath}/" id="managerHomeBtn">맛집플레이트</a>
+				</div>
+			</div>
+			<div class="menubox">
+				<div class="col-12" id="member">회원관리</div>
+				<div class="col-12" id="list">맛집리스트</div>
+				<div class="col-12" id="review">리뷰관리</div>
 			</div>
 		</div>
-		<div class="menubox">
-			<div class="col-12" id="member">회원관리</div>
-			<div class="col-12" id="list">맛집리스트</div>
-			<div class="col-12" id="review">리뷰관리</div>
-		</div>
-	</div>
 
 
-	<div class="mainManeger">
-		<div class="managerView">
-			<div class="txtCls">
-				<h2>관리자 페이지</h2>
-			</div>
+		<div class="mainManeger">
+			<div class="managerView">
+				<div class="txtCls">
+					<h2>관리자 페이지</h2>
+				</div>
 
-			<div class="headDiv"></div>
-			<form method='post' id='btnSubmit'
-				action='${pageContext.request.contextPath}/checkBoxDelMem.mem'>
-				<table class="table table-bordered list-table">
+				<div class="headDiv"></div>
+
+				<table class="table table-bordered managerTable">
 					<thead id="table_head">
 
 
@@ -249,8 +289,14 @@ body {
 
 					</tbody>
 				</table>
-			</form>
-			<div class="row btnCls"></div>
+				<div class="row btnCls"></div>
+
+			</div>
+
+
+
+
+
 
 
 
@@ -505,6 +551,192 @@ body {
 			</div>
 
 
+			<!-- 맛집 수정 Modal -->
+			<div class="modal fade" id="modalModifyRest"
+				data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered"
+					style="max-width: 100%; width: 50%;">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title"></h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+						<form method="post" enctype="multipart/form-data"
+							id="modifyRestForm">
+							<div class="modal-body modifyRestContainer">
+								<div class="row">
+									<div class="col-12" style="text-align: center;">
+										<h3>맛집 수정</h3>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<label style="margin-bottom: 4px;">음식점 이름</label> <input
+											type="text" class="form-control" id="restNameMd"
+											name="restName">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-12">
+										<label style="margin-bottom: 4px;">음식점 소개</label> <input
+											type="text" class="form-control" id="restIntroMd"
+											name="restIntro">
+									</div>
+								</div>
+
+								<div class="row">
+									<label style="margin-bottom: 4px;">음식점 주소</label>
+									<div class="col-6">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="postcodeMd" class="form-control"
+												name="postcode" placeholder="우편번호" readonly>
+										</div>
+									</div>
+									<div class="col-6">
+										<input type="button" class="btn btn-dark addressBtn"
+											onclick="sample4_execDaumPostcodeMd()" value="우편번호 찾기"><br>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="roadAddressMd" class="form-control"
+												placeholder="도로명주소" readonly>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-6">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="detailAddressMd" class="form-control"
+												placeholder="상세주소">
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="extraAddressMd" class="form-control"
+												placeholder="참고항목" readonly>
+										</div>
+									</div>
+									<div class="col d-none">
+										<input type="text" class="form-control" id="address"
+											name="address">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="sidoMd" class="form-control"
+												placeholder="시/도" name="sido" readonly>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="sigunguMd" class="form-control"
+												placeholder="시군구" name="sigungu" readonly>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="bnameMd" class="form-control"
+												placeholder="읍/면/동" name="bname" readonly>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<label style="margin-bottom: 4px;">음식점 전화번호</label>
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="telNum1Md" class="form-control"
+												maxlength=4>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="telNum2Md" class="form-control"
+												maxlength=4>
+										</div>
+									</div>
+									<div class="col-4">
+										<div class="input-group flex-nowrap">
+											<input type="text" id="telNum3Md" class="form-control"
+												maxlength=4>
+										</div>
+									</div>
+									<div class="col d-none">
+										<input type="text" class="form-control" id="telMd" name="tel">
+									</div>
+								</div>
+
+								<div class="row">
+									<label style="margin-bottom: 4px;">영업시간</label>
+									<div class="col-3">
+										<input type="text" id="openTimeMd"
+											class="form-control timepicker" style="text-align: center;">
+									</div>
+									~
+									<div class="col-3">
+										<input type="text" id="closeTimeMd"
+											class="form-control timepicker" style="text-align: center;">
+									</div>
+									<div class="col-3 d-none">
+										<input type="text" id="timeMd" name="time">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<label style="margin-bottom: 4px;" class="pkLabel">주차가능여부</label>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox"
+												id="inlineCheckbox1Md" value="주차가능" name="parkingPossible">
+											<label class="form-check-label" for="inlineCheckbox1">주차가능</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox"
+												id="inlineCheckbox2Md" value="주차불가능" name="parkingPossible">
+											<label class="form-check-label" for="inlineCheckbox2">주차불가능</label>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<label style="margin-bottom: 4px;" class="pkLabel">음식점
+											파일첨부</label> <input type="file" class="form-control" id="restFileMd"
+											name="restFile">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 d-none">
+										<input type="text" name="seq_rest" id="hiddenSeqBoxMd">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 d-none">
+										<input type="text" name="mark_count" id="hiddenMarkCountMd">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 d-none">
+										<input type="text" name="seq_list" id="hiddenSeqListMd">
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-bs-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary"
+								id="btnModifyRestComplete">수정완료</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 
 		</div>
 
@@ -514,7 +746,7 @@ body {
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
-	// 다음 우편번호 api
+	// 다음 우편번호 api 리스트 전용
 	function sample4_execDaumPostcode() {
 		new daum.Postcode(
 				{
@@ -554,12 +786,59 @@ body {
 					}
 				}).open();
 	}
+	
+	// 맛집 수정 전용
+	function sample4_execDaumPostcodeMd() {
+		new daum.Postcode(
+				{
+					oncomplete : function(data) {
+
+						var roadAddr = data.roadAddress; // 도로명 주소 변수
+						var extraRoadAddr = ''; // 참고 항목 변수
+
+						if (data.bname !== ''
+								&& /[동|로|가]$/g.test(data.bname)) {
+							extraRoadAddr += data.bname;
+						}
+
+						if (data.buildingName !== ''
+								&& data.apartment === 'Y') {
+							extraRoadAddr += (extraRoadAddr !== '' ? ', '
+									+ data.buildingName : data.buildingName);
+						}
+
+						if (extraRoadAddr !== '') {
+							extraRoadAddr = ' (' + extraRoadAddr + ')';
+						}
+
+						document.getElementById('postcodeMd').value = data.zonecode;
+						document.getElementById("roadAddressMd").value = roadAddr;
+						document.getElementById("sidoMd").value = data.sido; // 시도
+						document.getElementById("sigunguMd").value = data.sigungu; // 시군구
+						document.getElementById("bnameMd").value = data.bname; // 동
+
+						if (roadAddr !== '') {
+							document.getElementById("extraAddressMd").value = extraRoadAddr;
+						} else {
+							document.getElementById("extraAddressMd").value = '';
+						}
+
+						var guideTextBox = document.getElementById("guide");
+					}
+				}).open();
+	}
 	</script>
+	
 	<script>
-	// 로드될 시
 	checkBoxes = document.getElementsByName("num");	 
+	// 로드될 시
 	$(document).ready(function(){
+		
 		getCommentList(1);
+		$("#member").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
 		
 		// 체크박스 하나만 선택 가능
 		$(".form-check-input").click(function() {
@@ -569,17 +848,92 @@ body {
 			}
 		});
 	})
-		
-		  //회원관리 체크박스 전체선택 전체취소
-		  document.addEventListener('click',function(e){
-          if(e.target.id == 'cbx_chkAll'){
-        	  console.log("aa")
-          if ($("#cbx_chkAll").prop("checked"))  $("input[name=num]").prop("checked", true)
-          else  $("input[name=num]").prop("checked", false)
-          }});
+	
+	let startNevi = "";
+	let endNevi = "";
 	
 	
-        //누를 시 삭제
+	// 해당 버튼 클릭 이벤트
+	document.getElementById("member").addEventListener("click",function(){
+    	getCommentList(1);
+    	$("#member").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+    	$("#list").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#review").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+        //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
+    })
+    document.getElementById("list").addEventListener("click",function(){
+    	getListByCurrentPage(1);
+    	$("#member").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#list").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+    	$("#review").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    })
+    document.getElementById("review").addEventListener("click",function(){
+    	getViewList(1);
+    	$("#member").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#list").css({
+			"backgroundColor": "",
+			"color": ""
+		});
+    	$("#review").css({
+			"backgroundColor": "white",
+			"color": "black"
+		});
+    })
+    
+    
+    
+      //버튼 누를 시 회원 삭제
+      $(document).on("click","#delMem",function(e){
+    	  var chk_arr = []
+			console.log( $('input:checkbox[name="num"]:checked').length)
+			 $('input:checkbox[name="num"]:checked').each(function() {
+			         let chk = this.value
+			         chk_arr.push(chk);
+			 });
+      	console.log(chk_arr)
+			$.ajax({
+  				url : "${pageContext.request.contextPath}/checkBoxDelMem.mem",
+  				type : "post",
+  				traditional : true,
+  				data : {"chk_arr" : chk_arr}
+  			}).done(function(rs) {
+  				console.log(rs)
+  					
+  				if(rs=="빈칸"){
+  					alert("삭제할 회원을 선택해주세요");
+  				}else if(rs == "실패"){
+  					alert("삭제가 실패하였습니다. 다시 시도해주세요!");
+  				}else{
+  					getCommentList(1);
+  				}
+  				
+  			}).fail(function(e) {
+  				consol.log(e);
+  			})
+      })
+      
+      /*
 		 document.addEventListener('click',function(e){
           if(e.target.id == 'delMem'){
         	var chk_arr = []
@@ -611,27 +965,18 @@ body {
     			})
           }          
 		 })
-         
-		
-
-	
-	let startNavi = "";
-	let endNavi = "";
-	
-	
-	document.getElementById("member").addEventListener("click",function(){
-    	getCommentList(1);
-        //location.href = "${pageContext.request.contextPath}/getMemberList.mem?currentPage=1"
-    })
-    document.getElementById("list").addEventListener("click",function(){
-    	getListByCurrentPage(1);
-    })
-    document.getElementById("review").addEventListener("click",function(){
-    	getViewList(1);
-    })
+   	*/      
+   
+    //회원관리 체크박스 전체선택 전체취소
+ 	document.addEventListener('click',function(e){
+          if(e.target.id == 'cbx_chkAll'){
+        	  console.log("aa")
+          if ($("#cbx_chkAll").prop("checked"))  $("input[name=num]").prop("checked", true)
+          else  $("input[name=num]").prop("checked", false)
+          }});
     
-    /*회원관리*/
-    function getCommentList(currentPage){         
+	 /*회원관리*/
+     function getCommentList(currentPage){         
          $.ajax({
             type : "get"
             , url : "${pageContext.request.contextPath}/toMemberManagement.mem?currentPage="+currentPage
@@ -664,6 +1009,9 @@ body {
             console.log(data)
             startNevi = data.startNavi
             endNevi = data.endNavi
+            console.log(startNevi);
+			console.log(endNevi);
+			
             let list = ""
             for(let dto of data.list){
                list += "<tr><td><input type='checkbox' name='num' value='"+dto.user_id+"'></td><td>"+dto.rowNum+"</td><td>"+dto.user_id+"</td><td>"+dto.user_nickname+"</td><td>"+dto.signup_date+"</td></tr>" 
@@ -672,17 +1020,20 @@ body {
              let str =""
              let str1 = ""
              let str2 = ""
+             
             if(data.needPrev == true){
                str = "<li class='page-item'><div class='page-link 3'>Previous</div></li>"
             }
-            for(let j = data.startNavi; j<=data.endNavi; j++){
+             
+            for(let j = data.startNavi; j < data.endNavi + 1; j++){
                str1 += "<li class='page-item'><div class='page-link 3'>"+j+"</div></li>"
             }
+            
             if(data.needNext == true){
                str2 = "<li class='page-item'><div class='page-link 3'>Next</div></li>"
             }
             let nav = ""
-               nav = "<td colspan=5 class='naviTd>"
+               nav = "<td colspan=5 class='naviTd'>"
                   +"<nav class='col' aria-label='Page navigation example'>"
                   +"<ul class='pagination justify-content-center'>"
                    +str+str1+str2
@@ -697,14 +1048,17 @@ body {
               $("thead").append(thead)      
               $("tbody").append(list);
               $("tbody").append(nav)
+
               $(".btnCls").append(btn)
-        
+
          }).fail(function(e){
             console.log(e);
          });
       }
 
-  
+   
+	
+	
 	
 	// 리스트 관리 스크립트 영역
 	// 해당 currentPage에 속하는 리스트 목록을 불러오는 작업
@@ -720,8 +1074,11 @@ body {
 	        	$("#table_body").empty();
 	        	$(".btnCls").empty();
 
-	        	startNavi = data.startNavi;
-				endNavi = data.endNavi;
+	        	startNevi = data.startNavi;
+				endNevi = data.endNavi;
+				
+				console.log(startNevi);
+				console.log(endNevi);
 
 				let head = "<div class='row header'><div class='col-12'><p>맛집 리스트 관리</p></div></div>";
 				$(".headDiv").append(head);
@@ -732,13 +1089,13 @@ body {
 	            for (let listDto of data.list) {
 	                let totalList = "<tr><td class='seq_list'>" +"<p>"+ listDto.seq_list+"</p>"
 	                    + "</td><td class='list_title'>"
-	                    + "<a href='${pageContext.request.contextPath}/toRestManagerView.re?seq_list=" + listDto.seq_list + "'>" + listDto.list_title + "</a></td>"
+	                    + "<a href='javascript:void(0)' onclick='getRestList(" + listDto.seq_list + ");'>" + listDto.list_title + "</a></td>"
 	                    + "<td class='col-1 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-warning' id='btnModifyList' value='" + listDto.seq_list + "'>수정</button></td>"
+	                    + "<button type='button' class='btn btn-warning btnModifyList' value='" + listDto.seq_list + "'>수정</button></td>"
 	                    + "<td class='col-1 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-danger' id='btnDeleteList' value='" + listDto.seq_list + "'>삭제</button></td>"
+	                    + "<button type='button' class='btn btn-danger btnDeleteList' value='" + listDto.seq_list + "'>삭제</button></td>"
 	                    + "<td class='col-2 dynamicBtnCls'>"
-	                    + "<button type='button' class='btn btn-dark' id='btnAddRestaurnat' value='" + listDto.seq_list + "'>맛집등록</button></td></tr>";
+	                    + "<button type='button' class='btn btn-dark btnAddRestaurnat' value='" + listDto.seq_list + "'>맛집등록</button></td></tr>";
 	               		$("#table_body").append(totalList);
 	            }
 	            
@@ -747,17 +1104,17 @@ body {
 				let str3 = "";
 				
 				if(data.needPrev == true){
-					str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNavi + ")-1);'>Prev</a></li>";
-				}
-				
-				Number(endNavi)+1
-				for(let j = data.startNavi; j <= data.endNavi; j++){
-					str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
-				}
-				
-				if(data.needNext == true){
-					str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNavi + ")+1);'>Next</a></li>";
-				}
+		               str1 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + startNevi + ")-1);'>Prev</a></li>";
+		            }
+		            
+		            for(let j = data.startNavi; j < data.endNavi + 1; j++){
+		               str2 += "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(" + j + ");'>" + j + "</a></li>";
+		            }
+		            
+		            if(data.needNext == true){
+		               str3 = "<li class='page-item'><a class='page-link' href='javascript:void(0)' onclick='getListByCurrentPage(Number(" + endNevi + ")+1);'>Next</a></li>";
+		            }
+		            
 				let nav = "<td colspan='5' class='naviTd'>"
 							+"<nav class='col' aria-label='Page navigation example'>"
 							+"<ul class='pagination justify-content-center'>"
@@ -781,9 +1138,6 @@ body {
 	           })
 	    
 	    }
-	
-	
-	
 	
 	// 리스트 추가하기 버튼 클릭 시
 	$(document).on("click", "#btnAddList", function() {
@@ -827,7 +1181,7 @@ body {
 	})
 
 	// 수정버튼 클릭시
-	$(document).on("click", "#btnModifyList", function(e) {
+	$(document).on("click", ".btnModifyList", function(e) {
 		console.log($(e.target).val());
 		
 		$.ajax({
@@ -881,7 +1235,7 @@ body {
 	})
 
 	// 삭제 버튼 클릭시
-	$(document).on("click", "#btnDeleteList", function(e) {
+	$(document).on("click", ".btnDeleteList", function(e) {
 		console.log($(e.target).val());
 		if (confirm("정말로 삭제하시겠습니까?")) {
 			$.ajax({
@@ -898,10 +1252,12 @@ body {
 				console.log(e);
 			})
 		}
-	})
+	})      
+	
+	
 
 	// 맛집등록 버튼 클릭 시
-	$(document).on("click", "#btnAddRestaurnat", function(e) {
+	$(document).on("click", ".btnAddRestaurnat", function(e) {
 		$("#hiddenSeqBox").val($(e.target).val());
 		console.log($("#hiddenSeqBox").val());
 		$("#restName").val("");
@@ -924,6 +1280,7 @@ body {
 	$("#btnAdd-rest").on( "click", function(e) {
 		// regex
 		let regexTel = /^[0-9]{10,12}$/g;
+
 		if ($("#restName").val() == "") {
 			alert("음식점명을 입력하세요.");
 			return;
@@ -979,7 +1336,7 @@ body {
 		$("#telNum3").val("");
 		$("#openTime").val("");
 		$("#closeTime").val("");
-		$("input:checkbox[name='parkingPossible']").attr("checked", false);
+		$("input:checkbox[name='parkingPossible']").prop("checked", false);
 		$("#restFile").val("");
 		$("#hiddenSeqBox").val("");
 		$("#modalAddRest").modal("hide");
@@ -1000,9 +1357,13 @@ body {
 			$(".headDiv").empty();
 			$("thead").empty();
 			$("tbody").empty();
+			$(".btnCls").empty();
 			
 			startNevi = data.startNavi
 			endNevi = data.endNavi
+			
+			console.log(startNevi);
+			console.log(endNevi);
 			
 			let head = "<div class='row header'><div class='col-12'><p>리뷰 관리</p></div></div>";
 			$(".headDiv").append(head);
@@ -1027,29 +1388,31 @@ body {
 				+ "</tr>";
 				$("tbody").append(review);
 			}
-				 let str =""
+			let str =""
 				 let str1 = ""
 				 let str2 = ""
-				 console.log(data.startNavi)
+				 
 				if(data.needPrev == true){
-					str = "<li class='page-item'><div class='page-link 2'>Previous</div></li>"
+					str = "<li class='page-item'><div class='page-link 2' id= 'aa'>Previous</div></li>"
 				}
-				for(let j = data.startNavi; j<data.endNavi; j++){
+			
+				for(let j = data.startNavi; j < data.endNavi + 1; j++){
 					str1 += "<li class='page-item'><div class='page-link 2'>"+j+"</div></li>"
 				}
+				
 				if(data.needNext == true){
-					str2 = "<li class='page-item'><div class='page-link 2'>Next</div></li>"
+					str2 = "<li class='page-item'><button type ='button' class='page-link 2'>Next</div></li>"
 				}
 				let nav = ""
 					
-					nav = "<td colspan=5>"
+					nav = "<td colspan=5 class='naviTd'>"
 						+"<nav class='col' aria-label='Page navigation example'>"
 						+"<ul class='pagination justify-content-center'>"
 					 	+str+str1+str2
 						+"</ul>"  
 						+"</nav>"  	
 						+"</td>"  	 
-	             $("tbody").append(nav)
+	              $("tbody").append(nav)
 
 		
 		}).fail(function(e){
@@ -1058,6 +1421,7 @@ body {
 		
 		}
 	 
+	 // 리뷰삭제
 	 document.addEventListener('click',function(e){
 
         if(e.target.id == 'btnDelete'){
@@ -1080,75 +1444,252 @@ body {
 			
          }
        }); 
-    
-    document.addEventListener('click',function(e){
-		console.log(e.target.className);
-   		//console.log(e.target.className)
-   		//console.log(e.target.innerHTML)
-		if(e.target.className == "page-link listPage"){
-		   let currentPage="";
-		   if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
+	 
+	 
+     
+     
+	 
+	 /* 맛집 관련 영역 */
+	 function getRestList(e) {
+		 $.ajax({
+			 url: "${pageContext.request.contextPath}/toRestManagerView.re?seq_list=" + e,
+			 type: "get",
+			 dataType: "json"
+			 
+		 }).done(function(data){
+			 console.log(data);
+	         $(".headDiv").empty();
+	         $("#table_head").empty();
+	         $("#table_body").empty();
+	         $(".btnCls").empty();
+			 
+			 let header = "<div class='row header'><div class='col-12'><p>맛집 목록</p><p class='tit'>" + data.ldto.list_title + "</p></div></div>";
+			 $(".headDiv").append(header);
+			 
+			 let thead = "<tr><th class='col-1 num'>번호</th><th colspan='4'>맛집이름</th></tr>";
+			 $("#table_head").append(thead);
+			 
+			 for (let dto of data.restList) {
+	                let restList = "<tr><td class='col-1 seq_rest'>" +"<p>"+ dto.seq_rest+"</p>"
+	                    + "</td><td class='col-3 rest_name'>" + "<p>" + dto.rest_name + "</p></td>"
+	                    + "</td><td class='col-6 rest_address'>" + "<p>" + dto.rest_address + "</p></td>"
+	                    + "<td class='col-1 dynamicBtnCls'>"
+	                    + "<button type='button' class='btn btn-secondary btnRestModify' value='" + dto.seq_rest + "'>수정</button></td>"
+	                    + "<td class='col-1 dynamicBtnCls'>"
+	                    + "<button type='button' class='btn btn-success btnRestDelete' value='" + dto.seq_rest + "'>삭제</button></td>";
+	               		$("#table_body").append(restList);
+	            }
+			 
+			 if(data == "fail") {
+				 location.href = "${pageContext.request.contextPath}/Error/error.jsp";
+				 
+			 }
+		 }).fail(function(e){
+			 console.log(e);
+		 })
+		 
+	 }
+	 
+	// 수정버튼 클릭시
+	    $(document).on("click", ".btnRestModify", function(e) {
+	   	 	console.log($(e.target).val());
+	   	 
+	   	 	$.ajax({
+	   			 url: "${pageContext.request.contextPath}/getAllListInfo.re?seq_rest=" + $(e.target).val(),
+	   		 	 type: "get",
+	   		 	 dataType: "json"
+	   	 	}).done(function(data){
+	   	 		console.log(data);
+	   		 console.log(data.rest_name);
+	   		 $("#restNameMd").val(data.rest_name);
+	   		 $("#restIntroMd").val(data.rest_introduction);
+	   		 $("#postcodeMd").val(data.postCode);
+	   		 $("#sidoMd").val(data.sido);
+	   		 $("#sigunguMd").val(data.sigungu);
+	   		 $("#bnameMd").val(data.bname);  		 
+	   		 
+	   		 let tel = data.rest_tel;
+	   		 tel = tel.split("-");
+	   		 $("#telNum1Md").val(tel[0]);
+	   		 $("#telNum2Md").val(tel[1]);
+	   		 $("#telNum3Md").val(tel[2]);
+	   		 
+	   		 let time = data.rest_time;
+	   		 time = time.split(" ~ ");
+	   		 $("#openTimeMd").val(time[0]);
+	   		 $("#closeTimeMd").val(time[1]);
+	   		 $("#hiddenMarkCountMd").val(data.mark_count);
+	   		 $("#hiddenSeqListMd").val(data.seq_list);
+	   		 
+	   	 }).fail(function(e){
+	   		 console.log(e);
+	   	 })
+	   	 $("#modalModifyRest").modal("show");
+	    })
+	    
+	    
+	    // 수정완료버튼 클릭 시
+	     $("#btnModifyRestComplete").on("click", function(e){
+	        	// regex
+	        	let regexTel = /^[0-9]{10,12}$/g;
+	        	
+	        	if($("#restNameMd").val() == "") {
+	        		alert("음식점명을 입력하세요.");
+	        		return;
+	        	} else if($("#restIntroMd").val() == "") {
+	        		alert("음식점 소개를 입력하세요.");
+	        		return;
+	        	} else if($("#postcodeMd").val() == "" || $("#roadAddressMd").val() == "") {
+	        		alert("음식점 주소를 입력하세요.");
+	        		return;
+	        	} else if($("#telNum1Md").val() == "" || $("#telNum2Md").val() == "" 
+	        			|| $("#telNum3Md").val() == "" || !regexTel.test(($("#telNum1Md").val() + $("#telNum2Md").val() + $("#telNum3Md").val()))) {
+	        		alert("음식점 번호를 확인하세요.");
+	        		return;
+	        	} else if($("#openTimeMd").val() == "" || $("#closeTimeMd").val() == ""){
+	        		alert("영업시간을 입력하세요.");
+	        		return;
+	        	} else if($("#restFileMd").val() == "") {
+	        		alert("파일을 첨부하세요.");
+	        		return;
+	        	}
+	        	
+	        	$("#telMd").val($("#telNum1Md").val() + "-" + $("#telNum2Md").val() + "-" + $("#telNum3Md").val());
+	        	$("#addressMd").val($("#roadAddressMd").val() + " " + $("#extraAddressMd").val() + " " + $("#detailAddressMd").val());
+	        	$("#timeMd").val($("#openTimeMd").val() + " ~ " + $("#closeTimeMd").val());
+	        	
+	        	let modifyRestForm = $("#modifyRestForm")[0];
+	        	let formData = new FormData(modifyRestForm);
+	        	
+	        	$.ajax({
+	                url: "${pageContext.request.contextPath}/modifyRestProc.re",
+	                type: "post",
+	                data: formData,
+	                contentType: false,
+	                processData: false
+	                }).done(function (rs) {
+	                    if (rs != null) {
+	                        alert("맛집이 수정되었습니다.");
+	                        getRestList(rs);
+	                    } else {
+	                    	alert("맛집 수정에 실패했습니다.");
+	                    }
+	                }).fail(function (e) {
+	                    consol.log(e);
+	                })
+	                $("#restNameMd").val("");
+	        		$("#restIntroMd").val("");
+	                $("#postcodeMd").val("");
+	                $("#roadAddressMd").val("");
+	                $("#detailAddressMd").val("");
+	                $("#extraAddressMd").val("");
+	                $("#telNum1Md").val("");
+	                $("#telNum2Md").val("");
+	                $("#telNum3Md").val("");
+	                $("#openTimeMd").val("");
+	                $("#closeTimeMd").val("");
+	                $("#restFileMd").val("");
+	                $("#hiddenSeqBoxMd").val("");
+	                $("#hiddenMarkCountMd").val("");
+	                $("#hiddenSeqListMd").val("");
+	                $("#modalModifyRest").modal("hide");
+	         })
+	         
+	         // 삭제 버튼 클릭시
+	        $(document).on("click", ".btnRestDelete", function(e) {
+	        	 console.log($(e.target).val());
+	        	 if(confirm("정말로 삭제하시겠습니까?")) {
+	        		 $.ajax({
+	        			 url: "${pageContext.request.contextPath}/deleteRestProc.re?seq_rest=" + $(e.target).val(),
+	        			 type: "get"
+	        		 }).done(function(data){
+	        			 if(data != null) {
+	        				 console.log(data);
+	        				 alert("맛집이 삭제되었습니다.");
+	        				 getRestList(data);
+	        			 } else {
+	        				 alert("맛집 삭제에 실패하였습니다.");
+	        			 }
+	        		 }).fail(function(e){
+	        			 console.log(e);
+	        		 })
+	        	 }
+	         })
+	         
+ 
+	         
+	         
+	         
+	         // 페이징 관련 이벤트
+    		 // 리스트 관련 페이징
+   			 document.addEventListener('click',function(e){
+				console.log(e.target.className);
+   				//console.log(e.target.className)
+   				//console.log(e.target.innerHTML)
+				if(e.target.className == "page-link listPage"){
+		  			let currentPage="";
+		   			if(e.target.className == "page-link listPage" && e.target.innerHTML == "Next") {
 
-				 getListByCurrentPage(Number(endNavi)+1);  
+				 	getListByCurrentPage(Number(endNevi)+1);  
 			  
-     		//currentPage= data.startNavi+1
-               	}
-               	if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
+     				//currentPage= data.startNavi+1
+               		}
+               		if(e.target.className == "page-link listPage" && e.target.innerHTML == "Previous"){
                		
-               			getListByCurrentPage(Number(startNavi)-1);  
-               		//currentPage= data.startNavi-1
-               	}
-               	if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-               		console.log(e.target.innerHTML);
-               		currentPage=e.target.innerHTML;
+               			getListByCurrentPage(Number(startNevi)-1);  
+               			//currentPage= data.startNavi-1
+               		}
+               		if(e.target.className == "page-link listPage" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+               			console.log(e.target.innerHTML);
+               			currentPage=e.target.innerHTML;
                		
                			getListByCurrentPage(currentPage);  
-        		
-               		
-               	}  
-	   }
-	});
+               		}  
+	   		  	  }
+				});
  
- document.addEventListener('click',function(e){
-  	   //console.log(e.target.className)
-  	   //console.log(e.target.innerHTML)
-  	   if(e.target.className == "page-link 2"){
-  		   if(e.target.className == "page-link 2" && e.target.innerHTML == "Next") {
-  			 getViewList( Number(endNevi)+1)
-         		//currentPage= data.startNavi+1
-             	}
-             	if(e.target.className == "page-link 2" && e.target.innerHTML == "Previous"){
-             		getViewList(Number(startNevi)-1)
-             		//currentPage= data.startNavi-1
-             	}
-             	if(e.target.className == "page-link 2" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-             		currentPage=e.target.innerHTML
-             		getViewList(currentPage)
+			// 리뷰관련 페이징
+			 document.addEventListener('click',function(e){
+  	  			 //console.log(e.target.className)
+  	   			//console.log(e.target.innerHTML)
+  	   			if(e.target.className == "page-link 2"){
+  		   			if(e.target.className == "page-link 2" && e.target.innerHTML == "Next") {
+  						 getViewList( Number(endNevi)+1)
+         				//currentPage= data.startNavi+1
+             		}
+             		if(e.target.className == "page-link 2" && e.target.innerHTML == "Previous"){
+             			getViewList(Number(startNevi)-1)
+             			//currentPage= data.startNavi-1
+             		}
+             		if(e.target.className == "page-link 2" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+             			currentPage=e.target.innerHTML
+             			getViewList(currentPage)
              		
-             	}  
-  	   }
+             		}  
+  	   			}
   	
-      });
+     		 });
  
- document.addEventListener('click',function(e){
-       //console.log(e.target.className)
-       //console.log(e.target.innerHTML)
-       if(e.target.className == "page-link 3"){
-          let currentPage=""
-          if(e.target.className == "page-link 3" && e.target.innerHTML == "Next") {
-             getCommentList(Number(endNevi)+1)
-              //currentPage= data.startNavi+1
-               }
-               if(e.target.className == "page-link 3" && e.target.innerHTML == "Previous"){
-                  getCommentList(Number(startNevi)-1)
-                  //currentPage= data.startNavi-1
-               }
-               if(e.target.className == "page-link 3" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
-                  currentPage=e.target.innerHTML
-                  getCommentList(currentPage)
-               }  
-       }
-     });
+			 // 회원관련 페이징
+ 			document.addEventListener('click',function(e){
+       			//console.log(e.target.className)
+       			//console.log(e.target.innerHTML)
+       			if(e.target.className == "page-link 3"){
+        		  	let currentPage=""
+         			if(e.target.className == "page-link 3" && e.target.innerHTML == "Next") {
+             			getCommentList(Number(endNevi)+1)
+              			//currentPage= data.startNavi+1
+               		}
+               		if(e.target.className == "page-link 3" && e.target.innerHTML == "Previous"){
+                 		 getCommentList(Number(startNevi)-1)
+                 		 //currentPage= data.startNavi-1
+               		}
+               		if(e.target.className == "page-link 3" && e.target.innerHTML != "Previous" && e.target.innerHTML != "Next"){
+                  		currentPage=e.target.innerHTML
+                  		getCommentList(currentPage)
+              		}  
+       			}
+    		 });
 	
 	
 	</script>
