@@ -18,3 +18,11 @@
 + Server : Apache Tomcat 8.5
 + Control : GitHub
 + IDE : Eclipse IDE, SQL Developer, VS Code
+
+
+- - -
+### Use Case Diagram
+![Alt text](/USECASE.jpg)
+- - -
+### Entity-Relationship Diagram
+![Alt text](ERD.png)
