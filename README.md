@@ -26,7 +26,7 @@
 
 - - -
 ### Use Case Diagram
-![Alt text](/USECASE.jpg)
+![Alt text](/USECASE.png)
 - - -
 ### Entity-Relationship Diagram
 ![Alt text](ERD.png)
